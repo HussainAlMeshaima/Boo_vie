@@ -1,0 +1,100 @@
+{
+    "last_updated": "Wed, 14 Apr 2021 00:02:25 GMT",
+    "routes": [
+        {
+            "file_path": "views/start_up/start_up_view.dart",
+            "route_name": "start_upViewRoute",
+            "view_name": "StartUpView"
+        },
+        {
+            "file_path": "views/login/login_view.dart",
+            "route_name": "loginViewRoute",
+            "view_name": "LoginView"
+        },
+        {
+            "file_path": "views/splash_screen/splash_screen_view.dart",
+            "route_name": "splash_screenViewRoute",
+            "view_name": "SplashScreenView"
+        },
+        {
+            "file_path": "views/profile/profile_view.dart",
+            "route_name": "profileViewRoute",
+            "view_name": "ProfileView"
+        },
+        {
+            "file_path": "views/user_details/user_details_view.dart",
+            "route_name": "user_detailsViewRoute",
+            "view_name": "UserDetailsView"
+        },
+        {
+            "file_path": "views/challenges/challenges_view.dart",
+            "route_name": "challengesViewRoute",
+            "view_name": "ChallengesView"
+        },
+        {
+            "file_path": "views/home/home_view.dart",
+            "route_name": "homeViewRoute",
+            "view_name": "HomeView"
+        },
+        {
+            "file_path": "views/search/search_view.dart",
+            "route_name": "searchViewRoute",
+            "view_name": "SearchView"
+        },
+        {
+            "file_path": "views/more_books/more_books_view.dart",
+            "route_name": "more_booksViewRoute",
+            "view_name": "MoreBooksView"
+        },
+        {
+            "file_path": "views/book/book_view.dart",
+            "route_name": "bookViewRoute",
+            "view_name": "BookView"
+        },
+        {
+            "file_path": "views/book_author_grid/book_author_grid_view.dart",
+            "route_name": "book_author_gridViewRoute",
+            "view_name": "BookAuthorGridView"
+        },
+        {
+            "file_path": "views/book_information/book_information_view.dart",
+            "route_name": "book_informationViewRoute",
+            "view_name": "BookInformationView"
+        },
+        {
+            "file_path": "views/searched/searched_view.dart",
+            "route_name": "searchedViewRoute",
+            "view_name": "SearchedView"
+        },
+        {
+            "file_path": "views/comunintys/comunintys_view.dart",
+            "route_name": "comunintysViewRoute",
+            "view_name": "ComunintysView"
+        },
+        {
+            "file_path": "views/book_categories_grid/book_categories_grid_view.dart",
+            "route_name": "book_categories_gridViewRoute",
+            "view_name": "BookCategoriesGridView"
+        },
+        {
+            "file_path": "views/similer_books_grid/similer_books_grid_view.dart",
+            "route_name": "similer_books_gridViewRoute",
+            "view_name": "SimilerBooksGridView"
+        },
+        {
+            "file_path": "views/book_reviews/book_reviews_view.dart",
+            "route_name": "book_reviewsViewRoute",
+            "view_name": "BookReviewsView"
+        },
+        {
+            "file_path": "views/review/review_view.dart",
+            "route_name": "reviewViewRoute",
+            "view_name": "ReviewView"
+        },
+        {
+            "file_path": "views/user_revieww/user_revieww_view.dart",
+            "route_name": "user_reviewwViewRoute",
+            "view_name": "UserReviewwView"
+        }
+    ]
+}
