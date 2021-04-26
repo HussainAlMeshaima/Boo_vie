@@ -1,6 +1,7 @@
 import 'package:boo_vi_app/core/models/bookModels/bookIdModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'book_information_view_model.dart';
@@ -48,26 +49,6 @@ class BookInformationView extends StatelessWidget {
                 return ListView(
                   physics: ScrollPhysics(),
                   children: [
-                    InformationTileWidget(
-                      leadingText: 'Title',
-                      trailingText: snapshot.data.volumeInfo.title,
-                    ),
-                    InformationTileWidget(
-                      leadingText: 'Authors',
-                      fontSize: 14,
-                      trailingText: viewModel
-                          .getAuthors(snapshot.data.volumeInfo.authors),
-                    ),
-                    InformationTileWidget(
-                      leadingText: 'Type',
-                      trailingText:
-                          snapshot.data.volumeInfo.printType.toString(),
-                    ),
-                    InformationTileWidget(
-                      leadingText: 'Pages',
-                      trailingText:
-                          snapshot.data.volumeInfo.pageCount.toString(),
-                    ),
                     DescriptionTileWidget(
                       descriptionText: snapshot.data.volumeInfo.description
                           .replaceAll(
@@ -76,13 +57,13 @@ class BookInformationView extends StatelessWidget {
                               ''),
                     ),
                     InformationTileWidget(
-                      leadingText: 'Publisher',
-                      trailingText: snapshot.data.volumeInfo.publisher,
+                      leadingText: 'Title',
+                      trailingText: snapshot.data.volumeInfo.title,
                     ),
                     InformationTileWidget(
-                      leadingText: 'Date',
-                      trailingText:
-                          snapshot.data.volumeInfo.publishedDate.toString(),
+                      leadingText: 'Authors',
+                      trailingText: viewModel
+                          .getAuthors(snapshot.data.volumeInfo.authors),
                     ),
                     InformationTileWidget(
                       leadingText: 'Pages',
@@ -90,13 +71,41 @@ class BookInformationView extends StatelessWidget {
                           snapshot.data.volumeInfo.pageCount.toString(),
                     ),
                     InformationTileWidget(
+                      leadingText: 'Date',
+                      trailingText:
+                          snapshot.data.volumeInfo.publishedDate.toString(),
+                    ),
+                    InformationTileWidget(
+                      leadingText: 'Publisher',
+                      trailingText: snapshot.data.volumeInfo.publisher,
+                    ),
+                    InformationTileWidget(
                         leadingText: 'Categories',
                         fontSize: 14,
                         trailingText: viewModel.getCategories(
                             snapshot.data.volumeInfo.categories)),
                     InformationTileWidget(
+                      leadingText: 'Type',
+                      trailingText: snapshot.data.volumeInfo.printType
+                          .toLowerCase()
+                          .toString(),
+                    ),
+                    if (snapshot.data.volumeInfo.industryIdentifiers != null)
+                      if (snapshot.data.volumeInfo.industryIdentifiers.length >=
+                          1)
+                        for (var item
+                            in snapshot.data.volumeInfo.industryIdentifiers)
+                          InformationTileWidget(
+                            leadingText: item.type.replaceAll('_', ' '),
+                            trailingText: item.identifier.toString(),
+                          ),
+                    InformationTileWidget(
                       leadingText: 'ID',
                       trailingText: snapshot.data.id,
+                    ),
+                    InformationTileWidget(
+                      leadingText: 'E-tag',
+                      trailingText: snapshot.data.etag,
                     ),
                     SizedBox(
                       height: 80,
@@ -144,6 +153,40 @@ class BookInformationView extends StatelessWidget {
                     onTap: () async {
                       await launch(webReaderLink);
                     }),
+              if (webReaderLink != null)
+                SpeedDialChild(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  labelBackgroundColor: Theme.of(context).cardColor,
+                  label: 'Book QR code',
+                  child: Icon(
+                    Icons.qr_code_rounded,
+                    color: Colors.white,
+                  ),
+                  onTap: () async {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height / 2.8,
+                          child: Center(
+                            child: InkWell(
+                              onTap: () async {
+                                Navigator.pop(context);
+                                await launch(webReaderLink);
+                              },
+                              child: QrImage(
+                                data: webReaderLink,
+                                version: QrVersions.auto,
+                                size: 180.0,
+                                foregroundColor: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
             ],
           ),
         );

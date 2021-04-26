@@ -48,26 +48,6 @@ class HomeViewModel extends BaseViewModel {
         duration: Duration(milliseconds: 400));
   }
 
-  Stream getComicBooksStream() {
-    return _streamServices.getComicBooksStream();
-  }
-
-  Stream getFullNewestBooksStream() {
-    return _streamServices.getFullNewestBooksStream();
-  }
-
-  Stream getNewestBooksStream() {
-    return _streamServices.getNewestBooksStream();
-  }
-
-  Stream getfullComicBooksStream() {
-    return _streamServices.getfullComicBooksStream();
-  }
-
-  Stream getTravelBooksStream() {
-    return _streamServices.getTravelBooksStream();
-  }
-
   Stream getFullArtsAndentErtainmentBooksStream() {
     return _streamServices.getFullArtsAndentErtainmentBooksStream();
   }
@@ -76,8 +56,68 @@ class HomeViewModel extends BaseViewModel {
     return _streamServices.getArtsAndentErtainmentBooksStream();
   }
 
-  Stream getFullTravelBooksStream() {
-    return _streamServices.getFullTravelBooksStream();
+  Stream getFullBiographiesAndMemoirsBooksStream() {
+    return _streamServices.getFullBiographiesAndMemoirsBooksStream();
+  }
+
+  Stream getBiographiesAndMemoirsBooksStream() {
+    return _streamServices.getBiographiesAndMemoirsBooksStream();
+  }
+
+  Stream getFullBusinessAndInvestingBooksStream() {
+    return _streamServices.getFullBusinessAndInvestingBooksStream();
+  }
+
+  Stream getBusinessAndInvestingBooksStream() {
+    return _streamServices.getBusinessAndInvestingBooksStream();
+  }
+
+  Stream getFullChildrensBooksStream() {
+    return _streamServices.getFullChildrensBooksStream();
+  }
+
+  Stream getChildrensBooksStream() {
+    return _streamServices.getChildrensBooksStream();
+  }
+
+  Stream getComicBooksStream() {
+    return _streamServices.getComicBooksStream();
+  }
+
+  Stream getFullComicBooksStream() {
+    return _streamServices.getFullComicBooksStream();
+  }
+
+  Stream getFullComputersAndTechnologyBooksStream() {
+    return _streamServices.getFullComputersAndTechnologyBooksStream();
+  }
+
+  Stream getComputersAndTechnologyBooksStream() {
+    return _streamServices.getComputersAndTechnologyBooksStream();
+  }
+
+  Stream getFullCookingAndFoodBooksStream() {
+    return _streamServices.getFullCookingAndFoodBooksStream();
+  }
+
+  Stream getCookingAndFoodBooksStream() {
+    return _streamServices.getCookingAndFoodBooksStream();
+  }
+
+  Stream getFullFictionAndLiteratureBooksStream() {
+    return _streamServices.getFullFictionAndLiteratureBooksStream();
+  }
+
+  Stream getFictionAndLiteratureBooksStream() {
+    return _streamServices.getFictionAndLiteratureBooksStream();
+  }
+
+  Stream getFullHealthMindAndbodyBooksStream() {
+    return _streamServices.getFullHealthMindAndbodyBooksStream();
+  }
+
+  Stream getHealthMindAndbodyBooksStream() {
+    return _streamServices.getHealthMindAndbodyBooksStream();
   }
 
   Stream getFullHistoryBooksStream() {
@@ -88,11 +128,43 @@ class HomeViewModel extends BaseViewModel {
     return _streamServices.getHistoryBooksStream();
   }
 
-  Stream getFullBiographiesAndMemoirsBooksStream() {
-    return _streamServices.getFullBiographiesAndMemoirsBooksStream();
+  Stream getFullHomeAndGardenBooksStream() {
+    return _streamServices.getFullHomeAndGardenBooksStream();
   }
 
-  Stream getBiographiesAndMemoirsBooksStream() {
-    return _streamServices.getBiographiesAndMemoirsBooksStream();
+  Stream getHomeAndGardenBooksStream() {
+    return _streamServices.getHomeAndGardenBooksStream();
+  }
+
+  Stream getFullMysteryAndThrillersBooksStream() {
+    return _streamServices.getFullMysteryAndThrillersBooksStream();
+  }
+
+  Stream getMysteryAndThrillersBooksStream() {
+    return _streamServices.getMysteryAndThrillersBooksStream();
+  }
+
+  Stream getFullScienceFictionAndFantasyBooksStream() {
+    return _streamServices.getFullScienceFictionAndFantasyBooksStream();
+  }
+
+  Stream getScienceFictionAndFantasyBooksStream() {
+    return _streamServices.getScienceFictionAndFantasyBooksStream();
+  }
+
+  Stream getFullSportsBooksStream() {
+    return _streamServices.getFullSportsBooksStream();
+  }
+
+  Stream getSportsBooksStream() {
+    return _streamServices.getSportsBooksStream();
+  }
+
+  Stream getTravelBooksStream() {
+    return _streamServices.getTravelBooksStream();
+  }
+
+  Stream getFullTravelBooksStream() {
+    return _streamServices.getFullTravelBooksStream();
   }
 }

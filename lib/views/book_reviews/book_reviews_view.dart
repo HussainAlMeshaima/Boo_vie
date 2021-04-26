@@ -381,73 +381,11 @@ class BookReviewsView extends StatelessWidget {
                                                       ),
                                                     );
                                                   });
-                                              // viewModel.addACommentToABook(
-                                              //     tappedUserEmail:
-                                              //         tappedUserEmail);
                                             },
                                           ),
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          // ElevatedButton.icon(
-                                          //   icon: FutureBuilder(
-                                          //     future: viewModel
-                                          //         .getLikeBoolValue(bookId),
-                                          //     builder: (BuildContext context,
-                                          //         AsyncSnapshot<
-                                          //                 DocumentSnapshot>
-                                          //             snapshot) {
-                                          //       if (snapshot.hasData) {
-                                          //         if (snapshot.data.data()[
-                                          //             'isReviewLiked']) {
-                                          //           return Icon(
-                                          //             Icons.favorite,
-                                          //             color: Theme.of(context)
-                                          //                 .primaryColor,
-                                          //             size: 17,
-                                          //           );
-                                          //         }
-                                          //         return Icon(
-                                          //           Icons.favorite_border,
-                                          //           color: Theme.of(context)
-                                          //               .primaryColor,
-                                          //           size: 17,
-                                          //         );
-                                          //       }
-                                          //       return Container(
-                                          //         height: 17,
-                                          //         width: 17,
-                                          //         child: Center(
-                                          //           child:
-                                          //               CircularProgressIndicator(),
-                                          //         ),
-                                          //       );
-                                          //     },
-                                          //   ),
-                                          //   label: Text('Like'),
-                                          //   style: ElevatedButton.styleFrom(
-                                          //     onPrimary: Theme.of(context)
-                                          //                 .brightness ==
-                                          //             Brightness.dark
-                                          //         ? Theme.of(context)
-                                          //             .textTheme
-                                          //             .bodyText1
-                                          //             .color
-                                          //         : Colors.black,
-                                          //     primary: Theme.of(context)
-                                          //         .scaffoldBackgroundColor,
-                                          //     shape: RoundedRectangleBorder(
-                                          //       borderRadius:
-                                          //           new BorderRadius.circular(
-                                          //               8.0),
-                                          //     ),
-                                          //   ),
-                                          //   onPressed: () {
-                                          //     viewModel.addAlikeToABook(
-                                          //         tappedUserEmail:
-                                          //             tappedUserEmail);
-                                          //   },
-                                          // )
                                         ],
                                       )
                                     ],

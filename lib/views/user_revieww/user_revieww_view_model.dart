@@ -39,13 +39,14 @@ class UserReviewwViewModel extends BaseViewModel {
 
   Future addACommentToABook(
       {String commentString, String tappedUserEmail}) async {
+    var userDoc = await _cloudFirestoreServices
+        .getUserDoc(await _authenticationService.userEmail());
     await _cloudFirestoreServices.addACommentToAReview(
       bookId: _bookId,
       userComment: commentString,
-      userImageComment:
-          'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/usersImages%2Fhussainxd%40gmail.com%2FuserImage.png?alt=media&token=c1679663-90bc-46ec-b750-fefbc243b5f1',
+      userImageComment: userDoc['userImage'],
       userEmailComment: await _authenticationService.userEmail(),
-      userNameComment: 'userNameComment',
+      userNameComment: userDoc['displayedName'],
       userEmailReview: _tappedUserEmail,
     );
     notifyListeners();
@@ -70,6 +71,10 @@ class UserReviewwViewModel extends BaseViewModel {
   Stream<QuerySnapshot> getReviewComments() {
     return _cloudFirestoreServices.getReviewComments(
         bookId: _bookId, tappedUserEmail: _tappedUserEmail);
+  }
+
+  Future<String> getUserEmail() async {
+    return await _authenticationService.userEmail();
   }
 
   TextEditingController _commentController = TextEditingController(text: '');

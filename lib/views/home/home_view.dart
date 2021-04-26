@@ -29,52 +29,226 @@ class HomeView extends StatelessWidget {
                   if (snapshot.hasError) return snapshot.error;
 
                   if (snapshot.hasData) {
-                    Map userCategories = snapshot.data.data()['userCategories'];
+                    Map userCategories =
+                        snapshot.data.data()['userCategories'] ?? {};
 
-                    List<String> keyList = [];
-                    List<String> keyStings = [];
+                    List<String> keys = [];
+                    List<String> catigoryName = [];
                     List<String> catigoryNameTrimed = [];
+                    List<Stream> emptyStreamsList = [];
+                    List<Stream> emptyFullStreamsList = [];
 
                     userCategories.forEach(
                       (key, value) {
                         if (value['isSelected']) {
-                          print(value['isSelected']);
-
-                          keyList.add(key);
-                          keyStings.add(value['catigoryName']);
-                          catigoryNameTrimed.add(value['catigoryNameTrimed']);
+                          switch (key) {
+                            case 'artsandentertainmentBooks':
+                              emptyStreamsList.add(
+                                viewModel.getArtsAndentErtainmentBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullArtsAndentErtainmentBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'biographiesandmemoirsBooks':
+                              emptyStreamsList.add(
+                                viewModel.getBiographiesAndMemoirsBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullBiographiesAndMemoirsBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            // case 'businessandinvestingBooks':
+                            //   print(key);
+                            //   print(value);
+                            //   emptyStreamsList.add(
+                            //     viewModel.getBusinessAndInvestingBooksStream(),
+                            //   );
+                            //   emptyFullStreamsList.add(
+                            //     viewModel
+                            //         .getFullBusinessAndInvestingBooksStream(),
+                            //   );
+                            //   keys.add(key);
+                            //   catigoryName.add(value['catigoryName']);
+                            //   catigoryNameTrimed
+                            //       .add(value['catigoryNameTrimed']);
+                            //   break;
+                            case 'childrensbooksBooks':
+                              emptyStreamsList.add(
+                                viewModel.getChildrensBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullChildrensBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'comicsBooks':
+                              emptyStreamsList.add(
+                                viewModel.getComicBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullComicBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'computersandtechnologyBooks':
+                              emptyStreamsList.add(
+                                viewModel
+                                    .getComputersAndTechnologyBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullComputersAndTechnologyBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'cookingandfoodBooks':
+                              emptyStreamsList.add(
+                                viewModel.getCookingAndFoodBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullCookingAndFoodBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'fictionandliteratureBooks':
+                              emptyStreamsList.add(
+                                viewModel.getFictionAndLiteratureBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullFictionAndLiteratureBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'healthmindandbodyBooks':
+                              emptyStreamsList.add(
+                                viewModel.getHealthMindAndbodyBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullHealthMindAndbodyBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'historyBooks':
+                              emptyStreamsList.add(
+                                viewModel.getHistoryBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullHistoryBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'homeandgardenBooks':
+                              emptyStreamsList.add(
+                                viewModel.getHomeAndGardenBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullHomeAndGardenBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'mysteryandthrillersBooks':
+                              emptyStreamsList.add(
+                                viewModel.getMysteryAndThrillersBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullMysteryAndThrillersBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'sciencefictionandfantasyBooks':
+                              emptyStreamsList.add(
+                                viewModel
+                                    .getScienceFictionAndFantasyBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel
+                                    .getFullScienceFictionAndFantasyBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'sportsBooks':
+                              emptyStreamsList.add(
+                                viewModel.getSportsBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullSportsBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                            case 'travelBooks':
+                              emptyStreamsList.add(
+                                viewModel.getTravelBooksStream(),
+                              );
+                              emptyFullStreamsList.add(
+                                viewModel.getFullTravelBooksStream(),
+                              );
+                              keys.add(key);
+                              catigoryName.add(value['catigoryName']);
+                              catigoryNameTrimed
+                                  .add(value['catigoryNameTrimed']);
+                              break;
+                          }
                         }
                       },
                     );
 
-                    List<Stream> streamsList = [
-                      viewModel.getArtsAndentErtainmentBooksStream(),
-                      viewModel.getBiographiesAndMemoirsBooksStream(),
-                    ];
-                    List<Stream> fullStreamsList = [
-                      viewModel.getFullArtsAndentErtainmentBooksStream(),
-                      viewModel.getFullBiographiesAndMemoirsBooksStream(),
-                    ];
-                    List<int> indexOfStreams = [];
-                    for (var item in catigoryNameTrimed) {
-                      if (item == 'artsandentertainmentBooks')
-                        indexOfStreams.add(1);
-                      if (item == 'biographiesandmemoirsBooks')
-                        indexOfStreams.add(2);
-                    }
-                    print(indexOfStreams);
-
                     return ListView.builder(
                         shrinkWrap: true,
                         physics: ScrollPhysics(),
-                        itemCount: keyStings.length,
+                        itemCount: emptyStreamsList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ListView(
                             shrinkWrap: true,
                             physics: ScrollPhysics(),
                             children: [
                               BookCategoriesRowWidget(
-                                text: keyStings[index],
+                                text: catigoryName[index],
                               ),
                               Container(
                                 height: 255,
@@ -84,7 +258,7 @@ class HomeView extends StatelessWidget {
                                   physics: ScrollPhysics(),
                                   children: [
                                     StreamBuilder(
-                                        stream: streamsList[index],
+                                        stream: emptyStreamsList[index],
                                         builder: (BuildContext context,
                                             AsyncSnapshot<dynamic> snapshot) {
                                           if (snapshot.hasError)
@@ -144,8 +318,8 @@ class HomeView extends StatelessWidget {
                                         }),
                                     MoreBooksWidget(
                                       onTap: () => viewModel.pushMoreBooksView(
-                                          stream: fullStreamsList[index],
-                                          text: keyStings[index]),
+                                          stream: emptyFullStreamsList[index],
+                                          text: catigoryName[index]),
                                     ),
                                   ],
                                 ),

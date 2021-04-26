@@ -13,7 +13,7 @@ class DescriptionTileWidget extends StatelessWidget {
       physics: ScrollPhysics(),
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Card(
             shape: RoundedRectangleBorder(
               //side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
@@ -26,13 +26,16 @@ class DescriptionTileWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SelectableText('Description',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w700)),
+                    Tooltip(
+                      message: 'Book Description',
+                      child: Text('Description',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w700)),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Container(
-                        child: SelectableText(
+                        child: Text(
                           descriptionText ?? 'No description for this book',
                           style: TextStyle(fontSize: 14),
                         ),

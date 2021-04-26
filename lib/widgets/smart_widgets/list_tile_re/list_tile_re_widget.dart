@@ -44,20 +44,23 @@ class ListTileReWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: [
-                    Container(
-                      height: 43,
-                      width: 43,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Color(0xff262626)
-                              : Color(0xffE8E8E8),
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(userImage == '' ||
-                                      userImage.isEmpty
-                                  ? 'https://www.pngitem.com/pimgs/m/130-1300253_female-user-icon-png-download-user-image-color.png'
-                                  : userImage))),
+                    Tooltip(
+                      message: userName + ' profile Image',
+                      child: Container(
+                        height: 43,
+                        width: 43,
+                        decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Color(0xff262626)
+                                    : Color(0xffE8E8E8),
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(userImage == ''
+                                    ? 'https://www.pngitem.com/pimgs/m/130-1300253_female-user-icon-png-download-user-image-color.png'
+                                    : userImage))),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -68,21 +71,27 @@ class ListTileReWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              userName.length > 11
-                                  ? userName.substring(0, 13) + '..'
-                                  : userName,
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            Tooltip(
+                              message: userName,
+                              child: Text(
+                                userName.length > 11
+                                    ? userName.substring(0, 13) + '..'
+                                    : userName,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
                             ),
                             SizedBox(
                               height: 3,
                             ),
-                            Text(
-                              userReview.length > 36
-                                  ? userReview.substring(0, 36) + '..'
-                                  : userReview,
-                              style: TextStyle(fontSize: 12),
+                            Tooltip(
+                              message: userReview,
+                              child: Text(
+                                userReview.length > 36
+                                    ? userReview.substring(0, 36) + '..'
+                                    : userReview,
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ],
                         ),

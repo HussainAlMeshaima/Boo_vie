@@ -26,6 +26,8 @@ import 'package:boo_vi_app/views/similer_books_grid/similer_books_grid_view.dart
     as view15;
 import 'package:boo_vi_app/views/book_reviews/book_reviews_view.dart' as view16;
 import 'package:boo_vi_app/views/user_revieww/user_revieww_view.dart' as view18;
+import 'package:boo_vi_app/views/global_challenge/global_challenge_view.dart'
+    as view19;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -68,6 +70,8 @@ class Router {
 
       case userReviewwViewRoute:
         return MaterialPageRoute(builder: (_) => view18.UserReviewwView());
+      case globalChallengeViewRoute:
+        return MaterialPageRoute(builder: (_) => view19.GlobalChallengeView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

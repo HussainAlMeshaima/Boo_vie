@@ -17,11 +17,13 @@ class BookReviewSheetViewModel extends BaseViewModel {
   String _bookImage;
   String _bookTitle;
   String _bookpreviewLink;
-  handleStartUpLogic(
-      {@required String bookId,
-      @required String bookImage,
-      @required String bookTitle,
-      @required String bookpreviewLink}) {
+
+  handleStartUpLogic({
+    @required String bookId,
+    @required String bookImage,
+    @required String bookTitle,
+    @required String bookpreviewLink,
+  }) {
     _bookId = bookId;
     _bookImage = bookImage;
     _bookTitle = bookTitle;
@@ -85,18 +87,7 @@ class BookReviewSheetViewModel extends BaseViewModel {
         userReviewString: _reviewController.text,
         userId: userId,
         userName: displayedName);
-    // return ScaffoldMessenger.of(context)
-    //     .showSnackBar(SnackBar(content: Text(message)));
   }
-
-  // pushBookReviewsPage() async {
-  //   return _navigationService.navigateWithTransition(
-  //     BookReviewsView(
-  //       bookId: _bookId,
-  //     ),
-  //     transition: 'rightToLeftWithFade',
-  //   );
-  // }
 
   TextEditingController _reviewController = TextEditingController(text: '');
   TextEditingController get reviewController => _reviewController;

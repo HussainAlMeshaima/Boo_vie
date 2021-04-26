@@ -460,64 +460,84 @@ class BookView extends StatelessWidget {
                                             horizontal: 15, vertical: 10),
                                         child: Row(
                                           children: [
-                                            Text(
-                                              'Book Information',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20),
+                                            Tooltip(
+                                              message: 'Book Information',
+                                              child: Text(
+                                                'Book Information',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
                                             ),
                                             Spacer(),
-                                            Icon(
-                                              Icons.arrow_forward,
+                                            Tooltip(
+                                              message: 'More book information',
+                                              child: Icon(
+                                                Icons.arrow_forward,
+                                              ),
                                             )
                                           ],
                                         ),
                                       ),
-                                      Card(
-                                        // color: Theme.of(context).primaryColor,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20.0,
-                                                top: 12,
-                                                right: 12,
-                                                bottom: 10),
-                                            child: description ==
-                                                    'No Description For This Book'
-                                                ? Container(
-                                                    height: 22,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: Text(
-                                                      'No Description For This Book',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    height: 90,
-                                                    child: Text(
-                                                      description.length > 180
-                                                          ? '     ' +
-                                                              description
-                                                                  .replaceAll(
-                                                                      RegExp(
-                                                                          r"<[^>]*>",
-                                                                          multiLine:
-                                                                              true,
-                                                                          caseSensitive:
-                                                                              true),
-                                                                      '')
-                                                                  .substring(
-                                                                      0, 180) +
-                                                              '...'
-                                                          : description,
-                                                    ),
-                                                  )),
+                                      Tooltip(
+                                        message: description.length > 180
+                                            ? '     ' +
+                                                description
+                                                    .replaceAll(
+                                                        RegExp(r"<[^>]*>",
+                                                            multiLine: true,
+                                                            caseSensitive:
+                                                                true),
+                                                        '')
+                                                    .substring(0, 180) +
+                                                '...'
+                                            : description,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0)),
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0,
+                                                  top: 12,
+                                                  right: 12,
+                                                  bottom: 10),
+                                              child: description ==
+                                                      'No Description For This Book'
+                                                  ? Container(
+                                                      height: 22,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      child: Text(
+                                                        'No Description For This Book',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    )
+                                                  : Container(
+                                                      height: 90,
+                                                      child: Text(
+                                                        description.length > 180
+                                                            ? '     ' +
+                                                                description
+                                                                    .replaceAll(
+                                                                        RegExp(
+                                                                            r"<[^>]*>",
+                                                                            multiLine:
+                                                                                true,
+                                                                            caseSensitive:
+                                                                                true),
+                                                                        '')
+                                                                    .substring(
+                                                                        0,
+                                                                        180) +
+                                                                '...'
+                                                            : description,
+                                                      ),
+                                                    )),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -535,21 +555,26 @@ class BookView extends StatelessWidget {
                                           horizontal: 15, vertical: 10),
                                       child: Row(
                                         children: [
-                                          Text(
-                                            'Book Reviews',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
+                                          Tooltip(
+                                            message: 'Book Reviews',
+                                            child: Text(
+                                              'Book Reviews',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
                                           ),
                                           Spacer(),
-                                          //IconButton(icon: icon, onPressed: ()=> ;()
                                           GestureDetector(
                                             onTap: () =>
                                                 viewModel.pushBookReviews(
                                               bookId: id,
                                             ),
-                                            child: Icon(
-                                              Icons.arrow_forward,
+                                            child: Tooltip(
+                                              message: 'More book reviews',
+                                              child: Icon(
+                                                Icons.arrow_forward,
+                                              ),
                                             ),
                                           )
                                         ],
@@ -578,19 +603,36 @@ class BookView extends StatelessWidget {
                                                   return Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(vertical: 2),
-                                                    child: Container(
-                                                      height: 87,
-                                                      child: Center(
-                                                        child: Text(
-                                                            'No Book reviews yet ! 😭'),
+                                                    child: Tooltip(
+                                                      message:
+                                                          'No Book reviews yet ! 😭',
+                                                      child: Container(
+                                                        height: 87,
+                                                        child: Center(
+                                                          child: Text(
+                                                              'No Book reviews yet ! 😭'),
+                                                        ),
                                                       ),
                                                     ),
                                                   );
                                                 }
+
+                                                List<QueryDocumentSnapshot>
+                                                    reviewsDocs =
+                                                    snapshot.data.docs;
+                                                reviewsDocs.sort((a, b) {
+                                                  int aInt = a
+                                                      .get('reviewDateTime')
+                                                      .microsecondsSinceEpoch;
+                                                  int bInt = b
+                                                      .get('reviewDateTime')
+                                                      .microsecondsSinceEpoch;
+                                                  return aInt.compareTo(bInt);
+                                                });
                                                 return ListView(
                                                   shrinkWrap: true,
                                                   physics: ScrollPhysics(),
-                                                  children: snapshot.data.docs
+                                                  children: reviewsDocs
                                                       .map<Widget>((doc) {
                                                     return GestureDetector(
                                                       onTap: () {
@@ -599,77 +641,6 @@ class BookView extends StatelessWidget {
                                                                 bookId: id,
                                                                 tappedUserEmail:
                                                                     doc['userEmail']);
-                                                      },
-                                                      onLongPress: () {
-                                                        showModalBottomSheet(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return Container(
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height /
-                                                                    3,
-                                                                child: Column(
-                                                                  children: [
-                                                                    ListTile(
-                                                                        title:
-                                                                            Text(
-                                                                      'Add Somthing to ' +
-                                                                          doc['userName'] +
-                                                                          ' review',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    )),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              12.0,
-                                                                          vertical:
-                                                                              5),
-                                                                      child:
-                                                                          Card(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(15.0)),
-                                                                        child: ListTile(
-                                                                            leading:
-                                                                                Icon(Icons.sms),
-                                                                            title: Text('Add a comment')),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              12.0,
-                                                                          vertical:
-                                                                              5),
-                                                                      child:
-                                                                          Card(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(15.0)),
-                                                                        child:
-                                                                            Tooltip(
-                                                                          message: 'Add a like to ' +
-                                                                              doc['userName'] +
-                                                                              ' review',
-                                                                          child: ListTile(
-                                                                              onTap: () {},
-                                                                              leading: Icon(Icons.favorite),
-                                                                              title: Text('Add a like')),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            });
                                                       },
                                                       onDoubleTap: () {
                                                         viewModel
@@ -720,7 +691,7 @@ class BookView extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 10),
+                                        horizontal: 15, vertical: 0),
                                     child: Row(
                                       children: [
                                         Text(
@@ -741,7 +712,6 @@ class BookView extends StatelessWidget {
                                     ),
                                   ),
                                   Card(
-                                    // color: Theme.of(context).primaryColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
@@ -767,12 +737,20 @@ class BookView extends StatelessWidget {
                                                     List<Items> newListOfBooks =
                                                         snapshot.data.items;
 
+                                                    if (newListOfBooks ==
+                                                        null) {
+                                                      return Center(
+                                                          child: Text(
+                                                        'books aren\'t available right now! 😭\n try again later',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ));
+                                                    }
                                                     return Container(
                                                       width: double.infinity,
                                                       child: ListView.builder(
-                                                        itemCount:
-                                                            newListOfBooks
-                                                                .length,
+                                                        itemCount: snapshot
+                                                            .data.items.length,
                                                         shrinkWrap: true,
                                                         physics:
                                                             ScrollPhysics(),
@@ -815,23 +793,6 @@ class BookView extends StatelessWidget {
                                                               ),
                                                             );
                                                           }
-
-                                                          // Set<String>
-                                                          //     smilerBooks =
-                                                          //     snapshot
-                                                          //         .data.items
-                                                          //         .map<String>(
-                                                          //             (e) =>
-                                                          //                 e.id)
-                                                          //         .toSet();
-
-                                                          // print(smilerBooks);
-                                                          // snapshot.data.items
-                                                          //     .retainWhere((x) {
-                                                          //   return smilerBooks
-                                                          //       .contains(x.id);
-                                                          // });
-                                                          // print(smilerBooks);
 
                                                           if (newListOfBooks[
                                                                       index]
@@ -930,7 +891,7 @@ class BookView extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 65,
+                              height: 80,
                             )
                           ],
                         );

@@ -38,7 +38,7 @@ class UserDetailsViewModel extends BaseViewModel {
 
     if (newSelectImageFromCamra != null) {
       _selectedImage = File(newSelectImageFromCamra.path);
-
+      notifyListeners();
       _imageUrl = await _cloudStorageService.uploadAnImage(
           image: _selectedImage, userEmail: _userEmailController.text);
       notifyListeners();
@@ -53,7 +53,7 @@ class UserDetailsViewModel extends BaseViewModel {
 
     if (newSelectImageFromGallery != null) {
       _selectedImage = File(newSelectImageFromGallery.path);
-
+      notifyListeners();
       _imageUrl = await _cloudStorageService.uploadAnImage(
           image: _selectedImage, userEmail: _userEmailController.text);
       notifyListeners();
@@ -137,7 +137,6 @@ class UserDetailsViewModel extends BaseViewModel {
   List<String> _options = [
     'Arts & entertainment',
     'Biographies & memoirs',
-    'Business & investing',
     'Childrens books',
     'Comics',
     'Computers & technology',
@@ -152,7 +151,6 @@ class UserDetailsViewModel extends BaseViewModel {
     'Travel',
   ];
   List<bool> _isChoiceChipSelected = [
-    false,
     false,
     false,
     false,

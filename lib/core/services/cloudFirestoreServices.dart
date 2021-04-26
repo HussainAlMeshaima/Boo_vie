@@ -1,6 +1,7 @@
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
 class CloudFirestoreServices {
@@ -15,12 +16,62 @@ class CloudFirestoreServices {
     return FirebaseFirestore.instance.collection('users').doc(userEmail).get();
   }
 
+  Future<DocumentSnapshot> getUserInformation() async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userInformation')
+        .get();
+  }
+
   getUserCollection(String userEmail) {
     return FirebaseFirestore.instance.collection('users').doc(userEmail).get();
   }
 
   Stream getReviewsStream(String bookId) {
     return _bookReviewsCollection.doc(bookId).collection('reviews').snapshots();
+  }
+
+  Future<QuerySnapshot> getUserShelfsFuture() async {
+    String _userEmail = await _authenticationService.userEmail();
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userEmail)
+        .collection('userShelfs')
+        .get();
+  }
+
+  Future<QuerySnapshot> getUserShelfsBooksByNameFuture(String shelfId) async {
+    String _userEmail = await _authenticationService.userEmail();
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userEmail)
+        .collection('userShelfs')
+        .doc(shelfId)
+        .collection('books')
+        .get();
+  }
+
+  Stream<QuerySnapshot> getUserBooksInThatShelfStream(
+      {@required String shelfName}) async* {
+    String _userEmail = await _authenticationService.userEmail();
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userEmail)
+        .collection('userShelfs')
+        .doc(shelfName)
+        .collection('books')
+        .snapshots();
+  }
+
+  Future<DocumentSnapshot> getUserChallenges() async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userChallenges')
+        .get();
   }
 
   Stream<DocumentSnapshot> getUserReviewsStream(
@@ -53,15 +104,6 @@ class CloudFirestoreServices {
         .snapshots();
   }
 
-  Future<DocumentSnapshot> getUserShelfFuture(String userEmail) {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userEmail)
-        .collection('userDetails')
-        .doc('userShelf')
-        .get();
-  }
-
   getUserDisplayedName(String userEmail) {
     return FirebaseFirestore.instance
         .collection('users')
@@ -76,6 +118,120 @@ class CloudFirestoreServices {
       FirebaseFirestore.instance.collection('bookReviews');
 
   CollectionReference _users = FirebaseFirestore.instance.collection('users');
+
+  Future addAbooktoSelectedShelf(
+      {String shelfId,
+      String bookId,
+      String bookImage,
+      String previewLink,
+      String title}) async {
+    await _users
+        .doc(await _authenticationService.userEmail())
+        .collection('userShelfs')
+        .doc(shelfId)
+        .collection('books')
+        .doc(bookId)
+        .set({
+      'id': bookId,
+      'thumbnail': bookImage,
+      'previewLink': previewLink,
+      'title': title,
+      'openedDate': DateTime.now()
+    });
+  }
+
+  Future<void> addANewShelfByName(
+      {String newShelfName,
+      String bookId,
+      String bookImage,
+      String previewLink,
+      String title}) async {
+    await _users
+        .doc(await _authenticationService.userEmail())
+        .collection('userShelfs')
+        .doc(newShelfName)
+        .get()
+        .then((thatShelf) async => {
+              if (!thatShelf.exists)
+                {
+                  await _users
+                      .doc(await _authenticationService.userEmail())
+                      .collection('userShelfs')
+                      .doc(newShelfName)
+                      .set({
+                    'name': newShelfName,
+                  }).then((value) async => {
+                            await _users
+                                .doc(await _authenticationService.userEmail())
+                                .collection('userShelfs')
+                                .doc(newShelfName)
+                                .collection('books')
+                                .doc(bookId)
+                                .set({
+                              'id': bookId,
+                              'thumbnail': bookImage,
+                              'previewLink': previewLink,
+                              'title': title,
+                              'openedDate': DateTime.now()
+                            })
+                          })
+                }
+            });
+  }
+
+  Future<void> addAbookToRecentlyViewedShelf(
+      {@required String bookId,
+      @required String bookImage,
+      @required String previewLink,
+      @required String title}) async {
+    await _users
+        .doc(await _authenticationService.userEmail())
+        .collection('userShelfs')
+        .doc('recentlyViewed')
+        .collection('books')
+        .doc(bookId)
+        .get()
+        .then(
+          (thatDoc) async => {
+            if (!thatDoc.exists)
+              {
+                await _users
+                    .doc(await _authenticationService.userEmail())
+                    .collection('userShelfs')
+                    .doc('recentlyViewed')
+                    .set({'name': 'Recently viewed'}).then((value) async => {
+                          await _users
+                              .doc(await _authenticationService.userEmail())
+                              .collection('userShelfs')
+                              .doc('recentlyViewed')
+                              .collection('books')
+                              .doc(bookId)
+                              .set({
+                            'id': bookId,
+                            'thumbnail': bookImage,
+                            'previewLink': previewLink,
+                            'title': title,
+                            'openedDate': DateTime.now()
+                          })
+                        })
+              }
+            else
+              await _users
+                  .doc(await _authenticationService.userEmail())
+                  .collection('userShelfs')
+                  .doc('recentlyViewed')
+                  .collection('books')
+                  .doc(bookId)
+                  .update({
+                'id': bookId,
+                'thumbnail': bookImage,
+                'previewLink': previewLink,
+                'title': title,
+                'openedDate': DateTime.now()
+              })
+          },
+        );
+  }
 
   Future<String> createANewListForThatUser(
       {String userEmail, String uid, String newListName}) async {
@@ -326,6 +482,7 @@ class CloudFirestoreServices {
                       'userEmailReview': userEmailReview,
                       'userEmailComment': userEmailComment,
                       'userImageComment': userImageComment,
+                      'userNameComment': userNameComment,
                       'userComment': userComment,
                       'bookId': bookId,
                       'sendDate': DateTime.now(),
@@ -398,6 +555,7 @@ class CloudFirestoreServices {
                             .doc(userEmail)
                             .set({
                           'userId': userId,
+                          'bookImage': bookImage,
                           'userName': userName,
                           'userReviewString': userReviewString,
                           'userReviewEmojiRating': userReviewEmojiRating,
@@ -436,6 +594,7 @@ class CloudFirestoreServices {
                       .set({
                     'userId': userId,
                     'userName': userName,
+                    'bookImage': bookImage,
                     'userReviewString': userReviewString,
                     'userReviewEmojiRating': userReviewEmojiRating,
                     'userEmail': userEmail,
@@ -476,13 +635,6 @@ class CloudFirestoreServices {
     } catch (e) {
       return e.toString();
     }
-  }
-
-  futureCreateAsummyUser(Map aMap) async {
-    return await FirebaseFirestore.instance
-        .collection('ztst')
-        .doc('12345')
-        .set({'map': aMap});
   }
 
   Future createNewUser({
@@ -537,16 +689,18 @@ class CloudFirestoreServices {
           (_) => _users
               .doc(userEmail)
               .collection('userDetails')
+              .doc('userChallenges')
+              .set({'challenges': 'User challenges'}),
+        )
+        .then(
+          (_) => _users
+              .doc(userEmail)
+              .collection('userDetails')
               .doc('userShelf')
               .set(
             {
-              'name': 'User Book shelf',
-              'shelfs': [
-                {'shelfName': 'Recently Viewed', 'books': []},
-                {'shelfName': 'Currently Reading', 'books': []},
-                {'shelfName': 'Favorite', 'books': []},
-                {'shelfName': 'Best Books', 'books': []},
-              ]
+              'name': 'User Books shelf',
+              'recentlyViewed': {'name': 'Recently viewed', 'books': {}},
             },
           ),
         )
@@ -569,7 +723,7 @@ class CloudFirestoreServices {
               .collection('userDetails')
               .doc('userReviewedBooks')
               .set(
-            {'numberOfBooksReviewed': 0, 'reviewedBooks': []},
+            {'numberOfBooksReviewed': 0},
           ),
         )
         .then((value) => print("New User Added"))
