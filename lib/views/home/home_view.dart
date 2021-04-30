@@ -249,6 +249,9 @@ class HomeView extends StatelessWidget {
                             children: [
                               BookCategoriesRowWidget(
                                 text: catigoryName[index],
+                                onPressed: () => viewModel.pushMoreBooksView(
+                                    stream: emptyFullStreamsList[index],
+                                    text: catigoryName[index]),
                               ),
                               Container(
                                 height: 255,
@@ -282,22 +285,39 @@ class HomeView extends StatelessWidget {
                                                         .data()['medium'],
                                                     bookId:
                                                         document.data()['id'],
-                                                    onTap: () =>
-                                                        viewModel.pushBookView(
-                                                      image: document
-                                                          .data()['medium'],
-                                                      id: document
-                                                          .data()['id']
-                                                          .replaceAll(
-                                                              new RegExp(
-                                                                  r".{/ +}"),
-                                                              ''),
-                                                      bookTitle: document
-                                                          .data()['title'],
-                                                      previewLink:
-                                                          document.data()[
-                                                              'previewLink'],
-                                                    ),
+                                                    onTap: () {
+                                                      viewModel.pushBookView(
+                                                        image: document
+                                                            .data()['medium'],
+                                                        id: document
+                                                            .data()['id']
+                                                            .replaceAll(
+                                                                new RegExp(
+                                                                    r".{/ +}"),
+                                                                ''),
+                                                        bookTitle: document
+                                                            .data()['title'],
+                                                        previewLink:
+                                                            document.data()[
+                                                                'previewLink'],
+                                                      );
+                                                      viewModel
+                                                          .addAbookToRecentlyViewedShelf(
+                                                        title: document
+                                                            .data()['title'],
+                                                        bookImage: document
+                                                            .data()['medium'],
+                                                        previewLink:
+                                                            document.data()[
+                                                                'previewLink'],
+                                                        bookId: document
+                                                            .data()['id']
+                                                            .replaceAll(
+                                                                new RegExp(
+                                                                    r".{/ +}"),
+                                                                ''),
+                                                      );
+                                                    },
                                                     bookTitle: document
                                                         .data()['title'],
                                                   );

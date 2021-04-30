@@ -29,13 +29,13 @@ class SimilerBooksGridViewModel extends BaseViewModel {
       @required String bookTitle,
       @required String previewLink}) {
     _navigationService.navigateWithTransition(
-      BookView(
-        id: id,
-        image: image,
-        text: bookTitle,
-        previewLink: previewLink,
-      ),
-      transition: 'size',
-    );
+        BookView(
+          id: id,
+          image: image,
+          text: bookTitle,
+          previewLink: previewLink,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 }

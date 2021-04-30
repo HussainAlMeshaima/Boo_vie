@@ -242,8 +242,8 @@ class ProfileView extends StatelessWidget {
                         );
                       },
                     )),
-                FutureBuilder(
-                    future: viewModel.getUserShelfsFuture(),
+                StreamBuilder(
+                    stream: viewModel.getUserShelfsStream(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) return snapshot.error;
@@ -258,10 +258,20 @@ class ProfileView extends StatelessWidget {
                           );
                         }
                         if (snapshot.data.size != 0) {
+                          List<QueryDocumentSnapshot> shelfsDocs =
+                              snapshot.data.docs;
+
+                          shelfsDocs.sort((a, b) {
+                            int aInt =
+                                a.get('createdDate').microsecondsSinceEpoch;
+                            int bInt =
+                                b.get('createdDate').microsecondsSinceEpoch;
+                            return bInt.compareTo(aInt);
+                          });
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: ScrollPhysics(),
-                              itemCount: snapshot.data.size,
+                              itemCount: shelfsDocs.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return ListView(
                                   shrinkWrap: true,
@@ -272,7 +282,7 @@ class ProfileView extends StatelessWidget {
                                           right: 20, left: 20.0, top: 12),
                                       child: Container(
                                         child: Text(
-                                          snapshot.data.docs[index]['name'],
+                                          shelfsDocs[index]['name'],
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600),
@@ -282,8 +292,8 @@ class ProfileView extends StatelessWidget {
                                     StreamBuilder(
                                         stream: viewModel
                                             .getUserBooksInThatShelfStream(
-                                                shelfName: snapshot
-                                                    .data.docs[index].id),
+                                                shelfName:
+                                                    shelfsDocs[index].id),
                                         builder: (BuildContext context,
                                             AsyncSnapshot<QuerySnapshot>
                                                 snapshot) {
@@ -330,12 +340,13 @@ class ProfileView extends StatelessWidget {
                                                                         index]
                                                                     ['id'],
                                                                 image: booksDocs[
-                                                                        index]
-                                                                    [
-                                                                    'thumbnail'],
-                                                                bookTitle: booksDocs[
                                                                         index][
                                                                     'thumbnail'],
+                                                                bookTitle:
+                                                                    booksDocs[
+                                                                            index]
+                                                                        [
+                                                                        'title'],
                                                                 previewLink:
                                                                     booksDocs[
                                                                             index]
@@ -390,7 +401,11 @@ class ProfileView extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10),
                                                       color: Theme.of(context)
-                                                          .cardColor,
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? Theme.of(context)
+                                                              .cardColor
+                                                          : Color(0xffE7E7E7),
                                                     ),
                                                   ),
                                                 )

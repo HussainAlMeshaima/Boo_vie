@@ -12,13 +12,13 @@ class ListTileReViewModel extends BaseViewModel {
     this.log = getLogger(this.runtimeType.toString());
   }
 
-  handleStartUpLogic(String bookId) async {
+  handleStartUpLogic(String bookId, String bookImage) async {
     _bookId = bookId;
+    _bookImage = bookImage;
   }
 
-  bool _isBusy = false;
-  bool get isBusy => _isBusy;
   String _bookId;
+  String _bookImage;
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 

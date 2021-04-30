@@ -16,13 +16,19 @@ class BookCategoriesRowWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
           child: Row(children: [
-            Text(
-              text,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Tooltip(
+              message: text,
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
             Spacer(),
             IconButton(
-                icon: Icon(Icons.arrow_forward), onPressed: onPressed ?? () {})
+                tooltip: 'More ' + text,
+                color: Theme.of(context).primaryColor,
+                icon: Icon(Icons.arrow_forward),
+                onPressed: onPressed ?? () {})
           ]),
         );
       },

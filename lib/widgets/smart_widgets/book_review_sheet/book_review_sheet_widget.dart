@@ -75,6 +75,14 @@ class BookReviewSheetWidget extends StatelessWidget {
                   await viewModel.submitAReview(context);
                 },
               ),
+              Tooltip(
+                message: 'Is that review a spoiler ? 🔥',
+                child: SwitchListTile(
+                    value: viewModel.spoiler,
+                    title: Text('Is review spoiler ? 🔥'),
+                    activeColor: Theme.of(context).primaryColor,
+                    onChanged: (value) => viewModel.toggleSpoiler(value)),
+              )
             ],
           ),
         );

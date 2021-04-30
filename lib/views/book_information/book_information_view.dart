@@ -157,7 +157,7 @@ class BookInformationView extends StatelessWidget {
                 SpeedDialChild(
                   backgroundColor: Theme.of(context).primaryColor,
                   labelBackgroundColor: Theme.of(context).cardColor,
-                  label: 'Book QR code',
+                  label: 'QR code',
                   child: Icon(
                     Icons.qr_code_rounded,
                     color: Colors.white,

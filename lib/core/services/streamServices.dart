@@ -18,6 +18,13 @@ class StreamServices {
         .snapshots();
   }
 
+  Stream<DocumentSnapshot> getGlobalChallengeStream(String challangeId) {
+    return _firebaseFirestoreInstance
+        .collection('globalChallenges')
+        .doc(challangeId)
+        .snapshots();
+  }
+
   Stream getFullArtsAndentErtainmentBooksStream() {
     return _firebaseFirestoreInstance
         .collection('artsandentertainmentBooks')
@@ -201,5 +208,20 @@ class StreamServices {
 
   Stream getFullTravelBooksStream() {
     return _firebaseFirestoreInstance.collection('travelBooks').snapshots();
+  }
+
+  Stream<DocumentSnapshot> getChallangeDocument(String challangeId) {
+    return _firebaseFirestoreInstance
+        .collection('globalChallenges')
+        .doc(challangeId)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getChallangeComments(String challangeId) {
+    return _firebaseFirestoreInstance
+        .collection('globalChallenges')
+        .doc(challangeId)
+        .collection('challangeComments')
+        .snapshots();
   }
 }

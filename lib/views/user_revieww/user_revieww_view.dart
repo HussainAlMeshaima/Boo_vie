@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'dart:ui';
 
-import 'package:boo_vi_app/widgets/smart_widgets/book_review_sheet/book_review_sheet_widget.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/edit_review_sheet/edit_review_sheet_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +11,39 @@ import 'package:intl/intl.dart';
 class UserReviewwView extends StatelessWidget {
   final String tappedUserEmail;
   final String bookId;
+  final String bookImage;
 
-  const UserReviewwView(
-      {Key key, @required this.tappedUserEmail, @required this.bookId})
-      : super(key: key);
+  final bool spoiler;
+  final bool editSpoiler;
+  final String userReviewString;
+  final double userReviewEmojiRating;
+  final double userReviewEmojiRatingDouble;
+
+  const UserReviewwView({
+    Key key,
+    @required this.tappedUserEmail,
+    @required this.bookId,
+    @required this.bookImage,
+    @required this.spoiler,
+    @required this.editSpoiler,
+    @required this.userReviewString,
+    @required this.userReviewEmojiRating,
+    this.userReviewEmojiRatingDouble,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UserReviewwViewModel>.reactive(
-      onModelReady: (UserReviewwViewModel viewModel) => viewModel
-          .handleStartUpLogic(bookId: bookId, tappedUserEmail: tappedUserEmail),
+      onModelReady: (UserReviewwViewModel viewModel) =>
+          viewModel.handleStartUpLogic(
+        bookId: bookId,
+        tappedUserEmail: tappedUserEmail,
+        bookImage: bookImage,
+        spoiler: spoiler,
+        userReviewString: userReviewString,
+        editSpoiler: editSpoiler,
+        userReviewEmojiRating: userReviewEmojiRating,
+      ),
       builder:
           (BuildContext context, UserReviewwViewModel viewModel, Widget _) {
         return Scaffold(
@@ -113,386 +135,227 @@ class UserReviewwView extends StatelessWidget {
                                             BorderRadius.circular(15.0)),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
-                                      child: BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 20, sigmaY: 20),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              colorFilter: new ColorFilter.mode(
-                                                  Colors.black.withOpacity(0.5),
-                                                  BlendMode.dstATop),
-                                              image: NetworkImage(
-                                                snapshot.data
-                                                    .data()['bookImage'],
-                                              ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            colorFilter: new ColorFilter.mode(
+                                                Colors.black.withOpacity(0.5),
+                                                BlendMode.dstATop),
+                                            image: NetworkImage(
+                                              snapshot.data.data()['bookImage'],
                                             ),
                                           ),
-                                          child: ClipRRect(
-                                            child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 20,
-                                                  sigmaY: 20,
-                                                  tileMode: TileMode.clamp),
+                                        ),
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 10,
+                                              sigmaY: 10,
+                                              tileMode: TileMode.clamp),
+                                          child: Container(
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? Colors.black.withOpacity(0.5)
+                                                : Colors.white.withOpacity(0.5),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
                                               child: Container(
-                                                color: Colors.black
-                                                    .withOpacity(0.2),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      15.0),
-                                                  child: Container(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                        Column(
                                                           children: [
-                                                            Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                ),
-                                                                Container(
-                                                                    height: 65,
-                                                                    width: 65,
-                                                                    decoration: BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                12),
-                                                                        image: DecorationImage(
-                                                                            fit:
-                                                                                BoxFit.cover,
-                                                                            image: NetworkImage(data['userImage'])))),
-                                                              ],
+                                                            SizedBox(
+                                                              height: 10,
                                                             ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .all(
-                                                                      14.0),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                    data['userName'].length >
-                                                                            14
-                                                                        ? data['userName'].substring(0,
-                                                                                14) +
-                                                                            '..'
-                                                                        : data[
-                                                                            'userName'],
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.w600),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                    DateFormat
-                                                                            .yMd()
-                                                                        .format(
-                                                                            data['reviewDateTime'].toDate()),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      fontSize:
-                                                                          13,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                            Tooltip(
+                                                              message: data[
+                                                                      'userName'] +
+                                                                  ' profile image',
+                                                              child: Container(
+                                                                  height: 65,
+                                                                  width: 65,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              12),
+                                                                      image: DecorationImage(
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          image:
+                                                                              NetworkImage(data['userImage'])))),
                                                             ),
-                                                            Spacer(),
-                                                            FutureBuilder(
-                                                              future: viewModel
-                                                                  .getUserEmail(),
-                                                              builder: (context,
-                                                                  AsyncSnapshot
-                                                                      snapshot) {
-                                                                if (snapshot
-                                                                    .hasData) {
-                                                                  if (snapshot
-                                                                          .data ==
-                                                                      data[
-                                                                          'userEmail']) {
-                                                                    return GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        showModalBottomSheet(
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (context) {
-                                                                              return BookReviewSheetWidget(
-                                                                                bookId: bookId,
-                                                                              );
-                                                                            });
-                                                                      },
-                                                                      child: Padding(
-                                                                          padding: const EdgeInsets.all(20.0),
-                                                                          child: Icon(
-                                                                            Icons.edit,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                          )),
-                                                                    );
-                                                                  } else {
-                                                                    return GestureDetector(
-                                                                      child: Padding(
-                                                                          padding: const EdgeInsets.all(20.0),
-                                                                          child: Icon(
-                                                                            Icons.edit_off,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                          )),
-                                                                    );
-                                                                  }
-                                                                }
-                                                                return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          20.0),
-                                                                  child:
-                                                                      Container(
-                                                                    height: 24,
-                                                                    width: 24,
-                                                                    child:
-                                                                        Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            )
                                                           ],
-                                                        ),
-                                                        Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        0,
-                                                                    vertical:
-                                                                        6),
-                                                            child: Container(
-                                                                child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          5),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceEvenly,
-                                                                children: [
-                                                                  Column(
-                                                                    children: [
-                                                                      Text(
-                                                                        emoji
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                25,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  Container(
-                                                                    height: 20,
-                                                                    width: 1,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Theme.of(context)
-                                                                            .iconTheme
-                                                                            .color,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                  ),
-                                                                  Column(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .chat_bubble_outline,
-                                                                        size:
-                                                                            18,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Text(
-                                                                        data['reviewCommentsConter']
-                                                                            .toInt()
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  Container(
-                                                                    height: 20,
-                                                                    width: 1,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Theme.of(context)
-                                                                            .iconTheme
-                                                                            .color,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                  ),
-                                                                  Column(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .favorite_border,
-                                                                        size:
-                                                                            18,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Text(
-                                                                        data['reviewLikeConter']
-                                                                            .toInt()
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  Container(
-                                                                    height: 20,
-                                                                    width: 1,
-                                                                    decoration: BoxDecoration(
-                                                                        color: Theme.of(context)
-                                                                            .iconTheme
-                                                                            .color,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                  ),
-                                                                  Column(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .schedule,
-                                                                        size:
-                                                                            18,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Text(
-                                                                        DateFormat('h:mm a')
-                                                                            .format(data['reviewDateTime'].toDate()),
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                15,
-                                                                            color:
-                                                                                Theme.of(context).primaryColor,
-                                                                            fontWeight: FontWeight.w600),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            )),
-                                                          ),
                                                         ),
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      10,
-                                                                  vertical: 4),
-                                                          child: Text(data[
-                                                              'userReviewString']),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            ElevatedButton.icon(
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .chat_bubble_outline,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                size: 17,
+                                                                  .all(14.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 5,
                                                               ),
-                                                              label: Text(
-                                                                  'Comment'),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                onPrimary: Theme.of(context)
-                                                                            .brightness ==
-                                                                        Brightness
-                                                                            .dark
-                                                                    ? Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .bodyText1
-                                                                        .color
-                                                                    : Colors
-                                                                        .black,
-                                                                primary: Theme.of(
-                                                                        context)
-                                                                    .scaffoldBackgroundColor,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      new BorderRadius
-                                                                              .circular(
-                                                                          8.0),
+                                                              Tooltip(
+                                                                message: data[
+                                                                    'userName'],
+                                                                child: Text(
+                                                                  data['userName']
+                                                                              .length >
+                                                                          14
+                                                                      ? data['userName'].substring(
+                                                                              0,
+                                                                              14) +
+                                                                          '..'
+                                                                      : data[
+                                                                          'userName'],
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
                                                                 ),
                                                               ),
-                                                              onPressed: () {
-                                                                showModalBottomSheet(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Container(
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              Tooltip(
+                                                                message: data[
+                                                                        'userName'] +
+                                                                    ' have sent a review on ' +
+                                                                    DateFormat
+                                                                            .yMd()
+                                                                        .format(
+                                                                      data['reviewDateTime']
+                                                                          .toDate(),
+                                                                    ),
+                                                                child: Text(
+                                                                  DateFormat
+                                                                          .yMd()
+                                                                      .format(data[
+                                                                              'reviewDateTime']
+                                                                          .toDate()),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        13,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Spacer(),
+                                                        FutureBuilder(
+                                                          future: viewModel
+                                                              .getUserEmail(),
+                                                          builder: (context,
+                                                              AsyncSnapshot
+                                                                  snapshot) {
+                                                            if (snapshot
+                                                                .hasData) {
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  data[
+                                                                      'userEmail']) {
+                                                                return Tooltip(
+                                                                  message:
+                                                                      'Edit message',
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      showModalBottomSheet(
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (context) {
+                                                                            return ListView(
+                                                                              shrinkWrap: true,
+                                                                              physics: ScrollPhysics(),
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(0.0),
+                                                                                  child: Container(
+                                                                                    child: Padding(
+                                                                                        padding: const EdgeInsets.all(0.0),
+                                                                                        child: ListTile(
+                                                                                          title: Text(
+                                                                                            'Edit review',
+                                                                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                          ),
+                                                                                        )),
+                                                                                  ),
+                                                                                ),
+                                                                                EditReviewSheetWidget(
+                                                                                  bookId: bookId,
+                                                                                  spoiler: spoiler,
+                                                                                  editSpoiler: editSpoiler,
+                                                                                  userReviewString: userReviewString,
+                                                                                  userReviewEmojiRating: userReviewEmojiRatingDouble,
+                                                                                ),
+                                                                              ],
+                                                                            );
+                                                                          });
+                                                                    },
+                                                                    child: Padding(
+                                                                        padding: const EdgeInsets.all(20.0),
+                                                                        child: Icon(
+                                                                          Icons
+                                                                              .edit,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor,
+                                                                        )),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                // print(
+                                                                //     isThatReviewASpoiler);
+                                                                // String
+                                                                //     newReviewString;
+                                                                // if (isThatReviewASpoiler) {
+                                                                //   if (viewModel
+                                                                //       .spoiler) {
+                                                                //     newReviewString =
+                                                                //         '🔥🔥🔥🔥🔥🔥🔥🔥';
+                                                                //   } else {
+                                                                //     newReviewString =
+                                                                //         snapshot
+                                                                //             .data['userReviewString'];
+                                                                //   }
+                                                                // } else
+                                                                // newReviewString =
+                                                                //     snapshot.data[
+                                                                //         'userReviewString'];
+                                                                return GestureDetector(
+                                                                  child: Padding(
+                                                                      padding: const EdgeInsets.only(top: 10, right: 10),
+                                                                      child: Container(
+                                                                        height:
+                                                                            70,
+                                                                        width:
+                                                                            55,
                                                                         child:
                                                                             ListView(
                                                                           shrinkWrap:
@@ -500,107 +363,337 @@ class UserReviewwView extends StatelessWidget {
                                                                           physics:
                                                                               ScrollPhysics(),
                                                                           children: [
-                                                                            ListTile(
-                                                                              title: Text(
-                                                                                'Add a comment',
-                                                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                                                              ),
+                                                                            Text(
+                                                                              '🔥',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: TextStyle(fontSize: 15),
                                                                             ),
-                                                                            TextfieldWidget(
-                                                                              maxLines: 3,
-                                                                              onSubmitted: (commentText) {
-                                                                                viewModel.addACommentToABook(commentString: commentText, tappedUserEmail: tappedUserEmail);
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                            ),
+                                                                            Switch(
+                                                                                activeColor: Theme.of(context).primaryColor,
+                                                                                value: viewModel.spoiler,
+                                                                                onChanged: (value) => viewModel.toggleSpoiler(value))
                                                                           ],
                                                                         ),
-                                                                      );
-                                                                    });
-                                                              },
+                                                                      )),
+                                                                );
+                                                              }
+                                                            }
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .all(
+                                                                      20.0),
+                                                              child: Container(
+                                                                height: 24,
+                                                                width: 24,
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 0,
+                                                                vertical: 6),
+                                                        child: Container(
+                                                            child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 5),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Tooltip(
+                                                                message: data[
+                                                                        'userName'] +
+                                                                    ' has rated book with ' +
+                                                                    emoji,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Text(
+                                                                      emoji
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              25,
+                                                                          color: Theme.of(context)
+                                                                              .primaryColor,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                height: 20,
+                                                                width: 1,
+                                                                decoration: BoxDecoration(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .iconTheme
+                                                                        .color,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                              ),
+                                                              Tooltip(
+                                                                message: 'Total comments are ' +
+                                                                    data['reviewCommentsConter']
+                                                                        .toInt()
+                                                                        .toString(),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .chat_bubble_outline,
+                                                                      size: 18,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      data['reviewCommentsConter']
+                                                                          .toInt()
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          color: Theme.of(context)
+                                                                              .primaryColor,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                height: 20,
+                                                                width: 1,
+                                                                decoration: BoxDecoration(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .iconTheme
+                                                                        .color,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                              ),
+                                                              Tooltip(
+                                                                message: 'Total Likes are ' +
+                                                                    data['reviewLikeConter']
+                                                                        .toInt()
+                                                                        .toString(),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .favorite_border,
+                                                                      size: 18,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      data['reviewLikeConter']
+                                                                          .toInt()
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          color: Theme.of(context)
+                                                                              .primaryColor,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                height: 20,
+                                                                width: 1,
+                                                                decoration: BoxDecoration(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .iconTheme
+                                                                        .color,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            5)),
+                                                              ),
+                                                              Tooltip(
+                                                                message: 'Review has been sent at ' +
+                                                                    DateFormat(
+                                                                            'h:mm:ss a')
+                                                                        .format(
+                                                                            data['reviewDateTime'].toDate()),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .schedule,
+                                                                      size: 18,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 2,
+                                                                    ),
+                                                                    Text(
+                                                                      DateFormat(
+                                                                              'h:mm a')
+                                                                          .format(
+                                                                              data['reviewDateTime'].toDate()),
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              15,
+                                                                          color: Theme.of(context)
+                                                                              .primaryColor,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                      ),
+                                                    ),
+                                                    Tooltip(
+                                                      message: !viewModel
+                                                              .spoiler
+                                                          ? data[
+                                                              'userReviewString']
+                                                          : 'The review Containes spoilers 🔥',
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 4),
+                                                        child: Text(
+                                                          !viewModel.spoiler
+                                                              ? data[
+                                                                  'userReviewString']
+                                                              : '🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Tooltip(
+                                                          message:
+                                                              'Add/update you\'r comment',
+                                                          child: ElevatedButton
+                                                              .icon(
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .chat_bubble_outline,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              size: 17,
                                                             ),
-                                                            SizedBox(
-                                                              width: 10,
+                                                            label:
+                                                                Text('Comment'),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              onPrimary: Theme.of(
+                                                                              context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .bodyText1
+                                                                      .color
+                                                                  : Colors
+                                                                      .black,
+                                                              primary: Theme.of(
+                                                                      context)
+                                                                  .scaffoldBackgroundColor,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    new BorderRadius
+                                                                            .circular(
+                                                                        8.0),
+                                                              ),
                                                             ),
-                                                            ElevatedButton.icon(
-                                                              // icon: Icon(Icons.favorite),
-                                                              icon:
-                                                                  FutureBuilder(
-                                                                future: viewModel
-                                                                    .getLikeBoolValue(
-                                                                        bookId),
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            DocumentSnapshot>
-                                                                        snapshot) {
-                                                                  if (snapshot
-                                                                      .hasError)
-                                                                    return snapshot
-                                                                        .error;
-                                                                  if (snapshot
-                                                                          .data ==
-                                                                      null) {
+                                                            onPressed: () {
+                                                              showModalBottomSheet(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
                                                                     return Container(
-                                                                      height:
-                                                                          17,
-                                                                      width: 17,
                                                                       child:
-                                                                          Center(
-                                                                        child:
-                                                                            CircularProgressIndicator(),
+                                                                          ListView(
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        physics:
+                                                                            ScrollPhysics(),
+                                                                        children: [
+                                                                          ListTile(
+                                                                            title:
+                                                                                Text(
+                                                                              'Add a comment',
+                                                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                          ),
+                                                                          TextfieldWidget(
+                                                                            maxLines:
+                                                                                3,
+                                                                            onSubmitted:
+                                                                                (commentText) {
+                                                                              viewModel.addACommentToABook(commentString: commentText, tappedUserEmail: tappedUserEmail);
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     );
-                                                                  }
-                                                                  if (!snapshot
-                                                                      .data
-                                                                      .exists) {
-                                                                    return Icon(
-                                                                      Icons
-                                                                          .favorite_border,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      size: 17,
-                                                                    );
-                                                                  }
-                                                                  if (snapshot
-                                                                          .hasData &&
-                                                                      snapshot
-                                                                          .data
-                                                                          .exists) {
-                                                                    bool isTrue;
-
-                                                                    if (snapshot
-                                                                            .data
-                                                                            .data()['isReviewLiked'] !=
-                                                                        null)
-                                                                      isTrue = snapshot
-                                                                          .data
-                                                                          .data()['isReviewLiked'];
-                                                                    else
-                                                                      isTrue =
-                                                                          false;
-
-                                                                    if (isTrue) {
-                                                                      return Icon(
-                                                                        Icons
-                                                                            .favorite,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                        size:
-                                                                            17,
-                                                                      );
-                                                                    }
-                                                                    return Icon(
-                                                                      Icons
-                                                                          .favorite_border,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      size: 17,
-                                                                    );
-                                                                  }
+                                                                  });
+                                                            },
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Tooltip(
+                                                          message:
+                                                              'Add/update you\'r like',
+                                                          child: ElevatedButton
+                                                              .icon(
+                                                            icon: FutureBuilder(
+                                                              future: viewModel
+                                                                  .getLikeBoolValue(
+                                                                      bookId),
+                                                              builder: (BuildContext
+                                                                      context,
+                                                                  AsyncSnapshot<
+                                                                          DocumentSnapshot>
+                                                                      snapshot) {
+                                                                if (snapshot
+                                                                    .hasError)
+                                                                  return snapshot
+                                                                      .error;
+                                                                if (snapshot
+                                                                        .data ==
+                                                                    null) {
                                                                   return Container(
                                                                     height: 17,
                                                                     width: 17,
@@ -610,47 +703,104 @@ class UserReviewwView extends StatelessWidget {
                                                                           CircularProgressIndicator(),
                                                                     ),
                                                                   );
-                                                                },
-                                                              ),
-
-                                                              label:
-                                                                  Text('Like'),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                onPrimary: Theme.of(context)
-                                                                            .brightness ==
-                                                                        Brightness
-                                                                            .dark
-                                                                    ? Theme.of(
+                                                                }
+                                                                if (!snapshot
+                                                                    .data
+                                                                    .exists) {
+                                                                  return Icon(
+                                                                    Icons
+                                                                        .favorite_border,
+                                                                    color: Theme.of(
                                                                             context)
-                                                                        .textTheme
-                                                                        .bodyText1
-                                                                        .color
-                                                                    : Colors
-                                                                        .black,
-                                                                primary: Theme.of(
-                                                                        context)
-                                                                    .scaffoldBackgroundColor,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      new BorderRadius
-                                                                              .circular(
-                                                                          8.0),
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                viewModel.addAlikeToABook(
-                                                                    tappedUserEmail:
-                                                                        tappedUserEmail);
+                                                                        .primaryColor,
+                                                                    size: 17,
+                                                                  );
+                                                                }
+                                                                if (snapshot
+                                                                        .hasData &&
+                                                                    snapshot
+                                                                        .data
+                                                                        .exists) {
+                                                                  bool isTrue;
+
+                                                                  if (snapshot
+                                                                          .data
+                                                                          .data()['isReviewLiked'] !=
+                                                                      null)
+                                                                    isTrue = snapshot
+                                                                            .data
+                                                                            .data()[
+                                                                        'isReviewLiked'];
+                                                                  else
+                                                                    isTrue =
+                                                                        false;
+
+                                                                  if (isTrue) {
+                                                                    return Icon(
+                                                                      Icons
+                                                                          .favorite,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      size: 17,
+                                                                    );
+                                                                  }
+                                                                  return Icon(
+                                                                    Icons
+                                                                        .favorite_border,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                    size: 17,
+                                                                  );
+                                                                }
+                                                                return Container(
+                                                                  height: 17,
+                                                                  width: 17,
+                                                                  child: Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  ),
+                                                                );
                                                               },
-                                                            )
-                                                          ],
+                                                            ),
+                                                            label: Text('Like'),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              onPrimary: Theme.of(
+                                                                              context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .bodyText1
+                                                                      .color
+                                                                  : Colors
+                                                                      .black,
+                                                              primary: Theme.of(
+                                                                      context)
+                                                                  .scaffoldBackgroundColor,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    new BorderRadius
+                                                                            .circular(
+                                                                        8.0),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              viewModel.addAlikeToABook(
+                                                                  tappedUserEmail:
+                                                                      tappedUserEmail);
+                                                            },
+                                                          ),
                                                         )
                                                       ],
-                                                    ),
-                                                  ),
+                                                    )
+                                                  ],
                                                 ),
                                               ),
                                             ),
@@ -677,15 +827,51 @@ class UserReviewwView extends StatelessWidget {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ListTile(
-                                        leading: Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            colorFilter: new ColorFilter.mode(
+                                                Colors.black.withOpacity(0.5),
+                                                BlendMode.dstATop),
+                                            image: NetworkImage(
+                                              bookImage,
+                                            ),
+                                          ),
                                         ),
-                                        title: Text('No Commnets yet'),
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 10,
+                                              sigmaY: 10,
+                                              tileMode: TileMode.clamp),
+                                          child: Container(
+                                            color: Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? Colors.black.withOpacity(0.5)
+                                                : Colors.white.withOpacity(0.5),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Tooltip(
+                                                message: 'No Commnets yet 😭',
+                                                child: ListTile(
+                                                  leading: Container(
+                                                    width: 40,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(),
+                                                  ),
+                                                  title: Text(
+                                                      'No Commnets yet 😭'),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -703,24 +889,65 @@ class UserReviewwView extends StatelessWidget {
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(15.0)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ListTile(
-                                            leading: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(doc[
-                                                          'userImageComment']))),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                colorFilter:
+                                                    new ColorFilter.mode(
+                                                        Colors.black
+                                                            .withOpacity(0.5),
+                                                        BlendMode.dstATop),
+                                                image: NetworkImage(
+                                                  bookImage,
+                                                ),
+                                              ),
                                             ),
-                                            title: Text(doc['userNameComment']),
-                                            subtitle: Text(doc['userComment']),
-                                            trailing: Text(
-                                              DateFormat.jm().format(
-                                                  doc['sendDate'].toDate()),
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 10,
+                                                  sigmaY: 10,
+                                                  tileMode: TileMode.clamp),
+                                              child: Container(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.black
+                                                        .withOpacity(0.5)
+                                                    : Colors.white
+                                                        .withOpacity(0.5),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: ListTile(
+                                                    leading: Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  doc['userImageComment']))),
+                                                    ),
+                                                    title: Text(
+                                                        doc['userNameComment']),
+                                                    subtitle: Text(
+                                                        doc['userComment']),
+                                                    trailing: Text(
+                                                      DateFormat.jm().format(
+                                                          doc['sendDate']
+                                                              .toDate()),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),

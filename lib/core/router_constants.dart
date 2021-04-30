@@ -17,6 +17,6 @@ const String comunintysViewRoute = 'comunintysViewRoute';
 const String bookCategoriesGridViewRoute = 'bookCategoriesGridViewRoute';
 const String similerBooksGridViewRoute = 'similerBooksGridViewRoute';
 const String bookReviewsViewRoute = 'bookReviewsViewRoute';
-const String reviewViewRoute = 'reviewViewRoute';
 const String userReviewwViewRoute = 'userReviewwViewRoute';
 const String globalChallengeViewRoute = 'globalChallengeViewRoute';
+const String userGlobalChallengeViewRoute = 'userGlobalChallengeViewRoute';

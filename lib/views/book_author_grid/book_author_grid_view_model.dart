@@ -1,6 +1,7 @@
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/models/bookModels/booksResponseModel.dart';
 import 'package:boo_vi_app/core/services/bookServices.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
@@ -29,13 +30,28 @@ class BookAuthorGridViewModel extends BaseViewModel {
       @required String bookTitle,
       @required String previewLink}) {
     _navigationService.navigateWithTransition(
-      BookView(
-        id: id,
-        image: image,
-        text: bookTitle,
+        BookView(
+          id: id,
+          image: image,
+          text: bookTitle,
+          previewLink: previewLink,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
+  Future addAbookToRecentlyViewedShelf({
+    @required String bookId,
+    @required String bookImage,
+    @required String previewLink,
+    @required String title,
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        bookId: bookId,
+        title: title,
         previewLink: previewLink,
-      ),
-      transition: 'size',
-    );
+        bookImage: bookImage);
   }
 }

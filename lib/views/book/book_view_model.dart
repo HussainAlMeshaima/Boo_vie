@@ -39,8 +39,8 @@ class BookViewModel extends BaseViewModel {
     return _cloudFirestoreServices.getReviewsStream(bookId);
   }
 
-  Future<QuerySnapshot> getUserShelfFuture() async {
-    return _cloudFirestoreServices.getUserShelfsFuture();
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
+    yield* _cloudFirestoreServices.getUserShelfsStream();
   }
 
   Future<QuerySnapshot> getUserShelfsBooksByNameFuture(String shelfId) async {
@@ -63,29 +63,29 @@ class BookViewModel extends BaseViewModel {
 
   pushBookAuthorGridView({@required String authorName}) {
     return _navigationService.navigateWithTransition(
-      BookAuthorGridView(
-        authorName: authorName,
-      ),
-      transition: 'rightToLeftWithFade',
-    );
+        BookAuthorGridView(
+          authorName: authorName,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 
   pushSimilerBooksGridView({@required String title}) {
     return _navigationService.navigateWithTransition(
-      SimilerBooksGridView(
-        title: title,
-      ),
-      transition: 'rightToLeftWithFade',
-    );
+        SimilerBooksGridView(
+          title: title,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 
   pushBookCategoriesGridView({@required String bookCategories}) {
     return _navigationService.navigateWithTransition(
-      BookCategoriesGridView(
-        categories: bookCategories,
-      ),
-      transition: 'rightToLeftWithFade',
-    );
+        BookCategoriesGridView(
+          categories: bookCategories,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 
   String getBookcategories(String categories) {
@@ -108,13 +108,13 @@ class BookViewModel extends BaseViewModel {
     @required String buyLink,
   }) {
     _navigationService.navigateWithTransition(
-      BookInformationView(
-        bookId: bookId,
-        webReaderLink: webReaderLink,
-        buyLink: buyLink,
-      ),
-      transition: 'rightToLeft',
-    );
+        BookInformationView(
+          bookId: bookId,
+          webReaderLink: webReaderLink,
+          buyLink: buyLink,
+        ),
+        transition: 'rightToLeft',
+        duration: Duration(milliseconds: 400));
   }
 
   String getTitle(dynamic title) {
@@ -197,7 +197,7 @@ class BookViewModel extends BaseViewModel {
                                               BorderRadius.circular(15.0)),
                                       child: ListTile(
                                         leading: Icon(Icons.clear_all),
-                                        title: Text('Create a new Shelf'),
+                                        title: Text('Create a new shelf'),
                                         onTap: () {
                                           Navigator.pop(context);
                                           showModalBottomSheet(
@@ -240,52 +240,44 @@ class BookViewModel extends BaseViewModel {
                                       ),
                                     ),
                                   ),
-                                  FutureBuilder(
-                                    future: getUserShelfFuture(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (snapshot.hasData) {
-                                        return ListView(
-                                          shrinkWrap: true,
-                                          physics: ScrollPhysics(),
-                                          children: [
-                                            ListView.builder(
-                                              shrinkWrap: true,
-                                              physics: ScrollPhysics(),
-                                              itemCount:
-                                                  snapshot.data.docs.length,
-                                              itemBuilder: (context, index) {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'A book has been added to ' +
-                                                              snapshot.data
-                                                                          .docs[
-                                                                      index]
-                                                                  ['name']),
-                                                      duration:
-                                                          Duration(seconds: 4),
-                                                    ));
+                                  StreamBuilder(
+                                      stream: getUserShelfsStream(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError)
+                                          return snapshot.error;
 
-                                                    Timer(
-                                                        Duration(
-                                                          seconds: 1,
-                                                        ), () async {
-                                                      addAbooktoSelectedShelf(
-                                                          shelfId: snapshot.data
-                                                              .docs[index].id,
-                                                          bookId: _bookId,
-                                                          bookImage: _bookImage,
-                                                          previewLink:
-                                                              _bookpreviewLink,
-                                                          title: _bookTitle);
-                                                    });
-                                                  },
-                                                  child: ListView(
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data.size == 0) {
+                                            return Container(
+                                              height: 200,
+                                              child: Center(
+                                                  child: Text(
+                                                      'Seems Like you dont have any shelf yet😭')),
+                                            );
+                                          }
+                                          if (snapshot.data.size != 0) {
+                                            List<QueryDocumentSnapshot>
+                                                shelfsDocs = snapshot.data.docs;
+
+                                            shelfsDocs.sort((a, b) {
+                                              int aInt = a
+                                                  .get('createdDate')
+                                                  .microsecondsSinceEpoch;
+                                              int bInt = b
+                                                  .get('createdDate')
+                                                  .microsecondsSinceEpoch;
+                                              return bInt.compareTo(aInt);
+                                            });
+                                            return ListView.builder(
+                                                shrinkWrap: true,
+                                                physics: ScrollPhysics(),
+                                                itemCount: shelfsDocs.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return ListView(
                                                     shrinkWrap: true,
                                                     physics: ScrollPhysics(),
                                                     children: [
@@ -298,8 +290,7 @@ class BookViewModel extends BaseViewModel {
                                                                 top: 12),
                                                         child: Container(
                                                           child: Text(
-                                                            snapshot.data
-                                                                    .docs[index]
+                                                            shelfsDocs[index]
                                                                 ['name'],
                                                             style: TextStyle(
                                                                 fontSize: 18,
@@ -312,9 +303,7 @@ class BookViewModel extends BaseViewModel {
                                                       StreamBuilder(
                                                           stream: getUserBooksInThatShelfStream(
                                                               shelfName:
-                                                                  snapshot
-                                                                      .data
-                                                                      .docs[
+                                                                  shelfsDocs[
                                                                           index]
                                                                       .id),
                                                           builder: (BuildContext
@@ -329,59 +318,87 @@ class BookViewModel extends BaseViewModel {
                                                                   snapshot.data
                                                                       .docs;
 
-                                                              booksDocs
-                                                                  .sort((a, b) {
-                                                                int aInt = a
-                                                                    .get(
-                                                                        'openedDate')
-                                                                    .microsecondsSinceEpoch;
-                                                                int bInt = b
-                                                                    .get(
-                                                                        'openedDate')
-                                                                    .microsecondsSinceEpoch;
-                                                                return bInt
-                                                                    .compareTo(
-                                                                        aInt);
-                                                              });
-
-                                                              return ListView(
-                                                                shrinkWrap:
-                                                                    true,
-                                                                physics:
-                                                                    ScrollPhysics(),
-                                                                children: [
-                                                                  Container(
-                                                                    width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width,
-                                                                    height: 200,
-                                                                    child: ListView
-                                                                        .builder(
-                                                                      shrinkWrap:
-                                                                          true,
-                                                                      physics:
-                                                                          ScrollPhysics(),
-                                                                      scrollDirection:
-                                                                          Axis.horizontal,
-                                                                      itemCount: snapshot
-                                                                          .data
-                                                                          .size,
-                                                                      itemBuilder:
-                                                                          (context,
-                                                                              index) {
-                                                                        return Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(12.0),
-                                                                          child:
-                                                                              GestureDetector(
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  Timer(
+                                                                      Duration(
+                                                                        seconds:
+                                                                            1,
+                                                                      ), () {
+                                                                    addAbooktoSelectedShelf(
+                                                                        shelfId:
+                                                                            shelfsDocs[index]
+                                                                                .id,
+                                                                        bookId:
+                                                                            _bookId,
+                                                                        bookImage:
+                                                                            _bookImage,
+                                                                        previewLink:
+                                                                            _bookpreviewLink,
+                                                                        title:
+                                                                            _bookTitle);
+                                                                  });
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    SnackBar(
+                                                                      duration: Duration(
+                                                                          seconds:
+                                                                              3),
+                                                                      content: Text(shelfsDocs[index]
+                                                                              [
+                                                                              'name'] +
+                                                                          ' has been updated'),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                child: ListView(
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  physics:
+                                                                      ScrollPhysics(),
+                                                                  children: [
+                                                                    Container(
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      height:
+                                                                          200,
+                                                                      child: ListView
+                                                                          .builder(
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        physics:
+                                                                            ScrollPhysics(),
+                                                                        scrollDirection:
+                                                                            Axis.horizontal,
+                                                                        itemCount: snapshot
+                                                                            .data
+                                                                            .size,
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                index) {
+                                                                          booksDocs.sort((a,
+                                                                              b) {
+                                                                            int aInt =
+                                                                                a.get('openedDate').microsecondsSinceEpoch;
+                                                                            int bInt =
+                                                                                b.get('openedDate').microsecondsSinceEpoch;
+                                                                            return bInt.compareTo(aInt);
+                                                                          });
+                                                                          return Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(12.0),
                                                                             child:
-                                                                                Hero(
-                                                                              tag: booksDocs[index]['id'],
-                                                                              child: GestureDetector(
+                                                                                GestureDetector(
+                                                                              child: Hero(
+                                                                                tag: booksDocs[index]['id'],
                                                                                 child: Container(
-                                                                                  height: 200,
-                                                                                  width: 120,
+                                                                                  height: 150,
+                                                                                  width: 110,
                                                                                   decoration: BoxDecoration(
                                                                                     color: Theme.of(context).primaryColor.withOpacity(.5),
                                                                                     borderRadius: BorderRadius.circular(8),
@@ -393,37 +410,37 @@ class BookViewModel extends BaseViewModel {
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        horizontal:
-                                                                            15,
-                                                                        vertical:
-                                                                            8),
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          12,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10),
-                                                                        color: Theme.of(context)
-                                                                            .cardColor,
+                                                                          );
+                                                                        },
                                                                       ),
                                                                     ),
-                                                                  )
-                                                                ],
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                          horizontal:
+                                                                              15,
+                                                                          vertical:
+                                                                              8),
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            12,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10),
+                                                                          color: Theme.of(context).brightness == Brightness.dark
+                                                                              ? Theme.of(context).cardColor
+                                                                              : Color(0xffE7E7E7),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
                                                               );
                                                             }
 
                                                             return Container(
-                                                              height: 170,
                                                               child: Center(
                                                                 child:
                                                                     CircularProgressIndicator(),
@@ -431,25 +448,26 @@ class BookViewModel extends BaseViewModel {
                                                             );
                                                           }),
                                                     ],
-                                                  ),
-                                                );
-                                              },
+                                                  );
+                                                });
+                                          }
+                                        }
+                                        if (!snapshot.hasData) {
+                                          return Container(
+                                            height: 300,
+                                            child: Center(
+                                              child:
+                                                  CircularProgressIndicator(),
                                             ),
-                                            SizedBox(
-                                              height: 20,
-                                            )
-                                          ],
+                                          );
+                                        }
+                                        return Container(
+                                          height: 300,
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
                                         );
-                                      }
-
-                                      return Container(
-                                        height: 170,
-                                        child: Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      );
-                                    },
-                                  )
+                                      })
                                 ],
                               ),
                             ),
@@ -550,12 +568,12 @@ class BookViewModel extends BaseViewModel {
                         },
                       );
                       Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 4),
-                          content: Text('Reviews has been updated'),
-                        ),
-                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     duration: Duration(seconds: 4),
+                      //     content: Text('Reviews has been updated'),
+                      //   ),
+                      // );
                     },
                   ),
                 ),
@@ -565,6 +583,15 @@ class BookViewModel extends BaseViewModel {
         );
       },
     );
+    notifyListeners();
+  }
+
+  bool _spoiler = true;
+
+  bool get spoiler => _spoiler;
+
+  void toggleSpoiler(bool value) {
+    _spoiler = value;
     notifyListeners();
   }
 
@@ -590,13 +617,41 @@ class BookViewModel extends BaseViewModel {
   pushBookReviews({String bookId, String tappedUserEmail}) async {
     _navigationService.navigateWithTransition(
         BookReviewsView(bookId: _bookId, tappedUserEmail: tappedUserEmail),
-        transition: 'rightToLeftWithFade');
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 
-  pushBookUserReview({String bookId, String tappedUserEmail}) async {
+  pushBookUserReview({
+    String bookId,
+    String tappedUserEmail,
+    String bookImage,
+    bool spoiler,
+    String userReviewString,
+    double userReviewEmojiRating,
+  }) async {
+    String currentUserEmail = await _authenticationService.userEmail();
+    bool editSpoiler;
+    if (currentUserEmail == tappedUserEmail) {
+      print(spoiler);
+      editSpoiler = spoiler;
+      spoiler = false;
+    } else {
+      spoiler = spoiler;
+    }
+
     _navigationService.navigateWithTransition(
-        UserReviewwView(tappedUserEmail: tappedUserEmail, bookId: _bookId),
-        transition: 'rightToLeftWithFade');
+        UserReviewwView(
+          tappedUserEmail: tappedUserEmail,
+          bookId: _bookId,
+          bookImage: bookImage,
+          spoiler: spoiler,
+          editSpoiler: editSpoiler,
+          userReviewEmojiRating: userReviewEmojiRating,
+          userReviewString: userReviewString,
+          userReviewEmojiRatingDouble: userReviewEmojiRating,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 
   Future addAlikeToABook(String userEmail) async {
@@ -627,7 +682,6 @@ class BookViewModel extends BaseViewModel {
       String bookImage,
       String previewLink,
       String title}) async {
-    print(newShelfName);
     await _cloudFirestoreServices.addANewShelfByName(
         newShelfName: newShelfName,
         bookId: bookId,
@@ -644,5 +698,18 @@ class BookViewModel extends BaseViewModel {
       {@required String shelfName}) async* {
     yield* _cloudFirestoreServices.getUserBooksInThatShelfStream(
         shelfName: shelfName);
+  }
+
+  Future addAbookToRecentlyViewedShelf({
+    @required String bookId,
+    @required String bookImage,
+    @required String previewLink,
+    @required String title,
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        bookId: bookId,
+        title: title,
+        previewLink: previewLink,
+        bookImage: bookImage);
   }
 }

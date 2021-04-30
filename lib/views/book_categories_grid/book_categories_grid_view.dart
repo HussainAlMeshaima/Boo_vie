@@ -41,17 +41,35 @@ class BookCategoriesGridView extends StatelessWidget {
                                 ? Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: GestureDetector(
-                                      onTap: () => viewModel.pushBookView(
-                                          id: snapshot.data.items[index].id,
-                                          image: snapshot.data.items[index]
+                                      onTap: () {
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          title: snapshot.data.items[index]
+                                              .volumeInfo.title,
+                                          bookImage: snapshot.data.items[index]
                                               .volumeInfo.imageLinks.thumbnail,
                                           previewLink: snapshot
                                               .data
                                               .items[index]
                                               .volumeInfo
                                               .previewLink,
-                                          bookTitle: snapshot.data.items[index]
-                                              .volumeInfo.title),
+                                          bookId: snapshot.data.items[index].id,
+                                        );
+                                        viewModel.pushBookView(
+                                            id: snapshot.data.items[index].id,
+                                            image: snapshot
+                                                .data
+                                                .items[index]
+                                                .volumeInfo
+                                                .imageLinks
+                                                .thumbnail,
+                                            previewLink: snapshot
+                                                .data
+                                                .items[index]
+                                                .volumeInfo
+                                                .previewLink,
+                                            bookTitle: snapshot.data
+                                                .items[index].volumeInfo.title);
+                                      },
                                       child: Hero(
                                         tag: snapshot.data.items[index].id,
                                         child: Container(

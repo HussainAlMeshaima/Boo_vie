@@ -38,8 +38,8 @@ class ProfileViewModel extends BaseViewModel {
     });
   }
 
-  Future<QuerySnapshot> getUserShelfsFuture() async {
-    return _cloudFirestoreServices.getUserShelfsFuture();
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
+    yield* _cloudFirestoreServices.getUserShelfsStream();
   }
 
   Stream<QuerySnapshot> getUserBooksInThatShelfStream(
@@ -49,10 +49,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future<DocumentSnapshot> getUserDetails() async {
-    String userEmail = await _authenticationService.userEmail();
-    print(userEmail);
-
-    return await _cloudFirestoreServices.getUserDoc(userEmail);
+    return await _cloudFirestoreServices.getUserDoc();
   }
 
   Future<DocumentSnapshot> getUserInformation() {

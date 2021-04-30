@@ -52,25 +52,7 @@ class GlobalChallengesWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: () => viewModel.pushGlobalChallengeView(
-                bookId: bookId,
-                bookTitle: bookTitle,
-                bookImage: bookImage,
-                bookAuthor: bookAuthor,
-                challengeTitle: challengeTitle,
-                challengeDisc: challengeDisc,
-                challengeDate: challengeDate,
-                numberOfPeopleWhoHasCompletedThatChallenge:
-                    numberOfPeopleWhoHasCompletedThatChallenge,
-                numberOfPeopleWhoHasNotCompletedThatChallenge:
-                    numberOfPeopleWhoHasNotCompletedThatChallenge,
-                trophyName: trophyName,
-                trophyImage: trophyImage,
-                trophyIcon: trophyIcon,
-                trophyCount: trophyCount,
-                trophyDisc: trophyDisc,
-                arrowDownCount: arrowDownCount,
-                arrowUpCount: arrowUpCount),
+            onTap: () => viewModel.pushGlobalChallengeView(),
             child: Padding(
               padding: const EdgeInsets.all(2.0),
               child: Container(

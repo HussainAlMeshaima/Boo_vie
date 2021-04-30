@@ -1,9 +1,11 @@
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:boo_vi_app/views/more_books/more_books_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
@@ -166,5 +168,21 @@ class HomeViewModel extends BaseViewModel {
 
   Stream getFullTravelBooksStream() {
     return _streamServices.getFullTravelBooksStream();
+  }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
+
+  Future addAbookToRecentlyViewedShelf({
+    @required String bookId,
+    @required String bookImage,
+    @required String previewLink,
+    @required String title,
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        bookId: bookId,
+        title: title,
+        previewLink: previewLink,
+        bookImage: bookImage);
   }
 }

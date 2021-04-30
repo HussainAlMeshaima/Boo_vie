@@ -37,14 +37,13 @@ class BookView extends StatelessWidget {
               tooltip: 'Add Button',
               child: Icon(
                 Icons.add,
-                color: Colors.white,
               ),
             ),
             appBar: AppBar(
               title: Tooltip(message: 'Book View', child: Text('Book')),
               actions: [
                 Tooltip(
-                  message: '',
+                  message: 'Share',
                   child: IconButton(
                       icon: Icon(Icons.share),
                       onPressed: () {
@@ -115,6 +114,7 @@ class BookView extends StatelessWidget {
                                 ? 'No Description For This Book'
                                 : snapshot.data.volumeInfo.description
                                     .toString();
+                        print(description.length);
                         String pageCount =
                             snapshot.data.volumeInfo.pageCount == null
                                 ? ' - '
@@ -474,6 +474,8 @@ class BookView extends StatelessWidget {
                                               message: 'More book information',
                                               child: Icon(
                                                 Icons.arrow_forward,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                               ),
                                             )
                                           ],
@@ -552,7 +554,7 @@ class BookView extends StatelessWidget {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 10),
+                                          horizontal: 15, vertical: 3),
                                       child: Row(
                                         children: [
                                           Tooltip(
@@ -565,17 +567,25 @@ class BookView extends StatelessWidget {
                                             ),
                                           ),
                                           Spacer(),
-                                          GestureDetector(
-                                            onTap: () =>
-                                                viewModel.pushBookReviews(
-                                              bookId: id,
+                                          Tooltip(
+                                            message: viewModel.spoiler
+                                                ? 'Hide all spoilers'
+                                                : 'Show all Reviews',
+                                            child: Text(
+                                              '🔥',
+                                              style: TextStyle(fontSize: 24),
                                             ),
-                                            child: Tooltip(
-                                              message: 'More book reviews',
-                                              child: Icon(
-                                                Icons.arrow_forward,
-                                              ),
-                                            ),
+                                          ),
+                                          Tooltip(
+                                            message: viewModel.spoiler
+                                                ? 'Spoilers swiched on (Hide spoilers)'
+                                                : 'Spoilers swiched off (Show all)',
+                                            child: Switch(
+                                                activeColor: Theme.of(context)
+                                                    .primaryColor,
+                                                value: viewModel.spoiler,
+                                                onChanged: (value) => viewModel
+                                                    .toggleSpoiler(value)),
                                           )
                                         ],
                                       ),
@@ -629,47 +639,90 @@ class BookView extends StatelessWidget {
                                                       .microsecondsSinceEpoch;
                                                   return aInt.compareTo(bInt);
                                                 });
-                                                return ListView(
+
+                                                return ListView.builder(
                                                   shrinkWrap: true,
                                                   physics: ScrollPhysics(),
-                                                  children: reviewsDocs
-                                                      .map<Widget>((doc) {
+                                                  itemCount: reviewsDocs.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    bool isThatReviewASpoiler =
+                                                        reviewsDocs[index]
+                                                            ['spoiler'];
+                                                    String newReviewString;
+
+                                                    if (isThatReviewASpoiler) {
+                                                      if (viewModel.spoiler) {
+                                                        newReviewString =
+                                                            '🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥';
+                                                      } else {
+                                                        newReviewString =
+                                                            reviewsDocs[index][
+                                                                'userReviewString'];
+                                                      }
+                                                    } else
+                                                      newReviewString =
+                                                          reviewsDocs[index][
+                                                              'userReviewString'];
+
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        viewModel
-                                                            .pushBookUserReview(
-                                                                bookId: id,
-                                                                tappedUserEmail:
-                                                                    doc['userEmail']);
+                                                        viewModel.pushBookUserReview(
+                                                            bookId: id,
+                                                            tappedUserEmail:
+                                                                reviewsDocs[
+                                                                        index][
+                                                                    'userEmail'],
+                                                            bookImage: image,
+                                                            spoiler:
+                                                                reviewsDocs[
+                                                                        index]
+                                                                    ['spoiler'],
+                                                            userReviewString:
+                                                                reviewsDocs[
+                                                                        index][
+                                                                    'userReviewString'],
+                                                            userReviewEmojiRating:
+                                                                reviewsDocs[
+                                                                        index][
+                                                                    'userReviewEmojiRating']);
                                                       },
                                                       onDoubleTap: () {
-                                                        viewModel
-                                                            .addAlikeToABook(doc[
-                                                                'userEmail']);
+                                                        viewModel.addAlikeToABook(
+                                                            reviewsDocs[index]
+                                                                ['userEmail']);
                                                       },
                                                       child: ListTileReWidget(
                                                         userImage:
-                                                            doc['userImage'],
-                                                        likesCounter:
-                                                            doc['reviewLikeConter']
-                                                                .toDouble(),
+                                                            reviewsDocs[index]
+                                                                ['userImage'],
+                                                        likesCounter: reviewsDocs[
+                                                                    index][
+                                                                'reviewLikeConter']
+                                                            .toDouble(),
                                                         userName:
-                                                            doc['userName'],
-                                                        userReview: doc[
-                                                            'userReviewString'],
-                                                        userSentTime:
-                                                            doc['reviewDateTime']
-                                                                .toDate(),
+                                                            reviewsDocs[index]
+                                                                ['userName'],
+                                                        userReview:
+                                                            newReviewString,
+                                                        userSentTime: reviewsDocs[
+                                                                    index][
+                                                                'reviewDateTime']
+                                                            .toDate(),
                                                         commentsCounter:
-                                                            doc['reviewCommentsConter']
+                                                            reviewsDocs[index][
+                                                                    'reviewCommentsConter']
                                                                 .toDouble(),
+                                                        bookImage: image,
+                                                        bookId: id,
                                                       ),
                                                     );
-                                                  }).toList(),
+                                                  },
                                                 );
                                               }
 
                                               return Container(
+                                                height: 87,
                                                 child: Center(
                                                   child:
                                                       CircularProgressIndicator(),
@@ -694,146 +747,191 @@ class BookView extends StatelessWidget {
                                         horizontal: 15, vertical: 0),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'Similar Books',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                        Tooltip(
+                                          message: 'Similar Books',
+                                          child: Text(
+                                            'Similar Books',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          ),
                                         ),
                                         Spacer(),
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_forward,
-                                            ),
-                                            onPressed: () => viewModel
-                                                .pushSimilerBooksGridView(
-                                                    title: text))
+                                        Tooltip(
+                                          message: 'More similar books',
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              viewModel
+                                                  .pushSimilerBooksGridView(
+                                                      title: text);
+                                            },
+                                            child: Icon(Icons.arrow_forward,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        )
                                       ],
                                     ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
                                   ),
                                   Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15.0)),
                                     child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4.0,
-                                            top: 12,
-                                            right: 4,
-                                            bottom: 10),
-                                        child: Container(
-                                            height: 180,
-                                            child: FutureBuilder(
-                                                future:
-                                                    viewModel.getBooksByVolumes(
-                                                        volumeName: text),
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<BooksResponse>
-                                                        snapshot) {
-                                                  if (snapshot.hasError)
-                                                    return snapshot.error;
+                                      padding: const EdgeInsets.only(
+                                          left: 4.0,
+                                          top: 12,
+                                          right: 4,
+                                          bottom: 10),
+                                      child: Container(
+                                        height: 180,
+                                        child: FutureBuilder(
+                                          future: viewModel.getBooksByVolumes(
+                                              volumeName: text),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<BooksResponse>
+                                                  snapshot) {
+                                            if (snapshot.hasError)
+                                              return snapshot.error;
 
-                                                  if (snapshot.hasData) {
-                                                    List<Items> newListOfBooks =
-                                                        snapshot.data.items;
+                                            if (snapshot.hasData) {
+                                              List<Items> newListOfBooks =
+                                                  snapshot.data.items;
 
-                                                    if (newListOfBooks ==
-                                                        null) {
-                                                      return Center(
-                                                          child: Text(
-                                                        'books aren\'t available right now! 😭\n try again later',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ));
-                                                    }
-                                                    return Container(
-                                                      width: double.infinity,
-                                                      child: ListView.builder(
-                                                        itemCount: snapshot
-                                                            .data.items.length,
-                                                        shrinkWrap: true,
-                                                        physics:
-                                                            ScrollPhysics(),
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          if (newListOfBooks[
-                                                                      index]
-                                                                  .id ==
-                                                              id) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 8,
-                                                                      right: 8),
-                                                              child: Container(
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    'Book not available',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                ),
-                                                                height: 80,
-                                                                width: 110,
-                                                                decoration: BoxDecoration(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .primaryColor
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
+                                              if (newListOfBooks == null) {
+                                                return Tooltip(
+                                                  message:
+                                                      'books aren\'t available right now! 😭\n try again later',
+                                                  child: Center(
+                                                      child: Text(
+                                                    'books aren\'t available right now! 😭\n try again later',
+                                                    textAlign: TextAlign.center,
+                                                  )),
+                                                );
+                                              }
+                                              return Container(
+                                                width: double.infinity,
+                                                child: ListView.builder(
+                                                  itemCount: snapshot
+                                                      .data.items.length,
+                                                  shrinkWrap: true,
+                                                  physics: ScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    if (newListOfBooks[index]
+                                                            .id ==
+                                                        id) {
+                                                      return Tooltip(
+                                                        message:
+                                                            'Book not available',
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8,
+                                                                  right: 8),
+                                                          child: Container(
+                                                            child: Center(
+                                                              child: Text(
+                                                                'Book not available',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
                                                               ),
-                                                            );
-                                                          }
+                                                            ),
+                                                            height: 80,
+                                                            width: 110,
+                                                            decoration: BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor
+                                                                    .withOpacity(
+                                                                        .5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
 
-                                                          if (newListOfBooks[
+                                                    if (newListOfBooks[index]
+                                                            .volumeInfo
+                                                            .imageLinks !=
+                                                        null) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 8,
+                                                                right: 8),
+                                                        child: Tooltip(
+                                                          message: newListOfBooks[
                                                                       index]
                                                                   .volumeInfo
-                                                                  .imageLinks !=
-                                                              null) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 8,
-                                                                      right: 8),
-                                                              child:
-                                                                  GestureDetector(
-                                                                onTap: () => viewModel.pushBookView(
-                                                                    previewLink: newListOfBooks[
-                                                                            index]
-                                                                        .volumeInfo
-                                                                        .previewLink,
-                                                                    image: newListOfBooks[
-                                                                            index]
-                                                                        .volumeInfo
-                                                                        .imageLinks
-                                                                        .thumbnail,
-                                                                    id: newListOfBooks[
+                                                                  .title ??
+                                                              'No title for this book',
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              viewModel
+                                                                  .addAbookToRecentlyViewedShelf(
+                                                                title: newListOfBooks[
+                                                                        index]
+                                                                    .volumeInfo
+                                                                    .title,
+                                                                bookImage: newListOfBooks[
+                                                                        index]
+                                                                    .volumeInfo
+                                                                    .imageLinks
+                                                                    .thumbnail,
+                                                                previewLink: newListOfBooks[
+                                                                        index]
+                                                                    .volumeInfo
+                                                                    .previewLink,
+                                                                bookId:
+                                                                    newListOfBooks[
                                                                             index]
                                                                         .id,
-                                                                    bookTitle: newListOfBooks[
-                                                                            index]
-                                                                        .volumeInfo
-                                                                        .title),
-                                                                child: Hero(
-                                                                  tag: newListOfBooks[
+                                                              );
+
+                                                              viewModel.pushBookView(
+                                                                  previewLink: newListOfBooks[
+                                                                          index]
+                                                                      .volumeInfo
+                                                                      .previewLink,
+                                                                  image: newListOfBooks[
+                                                                          index]
+                                                                      .volumeInfo
+                                                                      .imageLinks
+                                                                      .thumbnail,
+                                                                  id: newListOfBooks[
                                                                           index]
                                                                       .id,
-                                                                  child:
-                                                                      Container(
-                                                                    height: 80,
-                                                                    width: 110,
-                                                                    decoration: BoxDecoration(
-                                                                        image: DecorationImage(
+                                                                  bookTitle: newListOfBooks[
+                                                                          index]
+                                                                      .volumeInfo
+                                                                      .title);
+                                                            },
+                                                            child: Hero(
+                                                              tag:
+                                                                  newListOfBooks[
+                                                                          index]
+                                                                      .id,
+                                                              child: Container(
+                                                                height: 80,
+                                                                width: 110,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        image:
+                                                                            DecorationImage(
                                                                           fit: BoxFit
                                                                               .cover,
                                                                           image: NetworkImage(newListOfBooks[index]
@@ -841,51 +939,57 @@ class BookView extends StatelessWidget {
                                                                               .imageLinks
                                                                               .thumbnail),
                                                                         ),
-                                                                        color: Theme.of(context).primaryColor.withOpacity(0.5),
-                                                                        borderRadius: BorderRadius.circular(10)),
-                                                                  ),
-                                                                ),
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor
+                                                                            .withOpacity(
+                                                                                0.5),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10)),
                                                               ),
-                                                            );
-                                                          }
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 8,
-                                                                    right: 8),
-                                                            child: Container(
-                                                              child: Center(
-                                                                child: Text(
-                                                                  'Book not available',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              ),
-                                                              height: 80,
-                                                              width: 110,
-                                                              decoration: BoxDecoration(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColor
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10)),
                                                             ),
-                                                          );
-                                                        },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8,
+                                                              right: 8),
+                                                      child: Container(
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Book not available',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        height: 80,
+                                                        width: 110,
+                                                        decoration: BoxDecoration(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
                                                       ),
                                                     );
-                                                  }
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  );
-                                                }))),
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

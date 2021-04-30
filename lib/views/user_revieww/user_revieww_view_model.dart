@@ -39,8 +39,7 @@ class UserReviewwViewModel extends BaseViewModel {
 
   Future addACommentToABook(
       {String commentString, String tappedUserEmail}) async {
-    var userDoc = await _cloudFirestoreServices
-        .getUserDoc(await _authenticationService.userEmail());
+    var userDoc = await _cloudFirestoreServices.getUserDoc();
     await _cloudFirestoreServices.addACommentToAReview(
       bookId: _bookId,
       userComment: commentString,
@@ -54,9 +53,27 @@ class UserReviewwViewModel extends BaseViewModel {
 
   String _bookId;
   String _tappedUserEmail;
-  handleStartUpLogic({String bookId, String tappedUserEmail}) {
+  String _bookImage;
+  bool _editSpoiler;
+  String _userReviewString;
+  double _userReviewEmojiRating;
+
+  handleStartUpLogic({
+    String bookId,
+    String tappedUserEmail,
+    String bookImage,
+    bool spoiler,
+    bool editSpoiler,
+    String userReviewString,
+    double userReviewEmojiRating,
+  }) {
     _bookId = bookId;
     _tappedUserEmail = tappedUserEmail;
+    _bookImage = bookImage;
+    _spoiler = spoiler;
+    _editSpoiler = editSpoiler;
+    _userReviewString = userReviewString;
+    _userReviewEmojiRating = userReviewEmojiRating;
   }
 
   Future<DocumentSnapshot> getLikeBoolValue(
@@ -77,6 +94,22 @@ class UserReviewwViewModel extends BaseViewModel {
     return await _authenticationService.userEmail();
   }
 
+  Future<String> getUserReview() {
+    return _cloudFirestoreServices.getUserReviewToBeEdited();
+  }
+
+  bool _spoiler;
+
+  bool get spoiler => _spoiler;
+
+  void toggleSpoiler(bool value) {
+    _spoiler = value;
+    notifyListeners();
+  }
+
   TextEditingController _commentController = TextEditingController(text: '');
   TextEditingController get commentController => _commentController;
+
+  TextEditingController _editReviewController = TextEditingController(text: '');
+  TextEditingController get editReviewController => _editReviewController;
 }

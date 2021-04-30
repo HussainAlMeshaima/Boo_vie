@@ -1,6 +1,7 @@
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/models/bookModels/booksResponseModel.dart';
 import 'package:boo_vi_app/core/services/bookServices.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
@@ -66,5 +67,20 @@ class BookCategoriesGridViewModel extends BaseViewModel {
     }
     _newCategoriesName = _newCategoriesName;
     return _newCategoriesName;
+  }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
+  Future addAbookToRecentlyViewedShelf({
+    @required String bookId,
+    @required String bookImage,
+    @required String previewLink,
+    @required String title,
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        bookId: bookId,
+        title: title,
+        previewLink: previewLink,
+        bookImage: bookImage);
   }
 }

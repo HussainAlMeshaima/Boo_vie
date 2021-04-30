@@ -17,6 +17,9 @@ class BookReviewSheetViewModel extends BaseViewModel {
   String _bookImage;
   String _bookTitle;
   String _bookpreviewLink;
+  bool _spoiler = false;
+
+  bool get spoiler => _spoiler;
 
   handleStartUpLogic({
     @required String bookId,
@@ -28,6 +31,11 @@ class BookReviewSheetViewModel extends BaseViewModel {
     _bookImage = bookImage;
     _bookTitle = bookTitle;
     _bookpreviewLink = bookpreviewLink;
+  }
+
+  void toggleSpoiler(bool value) {
+    _spoiler = value;
+    notifyListeners();
   }
 
   double _newSliderValue = 0;
@@ -59,7 +67,7 @@ class BookReviewSheetViewModel extends BaseViewModel {
 
   submitAReview(BuildContext context) async {
     Navigator.pop(context);
-    print('sent');
+
     if (reviewController.text == '') {
       return ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Please include a review to be recorded.')));
@@ -70,9 +78,8 @@ class BookReviewSheetViewModel extends BaseViewModel {
         await _cloudFirestoreServices.getUserCollection(userEmail);
 
     String displayedName = userDoc['displayedName'];
-    print(displayedName);
+
     String userImage = userDoc['userImage'];
-    print(userImage);
 
     await _cloudFirestoreServices.addBookReview(
         bookId: _bookId,
@@ -86,7 +93,8 @@ class BookReviewSheetViewModel extends BaseViewModel {
         userReviewEmojiRating: _newSliderValue,
         userReviewString: _reviewController.text,
         userId: userId,
-        userName: displayedName);
+        userName: displayedName,
+        spoiler: _spoiler);
   }
 
   TextEditingController _reviewController = TextEditingController(text: '');
