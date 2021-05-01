@@ -512,14 +512,14 @@ class ProfileView extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10),
                                                       color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.dark
-                                                          ? Theme.of(context)
-                                                              .cardColor
-                                                          : Color(0xffE7E7E7),
+                                                          .primaryColor
+                                                          .withOpacity(.5),
                                                     ),
                                                   ),
-                                                )
+                                                ),
+                                                SizedBox(
+                                                  height: 30,
+                                                ),
                                               ],
                                             );
                                           }

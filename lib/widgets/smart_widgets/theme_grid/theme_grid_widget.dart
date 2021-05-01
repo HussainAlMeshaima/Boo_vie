@@ -27,13 +27,13 @@ class ThemeGridWidget extends StatelessWidget {
                   title: 'Red',
                   color: Color(0xffEC4646),
                   context: context,
-                  colorIndex: 0,
+                  colorIndex: 1,
                 ),
                 ThemeListTileWidget(
                   title: 'Red',
                   color: Color(0xffEC4646),
                   context: context,
-                  colorIndex: 1,
+                  colorIndex: 0,
                 ),
                 ThemeListTileWidget(
                   title: 'Orange',

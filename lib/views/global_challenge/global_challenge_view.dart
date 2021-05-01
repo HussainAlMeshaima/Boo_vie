@@ -202,6 +202,8 @@ class GlobalChallengeView extends StatelessWidget {
                                                       },
                                                       child:
                                                           CreateANewShelfWithNameWidget(
+                                                        authours: viewModel
+                                                            .bookAuthors,
                                                         bookId:
                                                             viewModel.bookId,
                                                         bookImage:
@@ -240,11 +242,8 @@ class GlobalChallengeView extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Theme.of(context)
-                                                        .cardColor
-                                                    : Color(0xffE7E7E7),
+                                                    .primaryColor
+                                                    .withOpacity(.5),
                                               ),
                                             ),
                                           ),
@@ -407,9 +406,12 @@ class GlobalChallengeView extends StatelessWidget {
                                                                                 height: 12,
                                                                                 decoration: BoxDecoration(
                                                                                   borderRadius: BorderRadius.circular(10),
-                                                                                  color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).cardColor : Color(0xffE7E7E7),
+                                                                                  color: Theme.of(context).primaryColor.withOpacity(.5),
                                                                                 ),
                                                                               ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 30,
                                                                             ),
                                                                           ],
                                                                         ),

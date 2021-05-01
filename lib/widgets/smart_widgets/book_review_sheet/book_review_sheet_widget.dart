@@ -79,7 +79,7 @@ class BookReviewSheetWidget extends StatelessWidget {
               ElevatedButtonWidget(
                 text: 'Send',
                 onPressed: () async {
-                  await viewModel.submitAReview(context);
+                  return viewModel.submitAReview(context);
                 },
               ),
               SizedBox(

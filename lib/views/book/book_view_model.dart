@@ -145,7 +145,7 @@ class BookViewModel extends BaseViewModel {
   }
 
   fabOnTap(BuildContext context) {
-    showModalBottomSheet(
+    return showModalBottomSheet(
       context: context,
       builder: (context) {
         return Container(
@@ -162,10 +162,13 @@ class BookViewModel extends BaseViewModel {
               // ! Add a review
               GestureDetector(
                 onTap: () async {
-                  await showModalBottomSheet(
+                  Navigator.pop(context);
+
+                  return showModalBottomSheet(
                     context: context,
                     builder: (context) {
                       return BookReviewSheetWidget(
+                        authors: _bookAuthors,
                         bookId: _bookId,
                         bookImage: _bookImage,
                         bookTitle: _bookTitle,
@@ -173,7 +176,6 @@ class BookViewModel extends BaseViewModel {
                       );
                     },
                   );
-                  Navigator.pop(context);
                 },
                 child: Padding(
                   padding:
@@ -211,7 +213,7 @@ class BookViewModel extends BaseViewModel {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context);
-                                  showModalBottomSheet(
+                                  return showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
                                       return GestureDetector(
@@ -220,6 +222,7 @@ class BookViewModel extends BaseViewModel {
                                                 .requestFocus(FocusNode());
                                           },
                                           child: CreateANewShelfWithNameWidget(
+                                            authours: _bookAuthors,
                                             bookId: _bookId,
                                             bookImage: _bookImage,
                                             bookTitle: _bookTitle,
@@ -247,10 +250,9 @@ class BookViewModel extends BaseViewModel {
                                   height: 12,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Theme.of(context).cardColor
-                                        : Color(0xffE7E7E7),
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.5),
                                   ),
                                 ),
                               ),
@@ -435,13 +437,17 @@ class BookViewModel extends BaseViewModel {
                                                                       color: Theme.of(context).brightness ==
                                                                               Brightness
                                                                                   .dark
-                                                                          ? Theme.of(context)
-                                                                              .cardColor
-                                                                          : Color(
-                                                                              0xffE7E7E7),
+                                                                          ? Theme.of(context).primaryColor.withOpacity(
+                                                                              .5)
+                                                                          : Theme.of(context)
+                                                                              .primaryColor
+                                                                              .withOpacity(.5),
                                                                     ),
                                                                   ),
                                                                 ),
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                )
                                                               ],
                                                             ),
                                                           );
@@ -693,6 +699,7 @@ class BookViewModel extends BaseViewModel {
       String previewLink,
       String title}) async {
     await _cloudFirestoreServices.addANewShelfByName(
+        authors: _bookAuthors,
         newShelfName: newShelfName,
         bookId: bookId,
         bookImage: bookImage,

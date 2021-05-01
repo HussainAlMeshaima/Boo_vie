@@ -6,6 +6,7 @@ List<ThemeData> getThemes(BuildContext context) {
     ThemeData(
       primaryColor: Color(0xffEC4646),
       accentColor: Color(0xffEC4646),
+      brightness: Brightness.dark,
       fontFamily: 'FiraSans',
       snackBarTheme: SnackBarThemeData(
           backgroundColor: Color(0xffEC4646),
@@ -14,7 +15,6 @@ List<ThemeData> getThemes(BuildContext context) {
     ThemeData(
       primaryColor: Color(0xffEC4646),
       accentColor: Color(0xffEC4646),
-      brightness: Brightness.dark,
       fontFamily: 'FiraSans',
       snackBarTheme: SnackBarThemeData(
           backgroundColor: Color(0xffEC4646),

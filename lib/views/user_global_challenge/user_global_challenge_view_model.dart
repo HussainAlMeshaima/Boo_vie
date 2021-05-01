@@ -98,12 +98,14 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
   }
 
   Future addANewShelfByName(
-      {String newShelfName,
-      String bookId,
-      String bookImage,
-      String previewLink,
-      String title}) async {
+      {@required String newShelfName,
+      @required String bookId,
+      @required String authors,
+      @required String bookImage,
+      @required String previewLink,
+      @required String title}) async {
     await _cloudFirestoreServices.addANewShelfByName(
+        authors: authors,
         newShelfName: newShelfName,
         bookId: bookId,
         bookImage: bookImage,

@@ -303,7 +303,9 @@ class HomeView extends StatelessWidget {
                                                       viewModel
                                                           .addAbookToRecentlyViewedShelf(
                                                         authors: document
-                                                            .data()['authors'],
+                                                                    .data()[
+                                                                'authors'] ??
+                                                            'No authors',
                                                         title: document
                                                             .data()['title'],
                                                         bookImage: document

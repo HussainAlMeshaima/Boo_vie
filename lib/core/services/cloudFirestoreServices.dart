@@ -245,11 +245,12 @@ class CloudFirestoreServices {
   }
 
   Future<void> addANewShelfByName(
-      {String newShelfName,
-      String bookId,
-      String bookImage,
-      String previewLink,
-      String title}) async {
+      {@required String newShelfName,
+      @required String authors,
+      @required String bookId,
+      @required String bookImage,
+      @required String previewLink,
+      @required String title}) async {
     String userEmail = await _authenticationService.userEmail();
     await _users
         .doc(userEmail)
@@ -276,6 +277,7 @@ class CloudFirestoreServices {
                                 .set({
                               'id': bookId,
                               'thumbnail': bookImage,
+                              'authors': authors ?? 'No authors',
                               'previewLink': previewLink,
                               'title': title,
                               'openedDate': DateTime.now()
@@ -293,6 +295,7 @@ class CloudFirestoreServices {
                   'id': bookId,
                   'thumbnail': bookImage,
                   'previewLink': previewLink,
+                  'authors': authors ?? 'No authors',
                   'title': title,
                   'openedDate': DateTime.now()
                 })
@@ -336,7 +339,7 @@ class CloudFirestoreServices {
                               .set({
                             'id': bookId,
                             'thumbnail': bookImage,
-                            'authors': authors,
+                            'authors': authors ?? 'No authors',
                             'previewLink': previewLink,
                             'title': title,
                             'openedDate': DateTime.now()
@@ -353,6 +356,7 @@ class CloudFirestoreServices {
                   .set({
                 'id': bookId,
                 'thumbnail': bookImage,
+                'authors': authors ?? 'No authors',
                 'previewLink': previewLink,
                 'title': title,
                 'openedDate': DateTime.now()
@@ -395,7 +399,7 @@ class CloudFirestoreServices {
                             'id': bookId,
                             'thumbnail': bookImage,
                             'previewLink': previewLink,
-                            'authors': authors,
+                            'authors': authors ?? 'No authors',
                             'title': title,
                             'openedDate': DateTime.now()
                           })
@@ -411,6 +415,7 @@ class CloudFirestoreServices {
                   .set({
                 'id': bookId,
                 'thumbnail': bookImage,
+                'authors': authors ?? 'No authors',
                 'previewLink': previewLink,
                 'title': title,
                 'openedDate': DateTime.now()
@@ -794,15 +799,17 @@ class CloudFirestoreServices {
                         'bookId': bookId,
                         'bookImage': bookImage,
                         'bookTitle': bookTitle,
-                        'authors': authors,
+                        'authors': authors ?? 'No authors',
                         'bookPreviewLink': bookpreviewLink,
                       },
                     )
                     .then((value) => addAbookMyReviewsShelfViewedShelf(
-                        bookId: bookId,
-                        title: bookTitle,
-                        bookImage: bookImage,
-                        previewLink: bookpreviewLink))
+                          bookId: bookId,
+                          title: bookTitle,
+                          bookImage: bookImage,
+                          authors: authors ?? 'No authors',
+                          previewLink: bookpreviewLink,
+                        ))
                     .then((_) => _bookReviewsCollection
                             .doc(bookId)
                             .collection('reviews')
@@ -863,7 +870,7 @@ class CloudFirestoreServices {
                           bookId: bookId,
                           title: bookTitle,
                           bookImage: bookImage,
-                          authors: authors,
+                          authors: authors ?? 'No authors',
                           previewLink: bookpreviewLink))
                       .then(
                         (_) => _bookReviewsCollection
@@ -933,6 +940,7 @@ class CloudFirestoreServices {
             'userName': userName,
             'userEmail': userEmail,
             'userImage': userImageUrl,
+            'userTotalCompleatedChallenges': 0,
             'userDescription': userDescription,
             'numberOfBookReviwed': 0,
             'userTotalPoints': 0,

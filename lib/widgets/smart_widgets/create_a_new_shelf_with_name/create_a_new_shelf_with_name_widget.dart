@@ -9,13 +9,15 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
   final String bookImage;
   final String bookTitle;
   final String bookpreviewLink;
+  final String authours;
 
   const CreateANewShelfWithNameWidget(
       {Key key,
       @required this.bookId,
       @required this.bookImage,
       @required this.bookTitle,
-      @required this.bookpreviewLink})
+      @required this.bookpreviewLink,
+      @required this.authours})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
               bookId: bookId,
               bookImage: bookImage,
               bookTitle: bookTitle,
-              bookpreviewLink: bookpreviewLink),
+              bookpreviewLink: bookpreviewLink,
+              authours: authours),
       builder: (BuildContext context,
           CreateANewShelfWithNameViewModel viewModel, Widget _) {
         return ListView(
@@ -64,7 +67,7 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
                 Container(
                   width: 250,
                   child: TextfieldWidget(
-                    hintText: 'Type name here',
+                    hintText: 'Type shelf name',
                     controller: viewModel.displayedShelfNameController,
                     maxLines: 5,
                     onChanged: (String value) {
@@ -73,13 +76,23 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
                     onSubmitted: (String newShelfName) async {
                       Navigator.pop(context);
                       if (viewModel
-                          .displayedShelfNameController.text.isNotEmpty)
+                          .displayedShelfNameController.text.isNotEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            content: Text(
+                                viewModel.displayedShelfNameController.text +
+                                    ' has been created')));
+
                         await viewModel.addANewShelfByName(
-                            newShelfName: newShelfName,
+                            authors: viewModel.authors,
+                            newShelfName:
+                                viewModel.displayedShelfNameController.text,
                             bookId: viewModel.bookId,
                             bookImage: viewModel.bookImage,
                             previewLink: viewModel.bookpreviewLink,
                             title: viewModel.bookTitle);
+                        viewModel.displayedShelfNameController.clear();
+                      }
                     },
                   ),
                 ),
@@ -91,9 +104,7 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
                 height: 12,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(context).cardColor
-                      : Color(0xffE7E7E7),
+                  color: Theme.of(context).primaryColor.withOpacity(.5),
                 ),
               ),
             ),
@@ -103,15 +114,22 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
             ElevatedButtonWidget(
               text: 'Create',
               onPressed: () async {
-                if (viewModel.displayedShelfNameController.text.isNotEmpty)
+                if (viewModel.displayedShelfNameController.text.isNotEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      content: Text(
+                          viewModel.displayedShelfNameController.text +
+                              ' has been created')));
+
                   await viewModel.addANewShelfByName(
+                      authors: viewModel.authors,
                       newShelfName: viewModel.displayedShelfNameController.text,
                       bookId: viewModel.bookId,
                       bookImage: viewModel.bookImage,
                       previewLink: viewModel.bookpreviewLink,
                       title: viewModel.bookTitle);
-
-                Navigator.pop(context);
+                  viewModel.displayedShelfNameController.clear();
+                }
               },
             ),
             SizedBox(

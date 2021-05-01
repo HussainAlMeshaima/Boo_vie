@@ -20,14 +20,19 @@ class CreateANewShelfWithNameViewModel extends BaseViewModel {
   String get bookImage => _bookImage;
   String _bookTitle;
   String get bookTitle => _bookTitle;
+  String _authors;
+  String get authors => _authors;
   String _bookpreviewLink;
   String get bookpreviewLink => _bookpreviewLink;
-  handleStartUpLogic(
-      {String bookId,
-      String bookImage,
-      String bookTitle,
-      String bookpreviewLink}) {
+  handleStartUpLogic({
+    @required String bookId,
+    @required String bookImage,
+    @required String bookTitle,
+    @required String authours,
+    @required String bookpreviewLink,
+  }) {
     _bookId = bookId;
+    _authors = authours;
     _bookImage = bookImage;
     _bookTitle = bookTitle;
     _bookpreviewLink = bookpreviewLink;
@@ -45,12 +50,14 @@ class CreateANewShelfWithNameViewModel extends BaseViewModel {
   }
 
   Future addANewShelfByName(
-      {String newShelfName,
-      String bookId,
-      String bookImage,
-      String previewLink,
-      String title}) async {
+      {@required String newShelfName,
+      @required String bookId,
+      @required String authors,
+      @required String bookImage,
+      @required String previewLink,
+      @required @required String title}) async {
     await _cloudFirestoreServices.addANewShelfByName(
+        authors: authors,
         newShelfName: newShelfName,
         bookId: bookId,
         bookImage: bookImage,
