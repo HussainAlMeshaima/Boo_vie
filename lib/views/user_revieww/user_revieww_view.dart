@@ -65,15 +65,15 @@ class UserReviewwView extends StatelessWidget {
 
                     switch (userReviewEmojiRating) {
                       case 0:
-                        emoji = '🤢';
+                        emoji = '😡';
                         break;
 
                       case 1:
-                        emoji = '🤮';
+                        emoji = '🤢';
                         break;
 
                       case 2:
-                        emoji = '😫';
+                        emoji = '😟';
                         break;
 
                       case 3:
@@ -81,31 +81,47 @@ class UserReviewwView extends StatelessWidget {
                         break;
 
                       case 4:
-                        emoji = '😟';
+                        emoji = '😨';
                         break;
 
                       case 5:
-                        emoji = '😕';
+                        emoji = '😰';
                         break;
 
                       case 6:
-                        emoji = '🤨';
+                        emoji = '😓';
                         break;
 
                       case 7:
-                        emoji = '😃';
+                        emoji = '😫';
                         break;
 
                       case 8:
-                        emoji = '😇';
+                        emoji = '😭';
                         break;
 
                       case 9:
-                        emoji = '😍';
+                        emoji = '😦';
                         break;
 
                       case 10:
+                        emoji = '😮';
+                        break;
+
+                      case 11:
+                        emoji = '😃';
+                        break;
+
+                      case 12:
+                        emoji = '😁';
+                        break;
+
+                      case 13:
                         emoji = '🥰';
+                        break;
+
+                      case 14:
+                        emoji = '😍';
                         break;
 
                       default:
@@ -311,7 +327,7 @@ class UserReviewwView extends StatelessWidget {
                                                                                 EditReviewSheetWidget(
                                                                                   bookId: bookId,
                                                                                   spoiler: spoiler,
-                                                                                  editSpoiler: editSpoiler,
+                                                                                  editSpoiler: viewModel.editSpoiler,
                                                                                   userReviewString: userReviewString,
                                                                                   userReviewEmojiRating: userReviewEmojiRatingDouble,
                                                                                 ),
@@ -330,24 +346,6 @@ class UserReviewwView extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               } else {
-                                                                // print(
-                                                                //     isThatReviewASpoiler);
-                                                                // String
-                                                                //     newReviewString;
-                                                                // if (isThatReviewASpoiler) {
-                                                                //   if (viewModel
-                                                                //       .spoiler) {
-                                                                //     newReviewString =
-                                                                //         '🔥🔥🔥🔥🔥🔥🔥🔥';
-                                                                //   } else {
-                                                                //     newReviewString =
-                                                                //         snapshot
-                                                                //             .data['userReviewString'];
-                                                                //   }
-                                                                // } else
-                                                                // newReviewString =
-                                                                //     snapshot.data[
-                                                                //         'userReviewString'];
                                                                 return GestureDetector(
                                                                   child: Padding(
                                                                       padding: const EdgeInsets.only(top: 10, right: 10),
@@ -368,9 +366,9 @@ class UserReviewwView extends StatelessWidget {
                                                                               textAlign: TextAlign.center,
                                                                               style: TextStyle(fontSize: 15),
                                                                             ),
-                                                                            Switch(
+                                                                            SwitchListTile(
                                                                                 activeColor: Theme.of(context).primaryColor,
-                                                                                value: viewModel.spoiler,
+                                                                                value: viewModel.editSpoiler,
                                                                                 onChanged: (value) => viewModel.toggleSpoiler(value))
                                                                           ],
                                                                         ),

@@ -38,9 +38,14 @@ class HomeViewModel extends BaseViewModel {
   }
 
   pushBookView(
-      {String id, String image, String bookTitle, String previewLink}) {
+      {@required String id,
+      @required String image,
+      @required String bookTitle,
+      @required String previewLink,
+      @required String authors}) {
     _navigationService.navigateWithTransition(
         BookView(
+          authors: authors,
           id: id,
           image: image,
           text: bookTitle,
@@ -178,8 +183,10 @@ class HomeViewModel extends BaseViewModel {
     @required String bookImage,
     @required String previewLink,
     @required String title,
+    @required String authors,
   }) async {
     await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        authors: authors,
         bookId: bookId,
         title: title,
         previewLink: previewLink,

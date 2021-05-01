@@ -33,31 +33,41 @@ class UserDetailsViewModel extends BaseViewModel {
   Future selectImageFromCamra(BuildContext context) async {
     Navigator.pop(context);
 
+    Timer(Duration(milliseconds: 500), () {
+      _isLoading = true;
+      notifyListeners();
+    });
+
     PickedFile newSelectImageFromCamra =
         await _imageSelectorService.selectImageFromCamra();
 
     if (newSelectImageFromCamra != null) {
       _selectedImage = File(newSelectImageFromCamra.path);
-      notifyListeners();
+
       _imageUrl = await _cloudStorageService.uploadAnImage(
           image: _selectedImage, userEmail: _userEmailController.text);
-      notifyListeners();
     }
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future selectImageFromGallery(BuildContext context) async {
     Navigator.pop(context);
-
+    Timer(Duration(milliseconds: 500), () {
+      _isLoading = true;
+      notifyListeners();
+    });
     PickedFile newSelectImageFromGallery =
         await _imageSelectorService.selectImageFromGallery();
 
     if (newSelectImageFromGallery != null) {
       _selectedImage = File(newSelectImageFromGallery.path);
-      notifyListeners();
+
       _imageUrl = await _cloudStorageService.uploadAnImage(
           image: _selectedImage, userEmail: _userEmailController.text);
-      notifyListeners();
     }
+    _isLoading = false;
+    notifyListeners();
   }
 
   pushStartUpView(context) async {
@@ -69,9 +79,12 @@ class UserDetailsViewModel extends BaseViewModel {
     );
 
     if (await _authenticationService.hasUser())
-      Timer(Duration(seconds: 4, milliseconds: 520), () async {
-        _navigationService.pushNamedAndRemoveUntil(startUpViewRoute);
-      });
+      Timer(
+        Duration(seconds: 3),
+        () async {
+          _navigationService.pushNamedAndRemoveUntil(startUpViewRoute);
+        },
+      );
   }
 
   CloudFirestoreServices _cloudFirestoreServices =
@@ -121,7 +134,10 @@ class UserDetailsViewModel extends BaseViewModel {
 
     if (_aboutMeController.text.isNotEmpty &&
         _displayedNameController.text.isNotEmpty &&
-        _selectedImage != null) {
+        _selectedImage != null &&
+        _isLoading == false) {
+      _isLoading = true;
+      notifyListeners();
       await _cloudFirestoreServices.createNewUser(
           uid: await _authenticationService.userId(),
           userName: _displayedNameController.text,
@@ -130,6 +146,8 @@ class UserDetailsViewModel extends BaseViewModel {
           userImageUrl: _imageUrl,
           userCategories: userMap,
           totalNumberOfSelectedCategories: counter);
+      _isLoading = false;
+      notifyListeners();
       pushStartUpView(context);
     }
   }
@@ -197,4 +215,7 @@ class UserDetailsViewModel extends BaseViewModel {
   int numberOfSelcted() {
     return _isChoiceChipSelected.where((element) => element == true).length;
   }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 }

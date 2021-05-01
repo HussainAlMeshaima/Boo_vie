@@ -1,7 +1,16 @@
+import 'dart:async';
+
+import 'package:boo_vi_app/core/locator.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
+import 'package:boo_vi_app/core/services/streamServices.dart';
+import 'package:boo_vi_app/views/book/book_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class UserGlobalChallengeViewModel extends BaseViewModel {
   Logger log;
@@ -36,6 +45,14 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
     _trophiesMap = trophiesMap;
     //-----------------------------------------------------------
     _setToDate = setToDate;
+
+    convertTheGivenTimestampToString();
+
+    Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      convertTheGivenTimestampToString();
+
+      notifyListeners();
+    });
   }
 
   void convertTheGivenTimestampToString() {
@@ -57,7 +74,74 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
     _numberOfhours = _hoursString;
     _numberOfminutes = _minutesString;
     _numberOfseconds = _secondsString;
+
+    if (otherDate.isBefore(DateTime.now())) {
+      _isChallangeTimeDone = true;
+    }
   }
+
+  void pushBookView() {
+    _navigationService.navigateWithTransition(
+        BookView(
+          authors: _challengeAuthors,
+          id: _bookId,
+          image: _challengeImage,
+          text: _bookTitle,
+          previewLink: _previewLink,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  Stream<DocumentSnapshot> getChallangeDocument(String challangeId) {
+    return _streamServices.getChallangeDocument(challangeId);
+  }
+
+  Future addANewShelfByName(
+      {String newShelfName,
+      String bookId,
+      String bookImage,
+      String previewLink,
+      String title}) async {
+    await _cloudFirestoreServices.addANewShelfByName(
+        newShelfName: newShelfName,
+        bookId: bookId,
+        bookImage: bookImage,
+        previewLink: previewLink,
+        title: title);
+  }
+
+  removeChallangeFromMyChallanges() {
+    _cloudFirestoreServices.removeChallangeFromMyChallanges(
+        challangeId: _challangeId);
+  }
+
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
+    yield* _cloudFirestoreServices.getUserShelfsStream();
+  }
+
+  Stream<QuerySnapshot> getUserBooksInThatShelfStream(
+      {@required String shelfName}) async* {
+    yield* _cloudFirestoreServices.getUserBooksInThatShelfStream(
+        shelfName: shelfName);
+  }
+
+  Future addAbooktoSelectedShelf(
+      {String shelfId,
+      String bookId,
+      String bookImage,
+      String previewLink,
+      String title}) async {
+    return await _cloudFirestoreServices.addAbooktoSelectedShelf(
+        shelfId: shelfId,
+        bookId: bookId,
+        bookImage: bookImage,
+        previewLink: previewLink,
+        title: title);
+  }
+
+  bool _isChallangeTimeDone = false;
+  bool get isChallangeTimeDone => _isChallangeTimeDone;
 
   String _challangeId;
   String get challangeId => _challangeId;
@@ -103,4 +187,9 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
 
   Map _trophiesMap;
   Map get trophiesMap => _trophiesMap;
+
+  StreamServices _streamServices = locator<StreamServices>();
+  NavigationService _navigationService = locator<NavigationService>();
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
 }

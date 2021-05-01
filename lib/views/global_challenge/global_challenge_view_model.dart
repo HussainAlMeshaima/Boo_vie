@@ -85,6 +85,7 @@ class GlobalChallengeViewModel extends BaseViewModel {
   void pushBookView() {
     _navigationService.navigateWithTransition(
         BookView(
+          authors: _bookAuthors,
           id: _bookId,
           image: _challengeImage,
           text: _bookTitle,
@@ -196,6 +197,9 @@ class GlobalChallengeViewModel extends BaseViewModel {
 
   String _bookId;
   String get bookId => _bookId;
+
+  String _bookAuthors;
+  String get bookAuthors => _bookAuthors;
 
   String _challengeImage;
   String get image => _challengeImage;

@@ -1,4 +1,5 @@
 import 'package:boo_vi_app/widgets/dumb_widgets/list_tile/list_tile_widget.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -68,7 +69,8 @@ class UserDetailsView extends StatelessWidget {
                               height: 130,
                               width: 130,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(20),
                                   color: Theme.of(context).brightness ==
                                           Brightness.light
                                       ? Color(0xffE7E7E7)
@@ -82,12 +84,14 @@ class UserDetailsView extends StatelessWidget {
                                 children: [
                                   Positioned(
                                     bottom: -5,
-                                    right: 0,
+                                    right: -5,
                                     child: Container(
-                                      height: 45,
-                                      width: 45,
+                                      height: 37,
+                                      width: 37,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                           color:
                                               Theme.of(context).primaryColor),
                                       child: Icon(Icons.edit),
@@ -100,7 +104,8 @@ class UserDetailsView extends StatelessWidget {
                               height: 130,
                               width: 130,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(20),
                                 color: Theme.of(context).brightness ==
                                         Brightness.light
                                     ? Color(0xffE7E7E7)
@@ -112,12 +117,14 @@ class UserDetailsView extends StatelessWidget {
                                 children: [
                                   Positioned(
                                     bottom: -5,
-                                    right: 0,
+                                    right: -5,
                                     child: Container(
-                                      height: 45,
-                                      width: 45,
+                                      height: 37,
+                                      width: 37,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                           color:
                                               Theme.of(context).primaryColor),
                                       child: Icon(Icons.edit),
@@ -133,11 +140,7 @@ class UserDetailsView extends StatelessWidget {
                     Text(viewModel.displayedNameController.text,
                         style: TextStyle(fontSize: 20)),
                     SizedBox(
-                      height: 10,
-                    ),
-                    ListTile(
-                      title: Text('Categories of choice:'),
-                      dense: true,
+                      height: 25,
                     ),
                     Container(
                       height: 50,
@@ -184,21 +187,15 @@ class UserDetailsView extends StatelessWidget {
                             }),
                       ),
                     ),
-                    ListTile(
-                      title: Text(
-                        'User information',
-                      ),
-                      dense: true,
-                    ),
                     TextfieldWidget(
                       hintText: 'Displayed Name',
                       controller: viewModel.displayedNameController,
                       onChanged: (String char) {
                         viewModel.getUsernameOnChange(char);
                       },
-                      onSubmitted: (_) async {
-                        await viewModel.createNewUser(context);
-                      },
+                      // onSubmitted: (_) async {
+                      //   await viewModel.createNewUser(context);
+                      // },
                       iconData: Icons.edit,
                     ),
                     TextfieldWidget(
@@ -206,16 +203,33 @@ class UserDetailsView extends StatelessWidget {
                       maxLines: 3,
                       controller: viewModel.aboutMeController,
                       iconData: Icons.edit,
-                      onSubmitted: (_) async {
+                      // onSubmitted: (_) async {
+                      //   await viewModel.createNewUser(context);
+                      // },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    viewModel.isLoading
+                        ? Center(
+                            child: Container(
+                                height: 30,
+                                width: 30,
+                                child: CircularProgressIndicator()))
+                        : Center(
+                            child: Container(
+                            height: 30,
+                            width: 30,
+                          )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    OutlinedButtonWidget(
+                      text: 'Continue',
+                      onPressed: () async {
                         await viewModel.createNewUser(context);
                       },
-                    ),
-                    // OutlinedButtonWidget(
-                    //   text: 'Continue',
-                    //   onPressed: () async {
-                    //     await viewModel.createNewUser(context);
-                    //   },
-                    // )
+                    )
                   ],
                 ),
               ),

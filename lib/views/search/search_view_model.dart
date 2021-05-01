@@ -37,18 +37,25 @@ class SearchViewModel extends BaseViewModel {
     @required String bookImage,
     @required String previewLink,
     @required String title,
+    @required String authors,
   }) {
     _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
         bookId: bookId,
+        authors: authors,
         title: title,
         previewLink: previewLink,
         bookImage: bookImage);
   }
 
   pushBookView(
-      {String id, String image, String bookTitle, String previewLink}) {
+      {@required String id,
+      @required String image,
+      @required String bookTitle,
+      @required String previewLink,
+      @required String authors}) {
     _navigationService.navigateWithTransition(
         BookView(
+          authors: authors,
           id: id,
           image: image,
           text: bookTitle,

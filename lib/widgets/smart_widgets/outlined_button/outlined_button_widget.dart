@@ -5,8 +5,10 @@ import 'outlined_button_view_model.dart';
 class OutlinedButtonWidget extends StatelessWidget {
   final String text;
   final Function onPressed;
+  final Function onLongPress;
 
-  const OutlinedButtonWidget({Key key, this.text, this.onPressed})
+  const OutlinedButtonWidget(
+      {Key key, this.text, this.onPressed, this.onLongPress})
       : super(key: key);
 
   @override
@@ -14,24 +16,29 @@ class OutlinedButtonWidget extends StatelessWidget {
     return ViewModelBuilder<OutlinedButtonViewModel>.reactive(
       builder:
           (BuildContext context, OutlinedButtonViewModel viewModel, Widget _) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 70),
-          child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              primary: Theme.of(context).brightness == Brightness.light
-                  ? Theme.of(context).primaryColor
-                  : Colors.white,
-              side: BorderSide(color: Theme.of(context).primaryColor, width: 3),
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(20.0),
+        return Tooltip(
+          message: text,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 70),
+            child: OutlinedButton(
+              onLongPress: onLongPress,
+              style: OutlinedButton.styleFrom(
+                primary: Theme.of(context).brightness == Brightness.light
+                    ? Theme.of(context).primaryColor
+                    : Colors.white,
+                side:
+                    BorderSide(color: Theme.of(context).primaryColor, width: 3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0),
+                ),
               ),
-            ),
-            onPressed: onPressed,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                text,
-                style: TextStyle(fontSize: 18, fontFamily: 'DM Mono'),
+              onPressed: onPressed,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  text,
+                  style: TextStyle(fontSize: 18, fontFamily: 'DM Mono'),
+                ),
               ),
             ),
           ),

@@ -18,6 +18,7 @@ class ChallengesView extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               actions: [
+                IconButton(icon: Icon(Icons.emoji_events), onPressed: () {}),
                 IconButton(icon: Icon(Icons.history), onPressed: () {})
               ],
               title:
@@ -324,6 +325,7 @@ class ChallengesView extends StatelessWidget {
                             physics: ScrollPhysics(),
                             children: [
                               // !UserGlobalChallenges
+
                               StreamBuilder(
                                 stream:
                                     viewModel.getUserGlobalChallengesStream(),
@@ -501,17 +503,6 @@ class ChallengesView extends StatelessWidget {
                                                                       ],
                                                                     ),
                                                                   ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .timer,
-                                                                      )
-                                                                    ],
-                                                                  )
                                                                 ],
                                                               ),
                                                             ),
@@ -556,7 +547,21 @@ class ChallengesView extends StatelessWidget {
                                   if (!snapshot.hasData) {
                                     return Container();
                                   }
-                                  if (snapshot.hasData) {
+                                  if (snapshot.data.docs.length == 0)
+                                    return Container();
+                                  if (snapshot.hasData &&
+                                      snapshot.data.docs.length != 0) {
+                                    List<QueryDocumentSnapshot>
+                                        userChallangesDocs = snapshot.data.docs;
+                                    userChallangesDocs.sort((a, b) {
+                                      int aInt = a
+                                          .get('setToDate')
+                                          .microsecondsSinceEpoch;
+                                      int bInt = b
+                                          .get('setToDate')
+                                          .microsecondsSinceEpoch;
+                                      return bInt.compareTo(aInt);
+                                    });
                                     return ListView(
                                       shrinkWrap: true,
                                       physics: ScrollPhysics(),
@@ -570,153 +575,171 @@ class ChallengesView extends StatelessWidget {
                                         ListView.builder(
                                           shrinkWrap: true,
                                           physics: ScrollPhysics(),
-                                          itemCount: snapshot.data.docs.length,
+                                          itemCount: userChallangesDocs.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15,
-                                                        vertical: 3),
-                                                child: Container(
-                                                  height: 130,
-                                                  child: Card(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                    ),
-                                                    child: Container(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 12,
-                                                                vertical: 12),
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              height: 100,
-                                                              width: 60,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
-                                                                  image: DecorationImage(
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      image: NetworkImage(
-                                                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTXWoEuWuNNrEQ6tGRTNzdhBt6-eLBRiphJgKutC8r4pTFGJ_trpYjNDXMR0DM79VDsSo&usqp=CAU'))),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 12,
-                                                            ),
-                                                            Container(
-                                                              width: 210,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    'Cultural Studies Goes to School',
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            19,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 4,
-                                                                  ),
-                                                                  Text(
-                                                                    'David Buckingham',
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            12,
-                                                                        fontWeight:
-                                                                            FontWeight.w600),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 8,
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      Container(
-                                                                        height:
-                                                                            47,
-                                                                        width:
-                                                                            155,
-                                                                        decoration: BoxDecoration(
-                                                                            color: Theme.of(context).brightness == Brightness.dark
-                                                                                ? Color(0xff262626)
-                                                                                : Color(0xffE8E8E8),
-                                                                            borderRadius: BorderRadius.circular(7)),
-                                                                        child:
-                                                                            Center(
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  viewModel.pushBookView(
+                                                authors:
+                                                    userChallangesDocs[index]
+                                                        ['authors'],
+                                                image: userChallangesDocs[index]
+                                                    ['bookImage'],
+                                                id: userChallangesDocs[index]
+                                                    ['id'],
+                                                bookTitle:
+                                                    userChallangesDocs[index]
+                                                        ['title'],
+                                                previewLink:
+                                                    userChallangesDocs[index]
+                                                        ['previewLink'],
+                                              ),
+                                              child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 3),
+                                                  child: Container(
+                                                    height: 130,
+                                                    child: Card(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15.0),
+                                                      ),
+                                                      child: Container(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      12,
+                                                                  vertical: 12),
+                                                          child: Row(
+                                                            children: [
+                                                              Container(
+                                                                height: 100,
+                                                                width: 60,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                8),
+                                                                    image: DecorationImage(
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        image: NetworkImage(userChallangesDocs[index]
+                                                                            [
+                                                                            'bookImage']))),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 12,
+                                                              ),
+                                                              Container(
+                                                                width: 210,
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      userChallangesDocs[
+                                                                              index]
+                                                                          [
+                                                                          'title'],
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 4,
+                                                                    ),
+                                                                    Text(
+                                                                      userChallangesDocs[index]
+                                                                              [
+                                                                              'authors'] ??
+                                                                          'No Authors',
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 8,
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          height:
+                                                                              47,
+                                                                          width:
+                                                                              155,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Theme.of(context).brightness == Brightness.dark ? Color(0xff262626) : Color(0xffE8E8E8),
+                                                                              borderRadius: BorderRadius.circular(7)),
                                                                           child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
-                                                                            children: [
-                                                                              Text(
-                                                                                ',',
-                                                                                style: TextStyle(fontSize: 22),
-                                                                              ),
-                                                                            ],
+                                                                              Center(
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              children: [
+                                                                                Text(
+                                                                                  ',',
+                                                                                  style: TextStyle(fontSize: 22),
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            15,
-                                                                      ),
-                                                                      StreamBuilder(
-                                                                        stream: viewModel.getThatBookEmoji(snapshot
-                                                                            .data
-                                                                            .docs[index]['id']),
-                                                                        builder:
-                                                                            (context,
-                                                                                snapshot) {
-                                                                          if (snapshot
-                                                                              .hasData) {
-                                                                            return Text(
-                                                                              '😋',
-                                                                              style: TextStyle(fontSize: 22),
-                                                                            );
-                                                                          }
+                                                                        SizedBox(
+                                                                          width:
+                                                                              15,
+                                                                        ),
+                                                                        StreamBuilder(
+                                                                          stream: viewModel.getThatBookEmoji(snapshot
+                                                                              .data
+                                                                              .docs[index]['id']),
+                                                                          builder:
+                                                                              (context, snapshot) {
+                                                                            if (snapshot.hasData) {
+                                                                              return Text(
+                                                                                '😋',
+                                                                                style: TextStyle(fontSize: 22),
+                                                                              );
+                                                                            }
 
-                                                                          return Container(
-                                                                            height:
-                                                                                20,
-                                                                            width:
-                                                                                20,
-                                                                            child:
-                                                                                Center(
-                                                                              child: CircularProgressIndicator(),
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                      )
-                                                                    ],
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            )
-                                                          ],
+                                                                            return Container(
+                                                                              height: 20,
+                                                                              width: 20,
+                                                                              child: Center(
+                                                                                child: CircularProgressIndicator(),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        )
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ));
+                                                  )),
+                                            );
                                           },
                                         ),
                                         SizedBox(

@@ -15,6 +15,8 @@ class BookReviewSheetViewModel extends BaseViewModel {
   }
   String _bookId;
   String _bookImage;
+  String _authors;
+  String get authors => _authors;
   String _bookTitle;
   String _bookpreviewLink;
   bool _spoiler = false;
@@ -26,9 +28,11 @@ class BookReviewSheetViewModel extends BaseViewModel {
     @required String bookImage,
     @required String bookTitle,
     @required String bookpreviewLink,
+    @required String authors,
   }) {
     _bookId = bookId;
     _bookImage = bookImage;
+    _authors = authors;
     _bookTitle = bookTitle;
     _bookpreviewLink = bookpreviewLink;
   }
@@ -41,17 +45,21 @@ class BookReviewSheetViewModel extends BaseViewModel {
   double _newSliderValue = 0;
   double get newSliderValue => _newSliderValue;
   List _emojis = [
-    '🤮',
+    '😡',
     '🤢',
-    '😫',
     '😟',
-    '😕',
     '😧',
-    '🤨',
+    '😨',
+    '😰',
+    '😓',
+    '😫',
+    '😭',
+    '😦',
+    '😮',
     '😃',
-    '😇',
-    '😍',
+    '😁',
     '🥰',
+    '😍',
   ];
   List get emojis => _emojis;
 
@@ -82,6 +90,7 @@ class BookReviewSheetViewModel extends BaseViewModel {
     String userImage = userDoc['userImage'];
 
     await _cloudFirestoreServices.addBookReview(
+        authors: _authors,
         bookId: _bookId,
         bookImage: _bookImage,
         bookTitle: _bookTitle,

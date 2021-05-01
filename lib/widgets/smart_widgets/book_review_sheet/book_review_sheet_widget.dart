@@ -1,3 +1,4 @@
+import 'package:boo_vi_app/widgets/smart_widgets/elevated_button/elevated_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -8,13 +9,15 @@ class BookReviewSheetWidget extends StatelessWidget {
   final String bookImage;
   final String bookTitle;
   final String bookpreviewLink;
+  final String authors;
 
   const BookReviewSheetWidget({
     Key key,
-    this.bookId,
-    this.bookImage,
-    this.bookTitle,
-    this.bookpreviewLink,
+    @required this.bookId,
+    @required this.bookImage,
+    @required this.bookTitle,
+    @required this.bookpreviewLink,
+    @required this.authors,
   }) : super(key: key);
 
   @override
@@ -25,6 +28,7 @@ class BookReviewSheetWidget extends StatelessWidget {
         bookId: bookId,
         bookImage: bookImage,
         bookTitle: bookTitle,
+        authors: authors,
         bookpreviewLink: bookpreviewLink,
       ),
       builder:
@@ -53,27 +57,33 @@ class BookReviewSheetWidget extends StatelessWidget {
               Slider(
                   inactiveColor: Theme.of(context).cardColor,
                   activeColor: Theme.of(context).primaryColor,
-                  divisions: 10,
+                  divisions: viewModel.emojis.length,
                   min: 0,
-                  max: 10,
+                  max: viewModel.emojis.length.toDouble() - 1,
                   value: viewModel.newSliderValue,
                   onChanged: (double newValue) {
                     viewModel.updateSliderOriginalValue(newValue);
                   }),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 5),
                 child: Row(children: [
                   Text('${viewModel.emojis[0.toInt()]}'),
                   Spacer(),
-                  Text('${viewModel.emojis[10.toInt()]}')
+                  Text('${viewModel.emojis[viewModel.emojis.length - 1]}')
                 ]),
               ),
               TextfieldWidget(
                 maxLines: 5,
                 controller: viewModel.reviewController,
-                onSubmitted: (a) async {
+              ),
+              ElevatedButtonWidget(
+                text: 'Send',
+                onPressed: () async {
                   await viewModel.submitAReview(context);
                 },
+              ),
+              SizedBox(
+                height: 5,
               ),
               Tooltip(
                 message: 'Is that review a spoiler ? 🔥',
@@ -82,7 +92,10 @@ class BookReviewSheetWidget extends StatelessWidget {
                     title: Text('Is review spoiler ? 🔥'),
                     activeColor: Theme.of(context).primaryColor,
                     onChanged: (value) => viewModel.toggleSpoiler(value)),
-              )
+              ),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
         );

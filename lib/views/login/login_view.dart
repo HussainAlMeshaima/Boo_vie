@@ -22,20 +22,12 @@ class LoginView extends StatelessWidget {
                 controller: viewModel.pageController,
                 children: [
                   // ! Forgot Password
+
                   ListView(
                     children: [
                       SizedBox(
                         height: 160,
                       ),
-                      // Container(
-                      //   height: 100,
-                      //   width: 100,
-                      //   decoration: BoxDecoration(
-                      //     image: DecorationImage(
-                      //       image: AssetImage('assets/booViLogo-Red.png'),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 30,
                       ),
@@ -52,11 +44,25 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.forgotPasswordController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        onSubmitted: (_) =>
-                            viewModel.sendResetPasswordLink(context),
+                        // onSubmitted: (_) =>
+                        //     viewModel.sendResetPasswordLink(context),
                       ),
                       SizedBox(
-                        height: 148,
+                        height: 128,
+                      ),
+                      viewModel.showForgotPasswordCircularProgressIndicator ==
+                              true
+                          ? Center(
+                              child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator()))
+                          : Container(
+                              height: 30,
+                              width: 30,
+                            ),
+                      SizedBox(
+                        height: 15,
                       ),
                       ElevatedButtonWidget(
                         text: 'Send Email',
@@ -100,17 +106,17 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.loginEmailController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        onSubmitted: (_) => viewModel.loginUser(context),
+                        // onSubmitted: (_) => viewModel.loginUser(context),
                       ),
                       TextfieldWidget(
                         controller: viewModel.loginPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        onSubmitted: (_) => viewModel.loginUser(context),
+                        // onSubmitted: (_) => viewModel.loginUser(context),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
-                              top: 2, right: 20, bottom: 40),
+                              top: 2, right: 20, bottom: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -121,6 +127,19 @@ class LoginView extends StatelessWidget {
                               ),
                             ],
                           )),
+                      viewModel.showLoginCircularProgressIndicator == true
+                          ? Center(
+                              child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator()))
+                          : Container(
+                              height: 30,
+                              width: 30,
+                            ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       ElevatedButtonWidget(
                           text: 'Log In',
                           onPressed: () => viewModel.loginUser(context)),
@@ -162,16 +181,29 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.signUpEmailController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        onSubmitted: (_) => viewModel.signUpUser(context),
+                        //onSubmitted: (_) => viewModel.signUpUser(context),
                       ),
                       TextfieldWidget(
                         controller: viewModel.signUpPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        onSubmitted: (_) => viewModel.signUpUser(context),
+                        // onSubmitted: (_) => viewModel.signUpUser(context),
                       ),
                       SizedBox(
-                        height: 59,
+                        height: 38,
+                      ),
+                      viewModel.showSignUpCircularProgressIndicator == true
+                          ? Center(
+                              child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator()))
+                          : Container(
+                              height: 30,
+                              width: 30,
+                            ),
+                      SizedBox(
+                        height: 15,
                       ),
                       OutlinedButtonWidget(
                         text: 'Sign Up',

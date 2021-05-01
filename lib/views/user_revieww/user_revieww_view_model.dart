@@ -54,7 +54,6 @@ class UserReviewwViewModel extends BaseViewModel {
   String _bookId;
   String _tappedUserEmail;
   String _bookImage;
-  bool _editSpoiler;
   String _userReviewString;
   double _userReviewEmojiRating;
 
@@ -101,6 +100,9 @@ class UserReviewwViewModel extends BaseViewModel {
   bool _spoiler;
 
   bool get spoiler => _spoiler;
+  bool _editSpoiler;
+
+  bool get editSpoiler => _editSpoiler;
 
   void toggleSpoiler(bool value) {
     _spoiler = value;

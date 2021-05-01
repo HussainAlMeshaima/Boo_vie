@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
+import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:boo_vi_app/views/global_challenge/global_challenge_view.dart';
 import 'package:boo_vi_app/views/user_global_challenge/user_global_challenge_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -116,6 +117,24 @@ class ChallengesViewModel extends BaseViewModel {
           challengeDiscription: challengeDiscription,
           challengeRules: challengeRules,
           trophiesMap: trophiesMap,
+        ),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  pushBookView(
+      {@required String id,
+      @required String image,
+      @required String bookTitle,
+      @required String previewLink,
+      @required String authors}) {
+    _navigationService.navigateWithTransition(
+        BookView(
+          authors: authors,
+          id: id,
+          image: image,
+          text: bookTitle,
+          previewLink: previewLink,
         ),
         transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 400));

@@ -20,3 +20,4 @@ const String bookReviewsViewRoute = 'bookReviewsViewRoute';
 const String userReviewwViewRoute = 'userReviewwViewRoute';
 const String globalChallengeViewRoute = 'globalChallengeViewRoute';
 const String userGlobalChallengeViewRoute = 'userGlobalChallengeViewRoute';
+const String profileToEditDetailsViewRoute = 'profileToEditDetailsViewRoute';

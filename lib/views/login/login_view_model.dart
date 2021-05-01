@@ -30,6 +30,8 @@ class LoginViewModel extends BaseViewModel {
 
   loginUser(context) async {
     FocusScope.of(context).unfocus();
+    _showLoginCircularProgressIndicator = true;
+    notifyListeners();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -40,11 +42,15 @@ class LoginViewModel extends BaseViewModel {
         ),
       ),
     );
+    _showLoginCircularProgressIndicator = false;
+    notifyListeners();
     pushStartUpView();
   }
 
   signUpUser(context) async {
     FocusScope.of(context).unfocus();
+    _showSignUpCircularProgressIndicator = true;
+    notifyListeners();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 3),
@@ -56,11 +62,15 @@ class LoginViewModel extends BaseViewModel {
         ),
       ),
     );
+    _showSignUpCircularProgressIndicator = false;
+    notifyListeners();
     pushUserDetailsView();
   }
 
   sendResetPasswordLink(context) async {
     FocusScope.of(context).unfocus();
+    _showForgotPasswordCircularProgressIndicator = true;
+    notifyListeners();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 3),
@@ -71,6 +81,8 @@ class LoginViewModel extends BaseViewModel {
         ),
       ),
     );
+    _showForgotPasswordCircularProgressIndicator = false;
+    notifyListeners();
   }
 
   Future<void> pushUserDetailsView() async {
@@ -120,4 +132,16 @@ class LoginViewModel extends BaseViewModel {
       TextEditingController(text: '');
   TextEditingController get forgotPasswordController =>
       _forgotPasswordController;
+
+  bool _showLoginCircularProgressIndicator = false;
+  bool get showLoginCircularProgressIndicator =>
+      _showLoginCircularProgressIndicator;
+
+  bool _showForgotPasswordCircularProgressIndicator = false;
+  bool get showForgotPasswordCircularProgressIndicator =>
+      _showForgotPasswordCircularProgressIndicator;
+
+  bool _showSignUpCircularProgressIndicator = false;
+  bool get showSignUpCircularProgressIndicator =>
+      _showSignUpCircularProgressIndicator;
 }

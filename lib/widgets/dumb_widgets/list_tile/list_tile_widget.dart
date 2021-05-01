@@ -25,7 +25,10 @@ class ListTileWidget extends StatelessWidget {
         text,
         style: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
       ),
-      leading: Icon(leadingIconData),
+      leading: Icon(
+        leadingIconData,
+        color: Theme.of(context).primaryColor,
+      ),
       onTap: onTap,
     );
   }

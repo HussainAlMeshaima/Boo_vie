@@ -1,6 +1,7 @@
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/models/bookModels/booksResponseModel.dart';
 import 'package:boo_vi_app/core/services/bookServices.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -20,9 +21,11 @@ class SearchedViewModel extends BaseViewModel {
       {@required String id,
       @required String image,
       @required String bookTitle,
-      @required String previewLink}) {
+      @required String previewLink,
+      @required String authors}) {
     _navigationService.navigateWithTransition(
         BookView(
+          authors: authors,
           id: id,
           image: image,
           text: bookTitle,
@@ -104,6 +107,23 @@ class SearchedViewModel extends BaseViewModel {
     notifyListeners();
 
     return books;
+  }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
+  Future addAbookToRecentlyViewedShelf({
+    @required String bookId,
+    @required String bookImage,
+    @required String previewLink,
+    @required String title,
+    @required String authors,
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        authors: authors,
+        bookId: bookId,
+        title: title,
+        previewLink: previewLink,
+        bookImage: bookImage);
   }
 
   handleStartUpLogic(String text) {

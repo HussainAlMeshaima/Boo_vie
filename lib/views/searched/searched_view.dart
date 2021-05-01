@@ -220,25 +220,60 @@ class SearchedView extends StatelessWidget {
                                       ? Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: GestureDetector(
-                                            onTap: () => viewModel.pushBookView(
-                                                id: snapshot
-                                                    .data.items[index].id,
-                                                image: snapshot
-                                                    .data
-                                                    .items[index]
-                                                    .volumeInfo
-                                                    .imageLinks
-                                                    .thumbnail,
-                                                previewLink: snapshot
-                                                    .data
-                                                    .items[index]
-                                                    .volumeInfo
-                                                    .previewLink,
-                                                bookTitle: snapshot
-                                                    .data
-                                                    .items[index]
-                                                    .volumeInfo
-                                                    .title),
+                                            onTap: () {
+                                              viewModel.pushBookView(
+                                                  authors: snapshot
+                                                          .data
+                                                          .items[index]
+                                                          .volumeInfo
+                                                          .authors[0] ??
+                                                      'No authors',
+                                                  id: snapshot
+                                                      .data.items[index].id,
+                                                  image: snapshot
+                                                      .data
+                                                      .items[index]
+                                                      .volumeInfo
+                                                      .imageLinks
+                                                      .thumbnail,
+                                                  previewLink: snapshot
+                                                      .data
+                                                      .items[index]
+                                                      .volumeInfo
+                                                      .previewLink,
+                                                  bookTitle: snapshot
+                                                      .data
+                                                      .items[index]
+                                                      .volumeInfo
+                                                      .title);
+
+                                              viewModel
+                                                  .addAbookToRecentlyViewedShelf(
+                                                      authors: snapshot
+                                                              .data
+                                                              .items[index]
+                                                              .volumeInfo
+                                                              .authors[0] ??
+                                                          'No Authors',
+                                                      bookId: snapshot
+                                                          .data.items[index].id,
+                                                      bookImage: snapshot
+                                                          .data
+                                                          .items[index]
+                                                          .volumeInfo
+                                                          .imageLinks
+                                                          .thumbnail,
+                                                      previewLink: snapshot
+                                                          .data
+                                                          .items[index]
+                                                          .volumeInfo
+                                                          .previewLink,
+                                                      title: snapshot
+                                                          .data
+                                                          .items[index]
+                                                          .volumeInfo
+                                                          .title);
+                                            },
                                             child: Hero(
                                               tag:
                                                   snapshot.data.items[index].id,

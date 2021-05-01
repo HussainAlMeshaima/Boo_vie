@@ -43,6 +43,9 @@ class BookCategoriesGridView extends StatelessWidget {
                                     child: GestureDetector(
                                       onTap: () {
                                         viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.items[index]
+                                                  .volumeInfo.authors[0] ??
+                                              'No Authors',
                                           title: snapshot.data.items[index]
                                               .volumeInfo.title,
                                           bookImage: snapshot.data.items[index]
@@ -55,6 +58,9 @@ class BookCategoriesGridView extends StatelessWidget {
                                           bookId: snapshot.data.items[index].id,
                                         );
                                         viewModel.pushBookView(
+                                            authors: snapshot.data.items[index]
+                                                    .volumeInfo.authors[0] ??
+                                                'No authors',
                                             id: snapshot.data.items[index].id,
                                             image: snapshot
                                                 .data

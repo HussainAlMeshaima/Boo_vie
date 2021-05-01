@@ -67,6 +67,9 @@ class SimilerBooksGridView extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: GestureDetector(
                                       onTap: () => viewModel.pushBookView(
+                                          authors: snapshot.data.items[index]
+                                                  .volumeInfo.authors[0] ??
+                                              'No authors',
                                           id: snapshot.data.items[index].id,
                                           image: snapshot.data.items[index]
                                               .volumeInfo.imageLinks.thumbnail,

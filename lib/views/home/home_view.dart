@@ -14,9 +14,6 @@ class HomeView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('Home'),
-            actions: [
-              IconButton(icon: Icon(Icons.emoji_events), onPressed: () {})
-            ],
           ),
           body: ListView(
             shrinkWrap: true,
@@ -287,6 +284,8 @@ class HomeView extends StatelessWidget {
                                                         document.data()['id'],
                                                     onTap: () {
                                                       viewModel.pushBookView(
+                                                        authors: document
+                                                            .data()['authors'],
                                                         image: document
                                                             .data()['medium'],
                                                         id: document
@@ -303,6 +302,8 @@ class HomeView extends StatelessWidget {
                                                       );
                                                       viewModel
                                                           .addAbookToRecentlyViewedShelf(
+                                                        authors: document
+                                                            .data()['authors'],
                                                         title: document
                                                             .data()['title'],
                                                         bookImage: document

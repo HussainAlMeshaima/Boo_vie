@@ -67,6 +67,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -75,6 +76,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -145,6 +147,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -153,6 +156,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -223,6 +227,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -231,6 +236,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -300,6 +306,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -308,6 +315,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -379,6 +387,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -387,6 +396,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -457,6 +467,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -465,6 +476,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -534,6 +546,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -542,6 +555,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -612,6 +626,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -620,6 +635,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -690,6 +706,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -698,6 +715,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -767,6 +785,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -775,6 +794,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -844,6 +864,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -852,6 +873,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -924,6 +946,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -932,6 +955,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -1002,6 +1026,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -1010,6 +1035,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:
@@ -1079,6 +1105,7 @@ class SearchView extends StatelessWidget {
                                     bookId: document.data()['id'],
                                     onTap: () {
                                       viewModel.pushBookView(
+                                        authors: document.data()['authors'],
                                         image: document.data()['medium'],
                                         id: document.data()['id'].replaceAll(
                                             new RegExp(r".{/ +}"), ''),
@@ -1087,6 +1114,7 @@ class SearchView extends StatelessWidget {
                                             document.data()['previewLink'],
                                       );
                                       viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: document.data()['authors'],
                                         title: document.data()['title'],
                                         bookImage: document.data()['medium'],
                                         previewLink:

@@ -12,13 +12,15 @@ class BookView extends StatelessWidget {
   final String image;
   final String text;
   final String previewLink;
+  final String authors;
 
   const BookView({
     Key key,
-    this.id,
-    this.image,
-    this.text,
-    this.previewLink,
+    @required this.id,
+    @required this.image,
+    @required this.text,
+    @required this.previewLink,
+    @required this.authors,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class BookView extends StatelessWidget {
       onModelReady: (BookViewModel viewModel) => viewModel.handleStartUpLogic(
           bookId: id,
           bookImage: image,
+          bookAuthors: authors,
           bookTitle: text,
           bookpreviewLink: previewLink),
       builder: (BuildContext context, BookViewModel viewModel, Widget _) {
@@ -281,15 +284,15 @@ class BookView extends StatelessWidget {
 
                                                 switch (totlaAvg) {
                                                   case 0:
-                                                    emoji = '🤢';
+                                                    emoji = '😡';
                                                     break;
 
                                                   case 1:
-                                                    emoji = '🤮';
+                                                    emoji = '🤢';
                                                     break;
 
                                                   case 2:
-                                                    emoji = '😫';
+                                                    emoji = '😟';
                                                     break;
 
                                                   case 3:
@@ -297,31 +300,47 @@ class BookView extends StatelessWidget {
                                                     break;
 
                                                   case 4:
-                                                    emoji = '😟';
+                                                    emoji = '😨';
                                                     break;
 
                                                   case 5:
-                                                    emoji = '😕';
+                                                    emoji = '😰';
                                                     break;
 
                                                   case 6:
-                                                    emoji = '🤨';
+                                                    emoji = '😓';
                                                     break;
 
                                                   case 7:
-                                                    emoji = '😃';
+                                                    emoji = '😫';
                                                     break;
 
                                                   case 8:
-                                                    emoji = '😁';
+                                                    emoji = '😭';
                                                     break;
 
                                                   case 9:
-                                                    emoji = '😍';
+                                                    emoji = '😦';
                                                     break;
 
                                                   case 10:
+                                                    emoji = '😮';
+                                                    break;
+
+                                                  case 11:
+                                                    emoji = '😃';
+                                                    break;
+
+                                                  case 12:
+                                                    emoji = '😁';
+                                                    break;
+
+                                                  case 13:
                                                     emoji = '🥰';
+                                                    break;
+
+                                                  case 14:
+                                                    emoji = '😍';
                                                     break;
 
                                                   default:
@@ -883,6 +902,11 @@ class BookView extends StatelessWidget {
                                                             onTap: () {
                                                               viewModel
                                                                   .addAbookToRecentlyViewedShelf(
+                                                                authors: newListOfBooks[
+                                                                            index]
+                                                                        .volumeInfo
+                                                                        .authors[0] ??
+                                                                    'No Authors',
                                                                 title: newListOfBooks[
                                                                         index]
                                                                     .volumeInfo
@@ -903,6 +927,11 @@ class BookView extends StatelessWidget {
                                                               );
 
                                                               viewModel.pushBookView(
+                                                                  authors: newListOfBooks[index]
+                                                                              .volumeInfo
+                                                                              .authors[
+                                                                          0] ??
+                                                                      'No authors',
                                                                   previewLink: newListOfBooks[
                                                                           index]
                                                                       .volumeInfo

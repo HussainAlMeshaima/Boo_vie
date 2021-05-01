@@ -17,9 +17,11 @@ class EditReviewSheetViewModel extends BaseViewModel {
       {String bookId,
       bool spoiler,
       String userReviewString,
-      double userReviewEmojiRating}) {
+      double userReviewEmojiRating,
+      bool editSpoiler}) {
     _bookId = bookId;
     _spoiler = spoiler;
+    _editSpoiler = editSpoiler;
     _userReviewString = userReviewString;
     _userReviewEmojiRating = userReviewEmojiRating;
     setReviewController();
@@ -30,7 +32,7 @@ class EditReviewSheetViewModel extends BaseViewModel {
 
   void toggleSpoiler(bool value) {
     print(value);
-    _spoiler = value;
+    _editSpoiler = value;
     notifyListeners();
   }
 
@@ -51,15 +53,13 @@ class EditReviewSheetViewModel extends BaseViewModel {
         bookId: _bookId,
         userReviewEmojiRating: _userReviewEmojiRating,
         userReviewString: _reviewController.text,
-        spoiler: _spoiler);
+        spoiler: _editSpoiler);
 
     DocumentSnapshot doc =
         await _cloudFirestoreServices.getThatUserReviewForThatBook(_bookId);
     _userReviewEmojiRating = doc.data()['userReviewEmojiRating'];
     _reviewController.text = doc.data()['userReviewString'];
     _spoiler = doc.data()['spoiler'];
-    print('========================');
-    print(_spoiler);
   }
 
   String _bookId;
@@ -67,6 +67,8 @@ class EditReviewSheetViewModel extends BaseViewModel {
 
   bool _spoiler;
   bool get spoiler => _spoiler;
+  bool _editSpoiler;
+  bool get editSpoiler => _editSpoiler;
 
   double _userReviewEmojiRating;
   double get userReviewEmojiRating => _userReviewEmojiRating;

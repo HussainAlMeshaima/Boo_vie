@@ -27,9 +27,11 @@ class SimilerBooksGridViewModel extends BaseViewModel {
       {@required String id,
       @required String image,
       @required String bookTitle,
-      @required String previewLink}) {
+      @required String previewLink,
+      @required String authors}) {
     _navigationService.navigateWithTransition(
         BookView(
+          authors: authors,
           id: id,
           image: image,
           text: bookTitle,

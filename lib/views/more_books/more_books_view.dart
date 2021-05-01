@@ -31,6 +31,8 @@ class MoreBooksView extends StatelessWidget {
                           padding: const EdgeInsets.all(7.0),
                           child: GestureDetector(
                             onTap: () => viewModel.pushBookView(
+                              authors:
+                                  snapshot.data.docs[index].data()['authors'],
                               image: snapshot.data.docs[index].data()['medium'],
                               id: snapshot.data.docs[index].data()['id'],
                               bookTitle:

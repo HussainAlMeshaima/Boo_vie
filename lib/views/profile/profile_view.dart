@@ -1,3 +1,5 @@
+import 'package:boo_vi_app/widgets/smart_widgets/elevated_button/elevated_button_widget.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/theme_grid/theme_grid_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,6 +16,15 @@ class ProfileView extends StatelessWidget {
           appBar: AppBar(
             title: Text('Profile'),
             actions: [
+              IconButton(
+                  icon: Icon(Icons.palette),
+                  onPressed: () {
+                    return showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return ThemeGridWidget();
+                        });
+                  }),
               IconButton(
                   icon: Icon(Icons.settings),
                   onPressed: () {
@@ -32,71 +43,25 @@ class ProfileView extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              ListTile(
-                                leading: Icon(Icons.edit),
-                                title: Text(
-                                  'Edit Profile',
-                                ),
-                              ),
-                              // ListTile(
-                              //   leading: Icon(Icons.clear_all),
-                              //   title: Text(
-                              //     'Add a shelf',
-                              //   ),
-                              //   onTap: () {
-                              //     Navigator.pop(context);
-                              //     showModalBottomSheet(
-                              //         context: context,
-                              //         builder: (context) {
-                              //           return ListView(
-                              //             shrinkWrap: true,
-                              //             physics: ScrollPhysics(),
-                              //             children: [
-                              //               ListTile(
-                              //                 title: Text(
-                              //                   'Add a name to your new shelf:',
-                              //                   style: TextStyle(
-                              //                       fontSize: 20,
-                              //                       fontWeight:
-                              //                           FontWeight.bold),
-                              //                 ),
-                              //               ),
-                              //               TextfieldWidget(
-                              //                 maxLines: 5,
-                              //                 controller: viewModel
-                              //                     .newSelfNameController,
-                              //                 onSubmitted: (String newString) {
-                              //                   viewModel
-                              //                       .submitNewSelfNameController(
-                              //                           newString);
-                              //                 },
-                              //               ),
-                              //             ],
-                              //           );
-                              //         });
-                              //   },
-                              // ),
-
-                              ListTile(
-                                leading: Icon(Icons.palette),
-                                title: Text('Theme color'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  return showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return ThemeGridWidget();
-                                      });
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.logout),
-                                title: Text('Log out'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  viewModel.signOut(context);
-                                },
-                              ),
+                              OutlinedButtonWidget(
+                                  text: 'Log out',
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        duration: Duration(seconds: 3),
+                                        content: Text(
+                                            'Long press the button to log out.'),
+                                      ),
+                                    );
+                                  },
+                                  onLongPress: () {
+                                    Navigator.pop(context);
+                                    viewModel.signOut(context);
+                                  }),
+                              SizedBox(
+                                height: 20,
+                              )
                             ],
                           );
                         });
@@ -110,62 +75,112 @@ class ProfileView extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 SizedBox(
-                  height: 40,
+                  height: 30,
                 ),
                 FutureBuilder(
-                  future: viewModel.getUserDetails(),
+                  future: viewModel.getUserInformation(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView(
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
                         children: [
-                          Center(
-                            child: Container(
-                              height: 130,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Color(0xffE7E7E7)
-                                      : Color(0xff656565).withOpacity(0.4),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        snapshot.data.data()['userImage']),
-                                  )),
+                          GestureDetector(
+                            onTap: () {
+                              viewModel.pushProfileToEditDetailsView(
+                                  userImage: snapshot.data.data()['userImage']);
+                            },
+                            child: Center(
+                              child: Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Color(0xffE7E7E7)
+                                        : Color(0xff656565).withOpacity(0.4),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(20),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          snapshot.data.data()['userImage']),
+                                    )),
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Positioned(
+                                      bottom: -5,
+                                      right: -5,
+                                      child: Container(
+                                        height: 37,
+                                        width: 37,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                        child: Icon(Icons.edit,
+                                            color: Theme.of(context)
+                                                .primaryIconTheme
+                                                .color),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(
                             height: 15,
                           ),
-                          Text(snapshot.data.data()['displayedName'],
+                          Text(snapshot.data.data()['userName'],
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 20)),
                         ],
                       );
                     }
-                    return Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Color(0xffE7E7E7)
-                            : Color(0xff656565).withOpacity(0.4),
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 39),
+                      child: Center(
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadiusDirectional.circular(25),
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Color(0xffE7E7E7)
+                                    : Color(0xff656565).withOpacity(0.4),
+                          ),
+                          child: ListView(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            children: [
+                              Text('',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 20)),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
-                Text(viewModel.displayedNameController.text,
-                    style: TextStyle(fontSize: 20)),
+                SizedBox(
+                  height: 10,
+                ),
                 Padding(
                     padding: const EdgeInsets.only(
                         top: 0, left: 20, right: 20, bottom: 10),
                     child: FutureBuilder(
-                      future: viewModel.getUserDetails(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      future: viewModel.getUserInformationDoc(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.hasData) {
                           return Container(
                             height: 80,
@@ -176,60 +191,147 @@ class ProfileView extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 12.0,
-                                    right: 22,
-                                    left: 12.0,
+                                    right: 5,
+                                    left: 5.0,
                                     bottom: 12.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '-',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17),
-                                        ),
-                                        Text(
-                                          'Avg. Rating',
-                                          style: TextStyle(),
-                                        ),
-                                      ],
+                                    Tooltip(
+                                      message: 'Total compleated challenges is ' +
+                                          snapshot.data[
+                                                  'userTotalCompleatedChallenges']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.timer,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot.data[
+                                                    'userTotalCompleatedChallenges']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '-',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17),
-                                        ),
-                                        Text(
-                                          'Reviews',
-                                          style: TextStyle(),
-                                        ),
-                                      ],
+                                    Tooltip(
+                                      message: 'Total trophies is ' +
+                                          snapshot.data['userTotalTrophies']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.emoji_events,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot.data['userTotalTrophies']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '11',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17),
-                                        ),
-                                        Text(
-                                          'Communities',
-                                          style: TextStyle(),
-                                        ),
-                                      ],
+                                    Tooltip(
+                                      message: 'Total points is ' +
+                                          snapshot.data['userTotalPoints']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.radio_button_checked,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot.data['userTotalPoints']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Tooltip(
+                                      message: 'Total Communities is ' +
+                                          snapshot.data['userTotalCommunities']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.group_work,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot
+                                                .data['userTotalCommunities']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Tooltip(
+                                      message: 'Total books reviwed is ' +
+                                          snapshot.data['numberOfBookReviwed']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.sms,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot.data['numberOfBookReviwed']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Tooltip(
+                                      message: 'Total likes is ' +
+                                          snapshot.data['userTotalLikes']
+                                              .toString(),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.favorite,
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            snapshot.data['userTotalLikes']
+                                                .toString(),
+                                            style: TextStyle(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -237,8 +339,16 @@ class ProfileView extends StatelessWidget {
                             ),
                           );
                         }
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return Container(
+                          height: 80,
+                          child: Card(
+                            color: Theme.of(context).cardColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                         );
                       },
                     )),
@@ -254,7 +364,7 @@ class ProfileView extends StatelessWidget {
                             height: 200,
                             child: Center(
                                 child: Text(
-                                    'Seems Like you dont have any shelf yet😭')),
+                                    'Seems Like you dont have any shelf yet 😭')),
                           );
                         }
                         if (snapshot.data.size != 0) {
@@ -336,22 +446,23 @@ class ProfileView extends StatelessWidget {
                                                         child: GestureDetector(
                                                           onTap: () {
                                                             viewModel.pushBookView(
+                                                                authors: booksDocs[
+                                                                        index]
+                                                                    ['authors'],
                                                                 id: booksDocs[
                                                                         index]
                                                                     ['id'],
                                                                 image: booksDocs[
-                                                                        index][
+                                                                        index]
+                                                                    [
                                                                     'thumbnail'],
-                                                                bookTitle:
-                                                                    booksDocs[
-                                                                            index]
-                                                                        [
-                                                                        'title'],
+                                                                bookTitle: booksDocs[
+                                                                        index]
+                                                                    ['title'],
                                                                 previewLink:
                                                                     booksDocs[
                                                                             index]
-                                                                        [
-                                                                        'previewLink']);
+                                                                        ['previewLink']);
                                                           },
                                                           child: Hero(
                                                             tag:

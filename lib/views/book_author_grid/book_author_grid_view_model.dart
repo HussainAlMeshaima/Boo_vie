@@ -28,11 +28,13 @@ class BookAuthorGridViewModel extends BaseViewModel {
       {@required String id,
       @required String image,
       @required String bookTitle,
+      @required String authors,
       @required String previewLink}) {
     _navigationService.navigateWithTransition(
         BookView(
           id: id,
           image: image,
+          authors: authors,
           text: bookTitle,
           previewLink: previewLink,
         ),
@@ -47,8 +49,10 @@ class BookAuthorGridViewModel extends BaseViewModel {
     @required String bookImage,
     @required String previewLink,
     @required String title,
+    @required String authors,
   }) async {
     await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+        authors: authors,
         bookId: bookId,
         title: title,
         previewLink: previewLink,
