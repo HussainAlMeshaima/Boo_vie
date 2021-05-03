@@ -22,7 +22,8 @@ class SearchedViewModel extends BaseViewModel {
       @required String image,
       @required String bookTitle,
       @required String previewLink,
-      @required String authors}) {
+      @required String authors,
+      @required int bookIndex}) {
     _navigationService.navigateWithTransition(
         BookView(
           authors: authors,

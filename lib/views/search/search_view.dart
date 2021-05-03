@@ -23,11 +23,34 @@ class SearchView extends StatelessWidget {
               TextfieldWidget(
                 controller: viewModel.searchTextfieldController,
                 hintText: 'Search',
-                onPressedIcon: () =>
-                    viewModel.pushSearchedView(context: context),
+                onPressedIcon: () {
+                  viewModel.searchTextfieldController.text
+                      .trim()
+                      .replaceAll('', '+');
+                  print(viewModel.searchTextfieldController.text + '---');
+                  if (viewModel.searchTextfieldController.text.isNotEmpty)
+                    return viewModel.pushSearchedView(context: context);
+                  else
+                    return ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Search cannot be empty'),
+                      ),
+                    );
+                },
                 iconData: Icons.send,
                 onSubmitted: (String searchString) {
-                  viewModel.pushSearchedView(context: context);
+                  viewModel.searchTextfieldController.text
+                      .trim()
+                      .replaceAll('', '+');
+                  print(viewModel.searchTextfieldController.text + '---');
+                  if (viewModel.searchTextfieldController.text.isNotEmpty)
+                    return viewModel.pushSearchedView(context: context);
+                  else
+                    return ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Search cannot be empty'),
+                      ),
+                    );
                 },
               ),
 

@@ -27,11 +27,12 @@ class BookView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<BookViewModel>.reactive(
       onModelReady: (BookViewModel viewModel) => viewModel.handleStartUpLogic(
-          bookId: id,
-          bookImage: image,
-          bookAuthors: authors,
-          bookTitle: text,
-          bookpreviewLink: previewLink),
+        bookId: id,
+        bookImage: image,
+        bookAuthors: authors,
+        bookTitle: text,
+        bookpreviewLink: previewLink,
+      ),
       builder: (BuildContext context, BookViewModel viewModel, Widget _) {
         return Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -117,7 +118,7 @@ class BookView extends StatelessWidget {
                                 ? 'No Description For This Book'
                                 : snapshot.data.volumeInfo.description
                                     .toString();
-                        print(description.length);
+
                         String pageCount =
                             snapshot.data.volumeInfo.pageCount == null
                                 ? ' - '
@@ -162,7 +163,9 @@ class BookView extends StatelessWidget {
                                       child: Tooltip(
                                         message: author,
                                         child: Text(
-                                          author,
+                                          author.length >= 30
+                                              ? author.substring(0, 30) + '..'
+                                              : author,
                                           style: TextStyle(
                                               fontSize: 17,
                                               fontStyle: FontStyle.italic,
@@ -501,7 +504,7 @@ class BookView extends StatelessWidget {
                                         ),
                                       ),
                                       Tooltip(
-                                        message: description.length > 180
+                                        message: description.length >= 160
                                             ? '     ' +
                                                 description
                                                     .replaceAll(
@@ -510,9 +513,13 @@ class BookView extends StatelessWidget {
                                                             caseSensitive:
                                                                 true),
                                                         '')
-                                                    .substring(0, 180) +
+                                                    .substring(0, 160) +
                                                 '...'
-                                            : description,
+                                            : description.replaceAll(
+                                                RegExp(r"<[^>]*>",
+                                                    multiLine: true,
+                                                    caseSensitive: true),
+                                                ''),
                                         child: Card(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -538,9 +545,10 @@ class BookView extends StatelessWidget {
                                                       ),
                                                     )
                                                   : Container(
-                                                      height: 90,
                                                       child: Text(
-                                                        description.length > 180
+                                                        description
+                                                                    .length >=
+                                                                160
                                                             ? '     ' +
                                                                 description
                                                                     .replaceAll(
@@ -551,11 +559,17 @@ class BookView extends StatelessWidget {
                                                                             caseSensitive:
                                                                                 true),
                                                                         '')
-                                                                    .substring(
-                                                                        0,
-                                                                        180) +
+                                                                    .substring(0,
+                                                                        160) +
                                                                 '...'
-                                                            : description,
+                                                            : description.replaceAll(
+                                                                RegExp(
+                                                                    r"<[^>]*>",
+                                                                    multiLine:
+                                                                        true,
+                                                                    caseSensitive:
+                                                                        true),
+                                                                ''),
                                                       ),
                                                     )),
                                         ),
@@ -819,6 +833,25 @@ class BookView extends StatelessWidget {
                                             if (snapshot.hasData) {
                                               List<Items> newListOfBooks =
                                                   snapshot.data.items;
+
+                                              Set<String> bookListWithIds =
+                                                  newListOfBooks
+                                                      .map<String>(
+                                                          (book) => book.id)
+                                                      .toSet();
+
+                                              print(bookListWithIds);
+                                              newListOfBooks.retainWhere(
+                                                  (book) => bookListWithIds
+                                                      .remove(book.id));
+
+                                              newListOfBooks.removeWhere(
+                                                  (items) =>
+                                                      items.volumeInfo
+                                                          .imageLinks ==
+                                                      null);
+                                              newListOfBooks.removeWhere(
+                                                  (items) => items.id == id);
 
                                               if (newListOfBooks == null) {
                                                 return Tooltip(

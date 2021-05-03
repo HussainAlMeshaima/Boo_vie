@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 
 import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
@@ -126,12 +127,13 @@ class BookViewModel extends BaseViewModel {
       return _title;
   }
 
-  pushBookView(
-      {@required String id,
-      @required String image,
-      @required String bookTitle,
-      @required String previewLink,
-      @required String authors}) {
+  pushBookView({
+    @required String id,
+    @required String image,
+    @required String bookTitle,
+    @required String previewLink,
+    @required String authors,
+  }) {
     _navigationService.navigateWithTransition(
         BookView(
           id: id,
@@ -522,9 +524,17 @@ class BookViewModel extends BaseViewModel {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  await Navigator.of(context).push(
+                                    showPicker(
+                                        context: context,
+                                        value: TimeOfDay.now(),
+                                        onChange: (TimeOfDay value) {},
+                                        onChangeDateTime: (DateTime value) {
+                                          addBookToMyChallanges(value);
+                                        }),
+                                  );
                                   Navigator.pop(context);
-                                  addBookToMyChallanges();
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -609,6 +619,9 @@ class BookViewModel extends BaseViewModel {
   String _bookAuthors;
   String get bookAuthors => _bookAuthors;
 
+  int _bookIndex;
+  int get bookIndex => _bookIndex;
+
   String _bookId;
   String _bookImage;
   String _bookTitle;
@@ -668,14 +681,14 @@ class BookViewModel extends BaseViewModel {
     );
   }
 
-  Future addBookToMyChallanges() async {
+  Future addBookToMyChallanges(DateTime setToDate) async {
     await _cloudFirestoreServices.addBookToMyChallanges(
         bookId: _bookId,
         title: _bookTitle,
         previewLink: _bookpreviewLink,
         authors: _bookAuthors,
         bookImage: _bookImage,
-        setToDate: DateTime.now());
+        setToDate: setToDate);
   }
 
   Future addAbooktoSelectedShelf(

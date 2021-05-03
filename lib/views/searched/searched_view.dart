@@ -1,3 +1,4 @@
+import 'package:boo_vi_app/core/models/bookModels/bookErrorModel.dart';
 import 'package:boo_vi_app/core/models/bookModels/booksResponseModel.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:flutter/material.dart';
@@ -174,9 +175,10 @@ class SearchedView extends StatelessWidget {
                           AsyncSnapshot<BooksResponse> snapshot) {
                         if (snapshot.hasError)
                           return Container(
-                            height: 400,
+                            height: 450,
                             child: Center(
-                              child: Text('An error has been found'),
+                              child:
+                                  Text('No Books Found 😭, try again later.'),
                             ),
                           );
                         else if (snapshot.connectionState ==
@@ -189,16 +191,40 @@ class SearchedView extends StatelessWidget {
                           );
                         }
 
-                        if (snapshot.data.totalItems == 0) {
+                        if (snapshot.data.totalItems == 0 ||
+                            snapshot.data.items == null ||
+                            snapshot.data.items.length == null ||
+                            snapshot.data.items.length == 0) {
                           return Container(
                             height: 450,
                             child: Center(
-                              child: Text('No Books Found'),
+                              child: Text('No Books Found 😭'),
                             ),
                           );
                         }
 
                         if (snapshot.hasData && snapshot.data.totalItems != 0) {
+                          List<Items> newListOfBooks = snapshot.data.items;
+
+                          Set<String> bookListWithIds = newListOfBooks
+                              .map<String>((book) => book.id)
+                              .toSet();
+
+                          print(bookListWithIds);
+                          newListOfBooks.retainWhere(
+                              (book) => bookListWithIds.remove(book.id));
+
+                          newListOfBooks.removeWhere((book) => book.id == null);
+
+                          newListOfBooks.removeWhere(
+                              (book) => book.volumeInfo.authors == null);
+
+                          newListOfBooks.removeWhere(
+                              (book) => book.volumeInfo.previewLink == null);
+
+                          newListOfBooks.removeWhere(
+                              (book) => book.volumeInfo.imageLinks == null);
+
                           return Container(
                             child: GridView.builder(
                                 physics: ScrollPhysics(),
@@ -214,7 +240,8 @@ class SearchedView extends StatelessWidget {
 
                                   books = snapshot.data;
                                   print(books.totalItems);
-                                  return snapshot.data.items[index].volumeInfo
+                                  return newListOfBooks[index]
+                                              .volumeInfo
                                               .imageLinks !=
                                           null
                                       ? Padding(
@@ -222,73 +249,63 @@ class SearchedView extends StatelessWidget {
                                           child: GestureDetector(
                                             onTap: () {
                                               viewModel.pushBookView(
-                                                  authors: snapshot
-                                                          .data
-                                                          .items[index]
+                                                  bookIndex: index,
+                                                  authors: newListOfBooks[index]
                                                           .volumeInfo
                                                           .authors[0] ??
                                                       'No authors',
                                                   id: snapshot
                                                       .data.items[index].id,
-                                                  image: snapshot
-                                                      .data
-                                                      .items[index]
+                                                  image: newListOfBooks[index]
                                                       .volumeInfo
                                                       .imageLinks
                                                       .thumbnail,
-                                                  previewLink: snapshot
-                                                      .data
-                                                      .items[index]
-                                                      .volumeInfo
-                                                      .previewLink,
-                                                  bookTitle: snapshot
-                                                      .data
-                                                      .items[index]
-                                                      .volumeInfo
-                                                      .title);
+                                                  previewLink:
+                                                      newListOfBooks[index]
+                                                          .volumeInfo
+                                                          .previewLink,
+                                                  bookTitle:
+                                                      newListOfBooks[index]
+                                                          .volumeInfo
+                                                          .title);
 
                                               viewModel
                                                   .addAbookToRecentlyViewedShelf(
-                                                      authors: snapshot
-                                                              .data
-                                                              .items[index]
+                                                      authors: newListOfBooks[
+                                                                  index]
                                                               .volumeInfo
                                                               .authors[0] ??
                                                           'No Authors',
-                                                      bookId: snapshot
-                                                          .data.items[index].id,
-                                                      bookImage: snapshot
-                                                          .data
-                                                          .items[index]
-                                                          .volumeInfo
-                                                          .imageLinks
-                                                          .thumbnail,
-                                                      previewLink: snapshot
-                                                          .data
-                                                          .items[index]
-                                                          .volumeInfo
-                                                          .previewLink,
-                                                      title: snapshot
-                                                          .data
-                                                          .items[index]
-                                                          .volumeInfo
-                                                          .title);
+                                                      bookId: newListOfBooks[
+                                                              index]
+                                                          .id,
+                                                      bookImage:
+                                                          newListOfBooks[index]
+                                                              .volumeInfo
+                                                              .imageLinks
+                                                              .thumbnail,
+                                                      previewLink:
+                                                          newListOfBooks[index]
+                                                              .volumeInfo
+                                                              .previewLink,
+                                                      title:
+                                                          newListOfBooks[index]
+                                                              .volumeInfo
+                                                              .title);
                                             },
                                             child: Hero(
-                                              tag:
-                                                  snapshot.data.items[index].id,
+                                              tag: newListOfBooks[index].id,
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   image: DecorationImage(
                                                     fit: BoxFit.cover,
-                                                    image: NetworkImage(snapshot
-                                                        .data
-                                                        .items[index]
-                                                        .volumeInfo
-                                                        .imageLinks
-                                                        .thumbnail),
+                                                    image: NetworkImage(
+                                                        newListOfBooks[index]
+                                                            .volumeInfo
+                                                            .imageLinks
+                                                            .thumbnail),
                                                   ),
                                                 ),
                                               ),

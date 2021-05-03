@@ -33,12 +33,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  day_night_time_picker: ^1.0.1+1
   flutter_native_splash: ^1.1.5+1
 
 flutter_native_splash:
   android: true
   ios: true
-  color: "FFFFFF"
+  color: "2E2E2E"
   color_dark: "2E2E2E"
   image: "assets/booViLogo-Red.png"
   image_dark: "assets/booViLogo-Red.png"

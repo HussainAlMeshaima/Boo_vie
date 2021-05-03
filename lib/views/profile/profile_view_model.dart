@@ -4,6 +4,7 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/router_constants.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
+import 'package:boo_vi_app/core/services/imageSelectorService.dart';
 
 import 'package:boo_vi_app/views/profile_to_edit_details/profile_to_edit_details_view.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
@@ -28,10 +29,13 @@ class ProfileViewModel extends BaseViewModel {
       locator<AuthenticationService>();
   NavigationService _navigationService = locator<NavigationService>();
 
-  pushProfileToEditDetailsView({String userImage}) {
+  pushProfileToEditDetailsView(
+      {String userImage, String userDescription, String userName}) {
     return _navigationService.navigateWithTransition(
         ProfileToEditDetailsView(
           userImage: userImage,
+          userDescription: userDescription,
+          userName: userName,
         ),
         transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 400));
@@ -65,6 +69,10 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<DocumentSnapshot> getUserInformation() {
     return _cloudFirestoreServices.getUserInformation();
+  }
+
+  Stream<DocumentSnapshot> getUserInformationStream() async* {
+    yield* _cloudFirestoreServices.getUserInformationStream();
   }
 
   TextEditingController _displayedNameController =

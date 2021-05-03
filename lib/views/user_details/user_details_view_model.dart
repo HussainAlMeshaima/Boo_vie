@@ -90,10 +90,6 @@ class UserDetailsViewModel extends BaseViewModel {
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 
-  createNewUserCatigoryName() {
-    return _options.asMap().entries.forEach((element) => print(element));
-  }
-
   createNewUser(context) async {
     int counter =
         _isChoiceChipSelected.where((element) => element == true).length;
@@ -139,13 +135,13 @@ class UserDetailsViewModel extends BaseViewModel {
       _isLoading = true;
       notifyListeners();
       await _cloudFirestoreServices.createNewUser(
-          uid: await _authenticationService.userId(),
-          userName: _displayedNameController.text,
-          userEmail: _userEmailController.text.toLowerCase(),
-          userDescription: _aboutMeController.text,
-          userImageUrl: _imageUrl,
-          userCategories: userMap,
-          totalNumberOfSelectedCategories: counter);
+        uid: await _authenticationService.userId(),
+        userName: _displayedNameController.text,
+        userEmail: _userEmailController.text.toLowerCase(),
+        userDescription: _aboutMeController.text,
+        userImageUrl: _imageUrl,
+        userCategories: userMap,
+      );
       _isLoading = false;
       notifyListeners();
       pushStartUpView(context);

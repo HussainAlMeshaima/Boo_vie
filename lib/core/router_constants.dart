@@ -21,3 +21,7 @@ const String userReviewwViewRoute = 'userReviewwViewRoute';
 const String globalChallengeViewRoute = 'globalChallengeViewRoute';
 const String userGlobalChallengeViewRoute = 'userGlobalChallengeViewRoute';
 const String profileToEditDetailsViewRoute = 'profileToEditDetailsViewRoute';
+const String comunintyViewRoute = 'comunintyViewRoute';
+const String comunintyInformationViewRoute = 'comunintyInformationViewRoute';
+const String trophiesViewRoute = 'trophiesViewRoute';
+const String trophyViewRoute = 'trophyViewRoute';

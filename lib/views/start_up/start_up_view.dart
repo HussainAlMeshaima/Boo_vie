@@ -4,6 +4,7 @@ import 'package:boo_vi_app/views/home/home_view.dart';
 import 'package:boo_vi_app/views/profile/profile_view.dart';
 import 'package:boo_vi_app/views/search/search_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'start_up_view_model.dart';
 

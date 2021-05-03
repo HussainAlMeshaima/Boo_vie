@@ -77,8 +77,8 @@ class ProfileView extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                FutureBuilder(
-                  future: viewModel.getUserInformation(),
+                StreamBuilder(
+                  stream: viewModel.getUserInformationStream(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView(
@@ -88,48 +88,54 @@ class ProfileView extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               viewModel.pushProfileToEditDetailsView(
-                                  userImage: snapshot.data.data()['userImage']);
+                                  userImage: snapshot.data.data()['userImage'],
+                                  userDescription:
+                                      snapshot.data.data()['userDescription'],
+                                  userName: snapshot.data.data()['userName']);
                             },
                             child: Center(
-                              child: Container(
-                                height: 130,
-                                width: 130,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Color(0xffE7E7E7)
-                                        : Color(0xff656565).withOpacity(0.4),
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(20),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          snapshot.data.data()['userImage']),
-                                    )),
-                                child: Stack(
-                                  alignment: AlignmentDirectional.center,
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    Positioned(
-                                      bottom: -5,
-                                      right: -5,
-                                      child: Container(
-                                        height: 37,
-                                        width: 37,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                        child: Icon(Icons.edit,
-                                            color: Theme.of(context)
-                                                .primaryIconTheme
-                                                .color),
+                              child: Hero(
+                                tag: snapshot.data.data()['userImage'],
+                                child: Container(
+                                  height: 130,
+                                  width: 130,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Color(0xffE7E7E7)
+                                          : Color(0xff656565).withOpacity(0.4),
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(20),
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            snapshot.data.data()['userImage']),
+                                      )),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Positioned(
+                                        bottom: -5,
+                                        right: -5,
+                                        child: Container(
+                                          height: 37,
+                                          width: 37,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          child: Icon(Icons.edit,
+                                              color: Theme.of(context)
+                                                  .primaryIconTheme
+                                                  .color),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

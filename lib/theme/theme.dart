@@ -9,16 +9,25 @@ List<ThemeData> getThemes(BuildContext context) {
       brightness: Brightness.dark,
       fontFamily: 'FiraSans',
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4646),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4646),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       primaryColor: Color(0xffEC4646),
       accentColor: Color(0xffEC4646),
       fontFamily: 'FiraSans',
+      timePickerTheme: TimePickerThemeData(backgroundColor: Colors.red),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4646),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4646),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Ornage
@@ -29,8 +38,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC6E46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC6E46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC6E46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -39,8 +52,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC6E46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC6E46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC6E46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Merigold
@@ -51,8 +68,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECA046),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECA046),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECA046),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -61,8 +82,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECA046),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECA046),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECA046),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Gold
@@ -73,8 +98,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECD146),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECD146),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECD146),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -83,8 +112,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECD146),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECD146),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECD146),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Lemon
@@ -95,8 +128,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECE546),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECE546),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECE546),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -105,8 +142,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffECE546),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffECE546),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffECE546),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Blonde
@@ -117,8 +158,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffE9EC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffE9EC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffE9EC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -127,8 +172,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffE9EC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffE9EC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffE9EC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Pistachio
@@ -139,8 +188,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffCBEC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffCBEC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffCBEC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -149,8 +202,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffCBEC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffCBEC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffCBEC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Seafoam
@@ -161,8 +218,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff8FEC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff8FEC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff8FEC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -171,8 +232,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff8FEC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff8FEC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff8FEC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Mint
@@ -183,8 +248,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff53EC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff53EC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff53EC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -193,8 +262,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff8FEC46),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff8FEC46),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff8FEC46),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Lime
@@ -205,8 +278,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46EC9C),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46EC9C),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46EC9C),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -215,8 +292,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46EC9C),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46EC9C),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46EC9C),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Sea
@@ -227,8 +308,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECC4),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECC4),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECC4),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -237,8 +322,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECC4),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECC4),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECC4),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Teal
@@ -249,8 +338,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECE2),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECE2),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECE2),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -259,8 +352,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECE2),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECE2),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECE2),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Cerulean
@@ -271,8 +368,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECE2),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECE2),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECE2),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -281,8 +382,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46ECE2),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46ECE2),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46ECE2),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Sky
@@ -293,8 +398,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46D8EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46D8EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46D8EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -303,8 +412,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46D8EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46D8EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46D8EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Lapis
@@ -315,8 +428,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46C4EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46C4EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46C4EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -325,8 +442,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46C4EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46C4EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46C4EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Berry
@@ -337,8 +458,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46C4EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46C4EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46C4EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -347,8 +472,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff46C4EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff46C4EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff46C4EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.black,
+        ),
+      ),
     ),
 
     // ! Azure
@@ -359,8 +488,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff4692EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff4692EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff4692EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -369,8 +502,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff4692EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff4692EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff4692EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Blue
@@ -381,8 +518,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff467EEC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff467EEC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff467EEC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -391,8 +532,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff467EEC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff467EEC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff467EEC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Navy
@@ -403,8 +548,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff467EEC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff467EEC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff467EEC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -413,8 +562,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff467EEC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff467EEC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff467EEC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Violet
@@ -425,8 +578,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff5346EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff5346EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff5346EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -435,8 +592,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff5346EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff5346EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff5346EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Purple
@@ -447,8 +608,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff7B46EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff7B46EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff7B46EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -457,8 +622,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff7B46EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff7B46EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff7B46EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Amethyst
@@ -469,8 +638,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff9946EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff9946EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff9946EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -479,8 +652,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xff9946EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff9946EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xff9946EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Mauve
@@ -491,8 +668,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffB746EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffB746EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffB746EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -501,8 +682,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffB746EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffB746EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffB746EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Lavender
@@ -513,8 +698,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffDF46EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffDF46EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffDF46EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -523,8 +712,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffDF46EC),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffDF46EC),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffDF46EC),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Pink
@@ -535,8 +728,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC46C7),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC46C7),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC46C7),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -545,8 +742,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC46C7),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC46C7),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC46C7),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Ruby
@@ -557,8 +758,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC46AA),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC46AA),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC46AA),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -567,8 +772,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC46AA),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC46AA),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC46AA),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Brick
@@ -579,8 +788,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC4696),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4696),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4696),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -589,8 +802,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC4696),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4696),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4696),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Cerise
@@ -601,8 +818,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC466E),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC466E),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC466E),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -611,8 +832,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC466E),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC466E),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC466E),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
 
     // ! Fire
@@ -623,8 +848,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC4646),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4646),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4646),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
     ThemeData(
       brightness: Brightness.dark,
@@ -633,8 +862,12 @@ List<ThemeData> getThemes(BuildContext context) {
       fontFamily: 'FiraSans',
       primaryColorDark: Color(0xffEC4646),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xffEC4646),
-          contentTextStyle: TextStyle(fontFamily: 'FiraSans')),
+        backgroundColor: Color(0xffEC4646),
+        contentTextStyle: TextStyle(
+          fontFamily: 'FiraSans',
+          color: Colors.white,
+        ),
+      ),
     ),
   ];
 }

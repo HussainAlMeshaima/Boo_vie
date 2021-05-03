@@ -1,3 +1,4 @@
+import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'comunintys_view_model.dart';
@@ -8,67 +9,149 @@ class ComunintysView extends StatelessWidget {
     return ViewModelBuilder<ComunintysViewModel>.reactive(
       builder: (BuildContext context, ComunintysViewModel viewModel, Widget _) {
         return DefaultTabController(
-          length: 2,
+          length: 3,
           child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  return showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ListView(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          children: [
+                            ListTile(
+                              title: Text(
+                                'Create What ?',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 5),
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.group_work,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                title: Text('Create a Comuninty'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 5),
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.sms,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                title: Text('Create a conversation'),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        );
+                      });
+                },
+                child: Icon(Icons.add),
+              ),
               appBar: AppBar(
-                title: Text('Comunintys'),
+                title: Tooltip(
+                    message: 'Comunintys tab', child: Text('Comunintys')),
+                actions: [
+                  IconButton(icon: Icon(Icons.notifications), onPressed: () {})
+                ],
                 bottom: TabBar(
-                  //controller: viewModel,
-                  //onTap: (int index) => viewModel.handleTapIndexChanged(index),
-                  indicatorSize: TabBarIndicatorSize.label,
                   tabs: [
-                    Tab(icon: Text('Comunitys')),
-                    Tab(icon: Text('My Comunintys')),
+                    Tooltip(
+                        message: 'Global Comunintys challenges',
+                        child: Tab(
+                            icon: Text(
+                          'Global',
+                          textAlign: TextAlign.center,
+                        ))),
+                    Tooltip(
+                        message: 'My Comunintys tab',
+                        child: Tab(
+                            icon: Text(
+                          'Comunintys',
+                          textAlign: TextAlign.center,
+                        ))),
+                    Tooltip(
+                        message: 'Chats tab', child: Tab(icon: Text('Chats'))),
                   ],
                 ),
               ),
-              body: PageView(
+              body: TabBarView(
                 children: [
-                  ListView(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                              Theme.of(context).scaffoldBackgroundColor,
-                              BlendMode.overlay),
-                          child: Container(
-                            height: 170,
-                            decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius: BorderRadius.circular(25)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        height: 80,
-                                        width: 80,
+                  // ! Global Comunintys
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      child: GestureDetector(
+                        onTap: () {
+                          viewModel.pushComunintyInformationView();
+                        },
+                        child: ListView(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          children: [
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: Container(
+                                child: ListView(
+                                  physics: ScrollPhysics(),
+                                  shrinkWrap: true,
+                                  children: [
+                                    Hero(
+                                      tag: 1,
+                                      child: Container(
+                                        height: 120,
                                         decoration: BoxDecoration(
-                                            color: Colors.blue,
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                    'https://i.pinimg.com/originals/37/81/ea/3781ea0fe6a39bc7bb9c088043cfc4dc.jpg')),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              topRight: Radius.circular(15)),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80004f68741469.5bae1b8424f4c.jpg')),
+                                        ),
                                       ),
-                                      Spacer(),
-                                      Row(
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Row(
                                         children: [
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Container(
+                                            width: 210,
+                                            child: Text(
+                                              'Hussain Comunity 101',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Spacer(),
                                           Column(
                                             children: [
-                                              Icon(Icons.person_rounded),
-                                              Text('7'),
+                                              Icon(
+                                                Icons.favorite,
+                                                size: 18,
+                                              ),
+                                              Text('19'),
                                             ],
                                           ),
                                           SizedBox(
@@ -78,16 +161,9 @@ class ComunintysView extends StatelessWidget {
                                             children: [
                                               Icon(
                                                 Icons.timer,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
+                                                size: 18,
                                               ),
-                                              Text(
-                                                '7',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
+                                              Text('19'),
                                             ],
                                           ),
                                           SizedBox(
@@ -96,77 +172,58 @@ class ComunintysView extends StatelessWidget {
                                           Column(
                                             children: [
                                               Icon(
-                                                Icons.emoji_events,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
+                                                Icons.people,
+                                                size: 18,
                                               ),
-                                              Text(
-                                                '7',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
+                                              Text('19'),
+                                              SizedBox(
+                                                width: 5,
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          'Comuninty 1',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        Container(
-                                          width: 196,
-                                          child: Text(
-                                            'Community is an American television sitcom created by Dan Harmon. The series ran  ..',
+                                          SizedBox(
+                                            width: 15,
                                           ),
-                                        ),
-                                        Spacer(),
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                                onPressed: () {},
-                                                child: Text('view')),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                                onPressed: () {},
-                                                child: Text('Send request'))
-                                          ],
-                                        )
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Text(
+                                        '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit '
+                                                    .length >=
+                                                150
+                                            ? '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit '
+                                                    .substring(0, 150) +
+                                                '...'
+                                            : '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit ',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
+
+                  // ! My Comunintys
+                  Container(),
+
+                  // !
+                  Container()
                 ],
               )),
         );

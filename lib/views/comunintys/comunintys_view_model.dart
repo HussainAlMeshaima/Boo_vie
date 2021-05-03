@@ -1,7 +1,11 @@
+import 'package:boo_vi_app/core/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'package:boo_vi_app/views/comuninty_information/comuninty_information_view.dart';
 
 class ComunintysViewModel extends BaseViewModel {
   Logger log;
@@ -29,5 +33,13 @@ class ComunintysViewModel extends BaseViewModel {
     pageController.jumpToPage(pageIndex);
 
     notifyListeners();
+  }
+
+  NavigationService _navigationService = locator<NavigationService>();
+
+  pushComunintyInformationView() {
+    return _navigationService.navigateWithTransition(ComunintyInformationView(),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
   }
 }

@@ -193,9 +193,9 @@ class UserDetailsView extends StatelessWidget {
                       onChanged: (String char) {
                         viewModel.getUsernameOnChange(char);
                       },
-                      // onSubmitted: (_) async {
-                      //   await viewModel.createNewUser(context);
-                      // },
+                      onSubmitted: (_) async {
+                        await viewModel.createNewUser(context);
+                      },
                       iconData: Icons.edit,
                     ),
                     TextfieldWidget(
@@ -203,9 +203,9 @@ class UserDetailsView extends StatelessWidget {
                       maxLines: 3,
                       controller: viewModel.aboutMeController,
                       iconData: Icons.edit,
-                      // onSubmitted: (_) async {
-                      //   await viewModel.createNewUser(context);
-                      // },
+                      onSubmitted: (_) async {
+                        await viewModel.createNewUser(context);
+                      },
                     ),
                     SizedBox(
                       height: 15,

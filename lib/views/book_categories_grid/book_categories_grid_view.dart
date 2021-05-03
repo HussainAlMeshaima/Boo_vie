@@ -26,6 +26,25 @@ class BookCategoriesGridView extends StatelessWidget {
                   if (snapshot.hasError) return snapshot.error;
 
                   if (snapshot.hasData && snapshot.data.totalItems != 0) {
+                    List<Items> newListOfBooks = snapshot.data.items;
+
+                    Set<String> bookListWithIds =
+                        newListOfBooks.map<String>((book) => book.id).toSet();
+
+                    print(bookListWithIds);
+                    newListOfBooks
+                        .retainWhere((book) => bookListWithIds.remove(book.id));
+
+                    newListOfBooks.removeWhere((book) => book.id == null);
+
+                    newListOfBooks
+                        .removeWhere((book) => book.volumeInfo.authors == null);
+
+                    newListOfBooks.removeWhere(
+                        (book) => book.volumeInfo.previewLink == null);
+
+                    newListOfBooks.removeWhere(
+                        (book) => book.volumeInfo.imageLinks == null);
                     return Container(
                       child: GridView.builder(
                           physics: ScrollPhysics(),
@@ -35,7 +54,8 @@ class BookCategoriesGridView extends StatelessWidget {
                                   childAspectRatio: 1 / 1.6, crossAxisCount: 3),
                           itemCount: snapshot.data.items.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return snapshot.data.items[index].volumeInfo
+                            return newListOfBooks[index]
+                                        .volumeInfo
                                         .imageLinks !=
                                     null
                                 ? Padding(
@@ -43,53 +63,52 @@ class BookCategoriesGridView extends StatelessWidget {
                                     child: GestureDetector(
                                       onTap: () {
                                         viewModel.addAbookToRecentlyViewedShelf(
-                                          authors: snapshot.data.items[index]
-                                                  .volumeInfo.authors[0] ??
+                                          authors: newListOfBooks[index]
+                                                  .volumeInfo
+                                                  .authors[0] ??
                                               'No Authors',
-                                          title: snapshot.data.items[index]
-                                              .volumeInfo.title,
-                                          bookImage: snapshot.data.items[index]
-                                              .volumeInfo.imageLinks.thumbnail,
-                                          previewLink: snapshot
-                                              .data
-                                              .items[index]
+                                          title: newListOfBooks[index]
+                                              .volumeInfo
+                                              .title,
+                                          bookImage: newListOfBooks[index]
+                                              .volumeInfo
+                                              .imageLinks
+                                              .thumbnail,
+                                          previewLink: newListOfBooks[index]
                                               .volumeInfo
                                               .previewLink,
-                                          bookId: snapshot.data.items[index].id,
+                                          bookId: newListOfBooks[index].id,
                                         );
                                         viewModel.pushBookView(
-                                            authors: snapshot.data.items[index]
-                                                    .volumeInfo.authors[0] ??
+                                            authors: newListOfBooks[index]
+                                                    .volumeInfo
+                                                    .authors[0] ??
                                                 'No authors',
-                                            id: snapshot.data.items[index].id,
-                                            image: snapshot
-                                                .data
-                                                .items[index]
+                                            id: newListOfBooks[index].id,
+                                            image: newListOfBooks[index]
                                                 .volumeInfo
                                                 .imageLinks
                                                 .thumbnail,
-                                            previewLink: snapshot
-                                                .data
-                                                .items[index]
+                                            previewLink: newListOfBooks[index]
                                                 .volumeInfo
                                                 .previewLink,
-                                            bookTitle: snapshot.data
-                                                .items[index].volumeInfo.title);
+                                            bookTitle: newListOfBooks[index]
+                                                .volumeInfo
+                                                .title);
                                       },
                                       child: Hero(
-                                        tag: snapshot.data.items[index].id,
+                                        tag: newListOfBooks[index].id,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: NetworkImage(snapshot
-                                                  .data
-                                                  .items[index]
-                                                  .volumeInfo
-                                                  .imageLinks
-                                                  .thumbnail),
+                                              image: NetworkImage(
+                                                  newListOfBooks[index]
+                                                      .volumeInfo
+                                                      .imageLinks
+                                                      .thumbnail),
                                             ),
                                           ),
                                         ),

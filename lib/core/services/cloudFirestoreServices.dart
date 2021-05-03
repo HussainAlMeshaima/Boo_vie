@@ -2,6 +2,7 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class CloudFirestoreServices {
   AuthenticationService _authenticationService =
@@ -18,6 +19,33 @@ class CloudFirestoreServices {
         .collection('userDetails')
         .doc('userInformation')
         .get();
+  }
+
+  Future<DocumentSnapshot> getUserCategories() async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCategories')
+        .get();
+  }
+
+  Stream<DocumentSnapshot> getUserCategoriesStream() async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCategories')
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getUserInformationStream() async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userInformation')
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getUserInformation() async {
@@ -921,7 +949,6 @@ class CloudFirestoreServices {
     @required String userDescription,
     @required String userImageUrl,
     @required Map userCategories,
-    @required int totalNumberOfSelectedCategories,
   }) async {
     return await _users.doc(userEmail).set({
       'userId': uid,
@@ -995,11 +1022,7 @@ class CloudFirestoreServices {
               .collection('userDetails')
               .doc('userCategories')
               .set(
-            {
-              'totalNumberOfSelectedCategories':
-                  totalNumberOfSelectedCategories ?? 0,
-              'userCategories': userCategories
-            },
+            {'userCategories': userCategories},
           ),
         )
         .then(
@@ -1027,26 +1050,17 @@ class CloudFirestoreServices {
   }
 
   createDocBasedOnSelected(
-      List<bool> isSelected,
-      List<String> namesOfCatigoires,
-      List<Map> catigoiresMap,
-      int totalNumberOfSelectedCategories) async {
+    List<bool> isSelected,
+    List<String> namesOfCatigoires,
+    List<Map> catigoiresMap,
+  ) async {
     try {
       FirebaseFirestore.instance
           .collection('users')
           .doc(await _authenticationService.userEmail())
           .collection('userDetails')
           .doc('userCategories')
-          .set({
-        'totalNumberOfSelectedCategories': totalNumberOfSelectedCategories
-      }).then((value) async => {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(await _authenticationService.userEmail())
-                    .collection('userDetails')
-                    .doc('userCategories')
-                    .set({'catigoiresMap': catigoiresMap})
-              });
+          .set({'catigoiresMap': catigoiresMap});
     } catch (e) {}
   }
 
@@ -1115,5 +1129,35 @@ class CloudFirestoreServices {
         .collection('globalChallenges')
         .doc(challangeId)
         .delete();
+  }
+
+  Future<void> updateUserImage(String imageUrl) async {
+    _users
+        .doc(await _authenticationService.userEmail())
+        .update({'userImage': imageUrl}).then((value) async => {
+              _users
+                  .doc(await _authenticationService.userEmail())
+                  .collection('userDetails')
+                  .doc('userInformation')
+                  .update({'userImage': imageUrl})
+            });
+  }
+
+  Future<void> updateThatMap(Map<String, dynamic> map) async {
+    _users
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCategories')
+        .update({'userCategories': map}).then((value) => print('sent'));
+  }
+
+  Stream<QuerySnapshot> getUserTrophies() async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userTrophies')
+        .collection('Trophies')
+        .snapshots();
   }
 }

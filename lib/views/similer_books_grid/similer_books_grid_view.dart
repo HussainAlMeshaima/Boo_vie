@@ -48,6 +48,25 @@ class SimilerBooksGridView extends StatelessWidget {
                   }
 
                   if (snapshot.hasData && snapshot.data.totalItems != 0) {
+                    List<Items> newListOfBooks = snapshot.data.items;
+
+                    Set<String> bookListWithIds =
+                        newListOfBooks.map<String>((book) => book.id).toSet();
+
+                    print(bookListWithIds);
+                    newListOfBooks
+                        .retainWhere((book) => bookListWithIds.remove(book.id));
+
+                    newListOfBooks.removeWhere((book) => book.id == null);
+
+                    newListOfBooks
+                        .removeWhere((book) => book.volumeInfo.authors == null);
+
+                    newListOfBooks.removeWhere(
+                        (book) => book.volumeInfo.previewLink == null);
+
+                    newListOfBooks.removeWhere(
+                        (book) => book.volumeInfo.imageLinks == null);
                     return Container(
                       child: GridView.builder(
                           physics: ScrollPhysics(),
@@ -57,43 +76,65 @@ class SimilerBooksGridView extends StatelessWidget {
                                   childAspectRatio: 1 / 1.6, crossAxisCount: 3),
                           itemCount: snapshot.data.items.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return snapshot.data.items[index].volumeInfo
+                            return newListOfBooks[index]
+                                            .volumeInfo
                                             .imageLinks !=
                                         null &&
-                                    snapshot.data.items[index].volumeInfo
-                                            .imageLinks.thumbnail !=
+                                    newListOfBooks[index]
+                                            .volumeInfo
+                                            .imageLinks
+                                            .thumbnail !=
                                         null
                                 ? Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: GestureDetector(
-                                      onTap: () => viewModel.pushBookView(
-                                          authors: snapshot.data.items[index]
-                                                  .volumeInfo.authors[0] ??
-                                              'No authors',
-                                          id: snapshot.data.items[index].id,
-                                          image: snapshot.data.items[index]
-                                              .volumeInfo.imageLinks.thumbnail,
-                                          previewLink: snapshot
-                                              .data
-                                              .items[index]
-                                              .volumeInfo
-                                              .previewLink,
-                                          bookTitle: snapshot.data.items[index]
-                                              .volumeInfo.title),
+                                      onTap: () {
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                            authors: newListOfBooks[index]
+                                                    .volumeInfo
+                                                    .authors[0] ??
+                                                'No authors',
+                                            bookId: newListOfBooks[index].id,
+                                            bookImage: newListOfBooks[index]
+                                                .volumeInfo
+                                                .imageLinks
+                                                .thumbnail,
+                                            previewLink: newListOfBooks[index]
+                                                .volumeInfo
+                                                .previewLink,
+                                            title: newListOfBooks[index]
+                                                .volumeInfo
+                                                .title);
+                                        viewModel.pushBookView(
+                                            authors: newListOfBooks[index]
+                                                    .volumeInfo
+                                                    .authors[0] ??
+                                                'No authors',
+                                            id: newListOfBooks[index].id,
+                                            image: newListOfBooks[index]
+                                                .volumeInfo
+                                                .imageLinks
+                                                .thumbnail,
+                                            previewLink: newListOfBooks[index]
+                                                .volumeInfo
+                                                .previewLink,
+                                            bookTitle: newListOfBooks[index]
+                                                .volumeInfo
+                                                .title);
+                                      },
                                       child: Hero(
-                                        tag: snapshot.data.items[index].id,
+                                        tag: newListOfBooks[index].id,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: NetworkImage(snapshot
-                                                  .data
-                                                  .items[index]
-                                                  .volumeInfo
-                                                  .imageLinks
-                                                  .thumbnail),
+                                              image: NetworkImage(
+                                                  newListOfBooks[index]
+                                                      .volumeInfo
+                                                      .imageLinks
+                                                      .thumbnail),
                                             ),
                                           ),
                                         ),

@@ -2,6 +2,7 @@ import 'package:boo_vi_app/core/services/cloudStorageServices.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/ImageSelectorService.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
+import 'package:boo_vi_app/core/services/imageEditService.dart';
 import 'package:boo_vi_app/core/services/bookServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:get_it/get_it.dart';
@@ -34,6 +35,8 @@ class LocatorInjector {
     locator.registerLazySingleton(() => BookServices());
     log.d('Registering Cloud Firestore Services');
     locator.registerLazySingleton(() => CloudFirestoreServices());
+    log.d('Registering Image Edit Service');
+    locator.registerLazySingleton(() => ImageEditService());
     log.d('Registering Authentication Service');
     locator.registerLazySingleton(() => ThemeService.getInstance());
   }

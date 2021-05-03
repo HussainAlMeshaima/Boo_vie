@@ -5,6 +5,7 @@ import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
 import 'package:boo_vi_app/views/global_challenge/global_challenge_view.dart';
+import 'package:boo_vi_app/views/trophies/trophies_view.dart';
 import 'package:boo_vi_app/views/user_global_challenge/user_global_challenge_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -140,6 +141,12 @@ class ChallengesViewModel extends BaseViewModel {
         duration: Duration(milliseconds: 400));
   }
 
+  pushTrophiesView() {
+    _navigationService.navigateWithTransition(TrophiesView(),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
   pushBookReviews({String bookId, String tappedUserEmail}) async {}
 
   handleStartUpLogic() {
@@ -150,5 +157,45 @@ class ChallengesViewModel extends BaseViewModel {
 
   Stream<QuerySnapshot> getThatBookEmoji(String bookId) {
     return _cloudFirestoreServices.getBookRatingEmoji(bookId);
+  }
+
+  Timestamp _setToDate;
+  Timestamp get setToDate => _setToDate;
+  String _numberOfhours;
+  String get numberOfhours => _numberOfhours;
+
+  String _numberOfminutes;
+  String get numberOfminutes => _numberOfminutes;
+
+  String _numberOfseconds;
+  String get numberOfseconds => _numberOfseconds;
+
+  String convertTheGivenTimestampToString(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _days = date.inDays;
+    int _hours = date.inHours % 24;
+    int _minutes = date.inMinutes % 60;
+    int _seconds = date.inSeconds % 60;
+
+    String _daysString = '$_days';
+    String _hoursString = '$_hours'.padLeft(2, '0');
+    String _minutesString = '$_minutes'.padLeft(2, '0');
+    String _secondsString = '$_seconds'.padLeft(2, '0');
+
+    _daysString = _daysString;
+    _numberOfhours = _hoursString;
+    _numberOfminutes = _minutesString;
+    _numberOfseconds = _secondsString;
+
+    return (_daysString +
+        ' : ' +
+        _numberOfhours.toString() +
+        ' : ' +
+        _numberOfminutes.toString() +
+        ' : ' +
+        _numberOfseconds.toString());
   }
 }

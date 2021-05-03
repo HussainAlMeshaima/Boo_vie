@@ -18,7 +18,11 @@ class ChallengesView extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               actions: [
-                IconButton(icon: Icon(Icons.emoji_events), onPressed: () {}),
+                IconButton(
+                    icon: Icon(Icons.emoji_events),
+                    onPressed: () {
+                      viewModel.pushTrophiesView();
+                    }),
                 IconButton(icon: Icon(Icons.history), onPressed: () {})
               ],
               title:
@@ -621,7 +625,7 @@ class ChallengesView extends StatelessWidget {
                                                             children: [
                                                               Container(
                                                                 height: 100,
-                                                                width: 60,
+                                                                width: 71,
                                                                 decoration: BoxDecoration(
                                                                     borderRadius:
                                                                         BorderRadius
@@ -695,7 +699,7 @@ class ChallengesView extends StatelessWidget {
                                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 Text(
-                                                                                  ',',
+                                                                                  viewModel.convertTheGivenTimestampToString(snapshot.data.docs[index]['setToDate']),
                                                                                   style: TextStyle(fontSize: 22),
                                                                                 ),
                                                                               ],
@@ -713,9 +717,126 @@ class ChallengesView extends StatelessWidget {
                                                                           builder:
                                                                               (context, snapshot) {
                                                                             if (snapshot.hasData) {
-                                                                              return Text(
-                                                                                '😋',
-                                                                                style: TextStyle(fontSize: 22),
+                                                                              List<double> emojisList = [];
+                                                                              for (DocumentSnapshot item in snapshot.data.docs) {
+                                                                                emojisList.add(item.data()['userReviewEmojiRating']);
+                                                                              }
+                                                                              if (emojisList.length != 0) {
+                                                                                double avg = emojisList.reduce((a, b) => a + b);
+
+                                                                                avg = (avg / emojisList.length);
+
+                                                                                int totlaAvg = avg.toInt();
+                                                                                String emoji;
+
+                                                                                switch (totlaAvg) {
+                                                                                  case 0:
+                                                                                    emoji = '😡';
+                                                                                    break;
+
+                                                                                  case 1:
+                                                                                    emoji = '🤢';
+                                                                                    break;
+
+                                                                                  case 2:
+                                                                                    emoji = '😟';
+                                                                                    break;
+
+                                                                                  case 3:
+                                                                                    emoji = '😧';
+                                                                                    break;
+
+                                                                                  case 4:
+                                                                                    emoji = '😨';
+                                                                                    break;
+
+                                                                                  case 5:
+                                                                                    emoji = '😰';
+                                                                                    break;
+
+                                                                                  case 6:
+                                                                                    emoji = '😓';
+                                                                                    break;
+
+                                                                                  case 7:
+                                                                                    emoji = '😫';
+                                                                                    break;
+
+                                                                                  case 8:
+                                                                                    emoji = '😭';
+                                                                                    break;
+
+                                                                                  case 9:
+                                                                                    emoji = '😦';
+                                                                                    break;
+
+                                                                                  case 10:
+                                                                                    emoji = '😮';
+                                                                                    break;
+
+                                                                                  case 11:
+                                                                                    emoji = '😃';
+                                                                                    break;
+
+                                                                                  case 12:
+                                                                                    emoji = '😁';
+                                                                                    break;
+
+                                                                                  case 13:
+                                                                                    emoji = '🥰';
+                                                                                    break;
+
+                                                                                  case 14:
+                                                                                    emoji = '😍';
+                                                                                    break;
+
+                                                                                  default:
+                                                                                    emoji = '🥱';
+
+                                                                                    break;
+                                                                                }
+
+                                                                                return Tooltip(
+                                                                                  message: 'The avarage rating for this book is $emoji',
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        child: Text(
+                                                                                          emoji,
+                                                                                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        height: 5,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        'BooVi',
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                );
+                                                                              }
+                                                                              return Tooltip(
+                                                                                message: 'Looks like no one reviewed this book yet 🥱',
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Container(
+                                                                                      child: Text(
+                                                                                        '🥱',
+                                                                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 5,
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'BooVi',
+                                                                                      style: TextStyle(fontWeight: FontWeight.w500),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               );
                                                                             }
 

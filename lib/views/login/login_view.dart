@@ -44,8 +44,8 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.forgotPasswordController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        // onSubmitted: (_) =>
-                        //     viewModel.sendResetPasswordLink(context),
+                        onSubmitted: (_) =>
+                            viewModel.sendResetPasswordLink(context),
                       ),
                       SizedBox(
                         height: 128,
@@ -112,7 +112,7 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.loginPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        // onSubmitted: (_) => viewModel.loginUser(context),
+                        onSubmitted: (_) => viewModel.loginUser(context),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -187,7 +187,7 @@ class LoginView extends StatelessWidget {
                         controller: viewModel.signUpPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        // onSubmitted: (_) => viewModel.signUpUser(context),
+                        onSubmitted: (_) => viewModel.signUpUser(context),
                       ),
                       SizedBox(
                         height: 38,

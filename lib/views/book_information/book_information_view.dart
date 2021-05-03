@@ -50,11 +50,13 @@ class BookInformationView extends StatelessWidget {
                   physics: ScrollPhysics(),
                   children: [
                     DescriptionTileWidget(
-                      descriptionText: snapshot.data.volumeInfo.description
-                          .replaceAll(
-                              RegExp(r"<[^>]*>",
-                                  multiLine: true, caseSensitive: true),
-                              ''),
+                      descriptionText:
+                          snapshot.data.volumeInfo.description != null
+                              ? snapshot.data.volumeInfo.description.replaceAll(
+                                  RegExp(r"<[^>]*>",
+                                      multiLine: true, caseSensitive: true),
+                                  '')
+                              : 'No Description For This Book',
                     ),
                     InformationTileWidget(
                       leadingText: 'Title',
@@ -124,19 +126,20 @@ class BookInformationView extends StatelessWidget {
             },
           ),
           floatingActionButton: SpeedDial(
-            icon: Icons.link, foregroundColor: Colors.white,
+            icon: Icons.link,
             backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Theme.of(context).primaryIconTheme.color,
             useRotationAnimation: false,
             //child: Icon(Icons.book),
             children: [
               if (buyLink != null)
                 SpeedDialChild(
                     backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context).primaryIconTheme.color,
                     labelBackgroundColor: Theme.of(context).cardColor,
                     label: 'Buy',
                     child: Icon(
                       Icons.shopping_cart,
-                      color: Colors.white,
                     ),
                     onTap: () async {
                       await launch(buyLink);
@@ -144,11 +147,11 @@ class BookInformationView extends StatelessWidget {
               if (webReaderLink != null)
                 SpeedDialChild(
                     backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context).primaryIconTheme.color,
                     labelBackgroundColor: Theme.of(context).cardColor,
                     label: 'Read',
                     child: Icon(
                       Icons.auto_stories,
-                      color: Colors.white,
                     ),
                     onTap: () async {
                       await launch(webReaderLink);
@@ -156,11 +159,11 @@ class BookInformationView extends StatelessWidget {
               if (webReaderLink != null)
                 SpeedDialChild(
                   backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Theme.of(context).primaryIconTheme.color,
                   labelBackgroundColor: Theme.of(context).cardColor,
                   label: 'QR code',
                   child: Icon(
                     Icons.qr_code_rounded,
-                    color: Colors.white,
                   ),
                   onTap: () async {
                     showModalBottomSheet(

@@ -79,7 +79,7 @@ class SearchViewModel extends BaseViewModel {
         .trimLeft()
         .trimRight()
         .replaceAll(' ', '+');
-    print(_text);
+
     _navigationService.navigateWithTransition(
         SearchedView(
             timedText: _text, noneTrimedText: _searchTextfieldController.text),

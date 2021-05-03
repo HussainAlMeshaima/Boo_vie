@@ -24,6 +24,10 @@ import 'package:boo_vi_app/views/user_revieww/user_revieww_view.dart' as view17;
 import 'package:boo_vi_app/views/global_challenge/global_challenge_view.dart' as view18;
 import 'package:boo_vi_app/views/user_global_challenge/user_global_challenge_view.dart' as view19;
 import 'package:boo_vi_app/views/profile_to_edit_details/profile_to_edit_details_view.dart' as view20;
+import 'package:boo_vi_app/views/comuninty/comuninty_view.dart' as view21;
+import 'package:boo_vi_app/views/comuninty_information/comuninty_information_view.dart' as view22;
+import 'package:boo_vi_app/views/trophies/trophies_view.dart' as view23;
+import 'package:boo_vi_app/views/trophy/trophy_view.dart' as view24;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -70,6 +74,14 @@ class Router {
         return MaterialPageRoute(builder: (_) => view19.UserGlobalChallengeView());
       case profileToEditDetailsViewRoute:
         return MaterialPageRoute(builder: (_) => view20.ProfileToEditDetailsView());
+      case comunintyViewRoute:
+        return MaterialPageRoute(builder: (_) => view21.ComunintyView());
+      case comunintyInformationViewRoute:
+        return MaterialPageRoute(builder: (_) => view22.ComunintyInformationView());
+      case trophiesViewRoute:
+        return MaterialPageRoute(builder: (_) => view23.TrophiesView());
+      case trophyViewRoute:
+        return MaterialPageRoute(builder: (_) => view24.TrophyView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
