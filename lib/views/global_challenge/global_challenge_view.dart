@@ -165,6 +165,24 @@ class GlobalChallengeView extends StatelessWidget {
                             ),
                           ),
 
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              viewModel.addALikeToChallange();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 5),
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.favorite,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                title: Text('Add a like to challange'),
+                              ),
+                            ),
+                          ),
+
                           // ! Add book to a shelf
                           GestureDetector(
                             onTap: () {
@@ -603,165 +621,232 @@ class GlobalChallengeView extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: 120,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              colorFilter: new ColorFilter.mode(
-                                  Colors.black.withOpacity(0.5),
-                                  BlendMode.dstATop),
-                              image: NetworkImage(
-                                image,
+                StreamBuilder(
+                  stream: viewModel.getGlobalChallangeSetToDateStream(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      Timestamp setToDate = snapshot.data.data()['setToDate'];
+                      String _days =
+                          viewModel.convertTheGivenTimestampToDays(setToDate);
+                      String _hours =
+                          viewModel.convertTheGivenTimestampToHours(setToDate);
+                      String _minutes = viewModel
+                          .convertTheGivenTimestampToMinutes(setToDate);
+                      String _seconds = viewModel
+                          .convertTheGivenTimestampToSeconds(setToDate);
+
+                      return Container(
+                        height: 120,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    colorFilter: new ColorFilter.mode(
+                                        Colors.black.withOpacity(0.5),
+                                        BlendMode.dstATop),
+                                    image: NetworkImage(
+                                      image,
+                                    ),
+                                  ),
+                                ),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 10,
+                                      sigmaY: 10,
+                                      tileMode: TileMode.clamp),
+                                  child: Container(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.black.withOpacity(0.5)
+                                        : Colors.white.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 24),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                _days,
+                                                style: TextStyle(fontSize: 26),
+                                              ),
+                                              Text(
+                                                'DAYS',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color
+                                                        .withOpacity(.35)),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            ':',
+                                            style: TextStyle(
+                                                fontSize: 26,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color
+                                                    .withOpacity(.7)),
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                _hours,
+                                                style: TextStyle(fontSize: 26),
+                                              ),
+                                              Text(
+                                                'HOUR',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color
+                                                        .withOpacity(.35)),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            ':',
+                                            style: TextStyle(
+                                                fontSize: 26,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color
+                                                    .withOpacity(.7)),
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                _minutes,
+                                                style: TextStyle(fontSize: 26),
+                                              ),
+                                              Text(
+                                                'MIN',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color
+                                                        .withOpacity(.35)),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            ':',
+                                            style: TextStyle(
+                                                fontSize: 26,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color
+                                                    .withOpacity(.7)),
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                _seconds,
+                                                style: TextStyle(fontSize: 26),
+                                              ),
+                                              Text(
+                                                'SEC',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color
+                                                        .withOpacity(.35)),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(
-                                sigmaX: 10,
-                                sigmaY: 10,
-                                tileMode: TileMode.clamp),
-                            child: Container(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.black.withOpacity(0.5)
-                                  : Colors.white.withOpacity(0.5),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          viewModel.numberOfdays.toString(),
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          'DAYS',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .color
-                                                  .withOpacity(.35)),
-                                        ),
-                                      ],
+                        ),
+                      );
+                    }
+                    return Container(
+                      height: 120,
+                      child: Container(
+                        height: 120,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    colorFilter: new ColorFilter.mode(
+                                        Colors.black.withOpacity(0.5),
+                                        BlendMode.dstATop),
+                                    image: NetworkImage(
+                                      image,
                                     ),
-                                    Text(
-                                      ':',
-                                      style: TextStyle(
-                                          fontSize: 26,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              .color
-                                              .withOpacity(.7)),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          viewModel.numberOfhours.toString(),
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          'HOUR',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .color
-                                                  .withOpacity(.35)),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      ':',
-                                      style: TextStyle(
-                                          fontSize: 26,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              .color
-                                              .withOpacity(.7)),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          viewModel.numberOfminutes.toString(),
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          'MIN',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .color
-                                                  .withOpacity(.35)),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      ':',
-                                      style: TextStyle(
-                                          fontSize: 26,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              .color
-                                              .withOpacity(.7)),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          viewModel.numberOfseconds.toString(),
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          'SEC',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .color
-                                                  .withOpacity(.35)),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
+                                ),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 10,
+                                      sigmaY: 10,
+                                      tileMode: TileMode.clamp),
+                                  child: Container(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.black.withOpacity(0.5)
+                                        : Colors.white.withOpacity(0.5),
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24),
+                                        child: Center(
+                                          child: CircularProgressIndicator(),
+                                        )),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 Padding(
                   padding:
@@ -863,7 +948,44 @@ class GlobalChallengeView extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.favorite_border),
+                                        StreamBuilder(
+                                          stream: viewModel
+                                              .getGlobalChallengeIsLikedByUserStream(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<DocumentSnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasData) {
+                                              bool isChallangeLiked = false;
+                                              if (!snapshot.data.exists) {
+                                                isChallangeLiked = false;
+                                              } else if (snapshot.data.exists) {
+                                                print(snapshot.data.data()[
+                                                    'isChallangeLiked']);
+                                                isChallangeLiked = snapshot.data
+                                                    .data()['isChallangeLiked'];
+                                              }
+
+                                              if (isChallangeLiked) {
+                                                return Icon(
+                                                  Icons.favorite,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                );
+                                              } else {
+                                                return Icon(
+                                                    Icons.favorite_border);
+                                              }
+                                            }
+                                            return Container(
+                                              height: 24,
+                                              width: 24,
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          },
+                                        ),
                                         Text(snapshot
                                             .data['challengeLikeCounter']
                                             .toString())
@@ -1048,8 +1170,12 @@ class GlobalChallengeView extends StatelessWidget {
                                 ),
                               );
                             }
-                            String challengeDiscription =
-                                snapshot.data['challengeDiscription'];
+                            String challengeDiscription = snapshot
+                                .data['challengeDiscription']
+                                .replaceAll(
+                                    RegExp(r"<[^>]*>",
+                                        multiLine: true, caseSensitive: true),
+                                    '');
 
                             if (challengeDiscription != null) {
                               return Padding(

@@ -256,6 +256,7 @@ class BookView extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: VerticalDivider(
+                                            thickness: 1.2,
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
@@ -430,6 +431,7 @@ class BookView extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: VerticalDivider(
+                                            thickness: 1.2,
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
@@ -726,6 +728,9 @@ class BookView extends StatelessWidget {
                                                                 ['userEmail']);
                                                       },
                                                       child: ListTileReWidget(
+                                                        userEmail:
+                                                            reviewsDocs[index]
+                                                                ['userEmail'],
                                                         userImage:
                                                             reviewsDocs[index]
                                                                 ['userImage'],

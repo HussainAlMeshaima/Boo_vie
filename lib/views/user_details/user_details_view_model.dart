@@ -73,7 +73,7 @@ class UserDetailsViewModel extends BaseViewModel {
   pushStartUpView(context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 2, milliseconds: 500),
         content: Text('User has been created successfully'),
       ),
     );
@@ -82,7 +82,8 @@ class UserDetailsViewModel extends BaseViewModel {
       Timer(
         Duration(seconds: 3),
         () async {
-          _navigationService.pushNamedAndRemoveUntil(startUpViewRoute);
+          _navigationService
+              .pushNamedAndRemoveUntil(introductionScreenViewRoute);
         },
       );
   }

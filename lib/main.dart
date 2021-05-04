@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         themeMode: themeMode,
         navigatorKey: locator<NavigationService>().navigatorKey,
         onGenerateRoute: router.Router.generateRoute,
-        initialRoute: splashScreenViewRoute,
+        initialRoute: introductionScreenViewRoute,
       ),
     );
   }

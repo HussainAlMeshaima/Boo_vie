@@ -59,12 +59,8 @@ class GlobalChallengeViewModel extends BaseViewModel {
     _trophiesMap = trophiesMap;
     //-----------------------------------------------------------
     _setToDate = setToDate;
-
-    convertTheGivenTimestampToString();
-
+    notifyListeners();
     Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      convertTheGivenTimestampToString();
-
       notifyListeners();
     });
   }
@@ -95,25 +91,60 @@ class GlobalChallengeViewModel extends BaseViewModel {
         duration: Duration(milliseconds: 400));
   }
 
-  void convertTheGivenTimestampToString() {
-    DateTime otherDate = _setToDate.toDate();
+  String convertTheGivenTimestampToDays(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
 
     Duration date = otherDate.difference(DateTime.now());
 
     int _days = date.inDays;
-    int _hours = date.inHours % 24;
-    int _minutes = date.inMinutes % 60;
-    int _seconds = date.inSeconds % 60;
 
     String _daysString = '$_days';
-    String _hoursString = '$_hours'.padLeft(2, '0');
-    String _minutesString = '$_minutes'.padLeft(2, '0');
-    String _secondsString = '$_seconds'.padLeft(2, '0');
 
     _numberOfdays = _daysString;
+
+    return _numberOfdays;
+  }
+
+  String convertTheGivenTimestampToHours(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _hours = date.inHours % 24;
+
+    String _hoursString = '$_hours'.padLeft(2, '0');
+
     _numberOfhours = _hoursString;
+
+    return _numberOfhours.toString();
+  }
+
+  String convertTheGivenTimestampToMinutes(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _minutes = date.inMinutes % 60;
+
+    String _minutesString = '$_minutes'.padLeft(2, '0');
+
     _numberOfminutes = _minutesString;
+
+    return _numberOfminutes.toString();
+  }
+
+  String convertTheGivenTimestampToSeconds(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _seconds = date.inSeconds % 60;
+
+    String _secondsString = '$_seconds'.padLeft(2, '0');
+
     _numberOfseconds = _secondsString;
+
+    return _numberOfseconds.toString();
   }
 
   Stream<QuerySnapshot> getUserBooksInThatShelfStream(
@@ -128,6 +159,11 @@ class GlobalChallengeViewModel extends BaseViewModel {
 
   Stream<QuerySnapshot> getUserShelfsStream() async* {
     yield* _cloudFirestoreServices.getUserShelfsStream();
+  }
+
+  Stream<DocumentSnapshot> getGlobalChallangeSetToDateStream() async* {
+    yield* _cloudFirestoreServices
+        .getGlobalChallangeSetToDateStream(_challangeId);
   }
 
   Future addAbooktoSelectedShelf(
@@ -189,6 +225,16 @@ class GlobalChallengeViewModel extends BaseViewModel {
         numberOfCommunitiesWhoHasThatChallangeCount:
             _numberOfCommunitiesWhoHasThatChallangeCount,
         challengeLikeCounter: _challengeLikeCounter);
+  }
+
+  Stream<DocumentSnapshot> getGlobalChallengeIsLikedByUserStream() async* {
+    yield* _cloudFirestoreServices
+        .getGlobalChallengeIsLikedByUserStream(_challangeId);
+  }
+
+  Future addALikeToChallange() async {
+    await _cloudFirestoreServices.addALikeToChallange(
+        challangeId: _challangeId);
   }
 
   TextEditingController _commentController = TextEditingController(text: '');

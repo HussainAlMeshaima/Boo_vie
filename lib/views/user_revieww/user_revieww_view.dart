@@ -230,22 +230,26 @@ class UserReviewwView extends StatelessWidget {
                                                               Tooltip(
                                                                 message: data[
                                                                     'userName'],
-                                                                child: Text(
-                                                                  data['userName']
-                                                                              .length >
-                                                                          14
-                                                                      ? data['userName'].substring(
-                                                                              0,
-                                                                              14) +
-                                                                          '..'
-                                                                      : data[
-                                                                          'userName'],
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          18,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
+                                                                child:
+                                                                    Container(
+                                                                  width: 134,
+                                                                  child: Text(
+                                                                    data['userName'].length >
+                                                                            14
+                                                                        ? data['userName'].substring(0,
+                                                                                20) +
+                                                                            '..'
+                                                                        : data[
+                                                                            'userName'],
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            18,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  ),
                                                                 ),
                                                               ),
                                                               SizedBox(

@@ -23,7 +23,11 @@ class ChallengesView extends StatelessWidget {
                     onPressed: () {
                       viewModel.pushTrophiesView();
                     }),
-                IconButton(icon: Icon(Icons.history), onPressed: () {})
+                IconButton(
+                    icon: Icon(Icons.history),
+                    onPressed: () {
+                      viewModel.pushCompletedChallengesView();
+                    })
               ],
               title:
                   Tooltip(message: 'Challenges tab', child: Text('Challenges')),
@@ -48,6 +52,8 @@ class ChallengesView extends StatelessWidget {
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
+                          List<QueryDocumentSnapshot> globalChallangesDocs =
+                              snapshot.data.docs;
                           return ListView(
                             shrinkWrap: true,
                             physics: ScrollPhysics(),
@@ -60,37 +66,50 @@ class ChallengesView extends StatelessWidget {
                                 physics: ScrollPhysics(),
                                 itemCount: snapshot.data.docs.length,
                                 itemBuilder: (context, index) {
+                                  globalChallangesDocs.sort((a, b) {
+                                    int aInt = a
+                                        .get('setToDate')
+                                        .microsecondsSinceEpoch;
+                                    int bInt = b
+                                        .get('setToDate')
+                                        .microsecondsSinceEpoch;
+                                    return bInt.compareTo(aInt);
+                                  });
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 3),
                                     child: GestureDetector(
                                       onTap: () {
                                         viewModel.pushGlobalChallengeView(
-                                            challengeRules: snapshot.data.docs[index]
-                                                ['challengeRules'],
-                                            trophiesMap: snapshot.data.docs[index]
+                                            challengeRules:
+                                                globalChallangesDocs[index]
+                                                    ['challengeRules'],
+                                            trophiesMap: globalChallangesDocs[index]
                                                 ['trophiesMap'],
                                             numberOfCommunitiesWhoHasThatChallangeCount:
-                                                snapshot.data.docs[index][
+                                                globalChallangesDocs[index][
                                                     'numberOfCommunitiesWhoHasThatChallangeCount'],
-                                            numberOfCommentsCount: snapshot.data.docs[index]
-                                                ['numberOfCommentsCount'],
-                                            trophiesCount: snapshot.data.docs[index]
+                                            numberOfCommentsCount:
+                                                globalChallangesDocs[index]
+                                                    ['numberOfCommentsCount'],
+                                            trophiesCount: globalChallangesDocs[index]
                                                 ['trophiesCount'],
-                                            challengeDiscription: snapshot.data.docs[index]
-                                                ['challengeDiscription'],
-                                            setToDate: snapshot.data.docs[index]
+                                            challengeDiscription:
+                                                globalChallangesDocs[index]
+                                                    ['challengeDiscription'],
+                                            setToDate: globalChallangesDocs[index]
                                                 ['setToDate'],
                                             numberOfPeopleWhoHasTheChallengeCount:
-                                                snapshot.data.docs[index]['numberOfPeopleWhoHasThatChallengeCount'],
-                                            challengeLikeCounter: snapshot.data.docs[index]['challengeLikeCounter'],
-                                            challengeName: snapshot.data.docs[index]['challengeName'],
-                                            bookTitle: snapshot.data.docs[index]['bookTitle'],
-                                            bookId: snapshot.data.docs[index]['id'],
-                                            previewLink: snapshot.data.docs[index]['previewLink'],
-                                            challengeAuthors: snapshot.data.docs[index]['challengeAuthors'],
-                                            image: snapshot.data.docs[index]['challengeImage'],
-                                            challangeId: snapshot.data.docs[index].id);
+                                                globalChallangesDocs[index]
+                                                    ['numberOfPeopleWhoHasThatChallengeCount'],
+                                            challengeLikeCounter: globalChallangesDocs[index]['challengeLikeCounter'],
+                                            challengeName: globalChallangesDocs[index]['challengeName'],
+                                            bookTitle: globalChallangesDocs[index]['bookTitle'],
+                                            bookId: globalChallangesDocs[index]['id'],
+                                            previewLink: globalChallangesDocs[index]['previewLink'],
+                                            challengeAuthors: globalChallangesDocs[index]['challengeAuthors'],
+                                            image: globalChallangesDocs[index]['challengeImage'],
+                                            challangeId: globalChallangesDocs[index].id);
                                       },
                                       child: Card(
                                         shape: RoundedRectangleBorder(
@@ -329,7 +348,6 @@ class ChallengesView extends StatelessWidget {
                             physics: ScrollPhysics(),
                             children: [
                               // !UserGlobalChallenges
-
                               StreamBuilder(
                                 stream:
                                     viewModel.getUserGlobalChallengesStream(),
@@ -342,6 +360,19 @@ class ChallengesView extends StatelessWidget {
                                     return Container();
                                   }
                                   if (snapshot.hasData) {
+                                    viewModel.sethasGlobalChallengesToTrue();
+                                    List<QueryDocumentSnapshot>
+                                        globalChallangesDocs =
+                                        snapshot.data.docs;
+                                    globalChallangesDocs.sort((a, b) {
+                                      int aInt = a
+                                          .get('challengeLikeCounter')
+                                          .microsecondsSinceEpoch;
+                                      int bInt = b
+                                          .get('challengeLikeCounter')
+                                          .microsecondsSinceEpoch;
+                                      return bInt.compareTo(aInt);
+                                    });
                                     return ListView(
                                       shrinkWrap: true,
                                       physics: ScrollPhysics(),
@@ -355,7 +386,8 @@ class ChallengesView extends StatelessWidget {
                                         ListView.builder(
                                           shrinkWrap: true,
                                           physics: ScrollPhysics(),
-                                          itemCount: snapshot.data.docs.length,
+                                          itemCount:
+                                              globalChallangesDocs.length,
                                           itemBuilder: (context, index) {
                                             return Padding(
                                               padding:
@@ -365,30 +397,37 @@ class ChallengesView extends StatelessWidget {
                                               child: GestureDetector(
                                                 onTap: () {
                                                   viewModel.pushUserGlobalChallengeView(
-                                                      challengeRules: snapshot.data.docs[index]
+                                                      challengeRules: globalChallangesDocs[index]
                                                           ['challengeRules'],
-                                                      trophiesMap: snapshot.data.docs[index]
-                                                          ['trophiesMap'],
+                                                      trophiesMap:
+                                                          globalChallangesDocs[index]
+                                                              ['trophiesMap'],
                                                       numberOfCommunitiesWhoHasThatChallangeCount:
-                                                          snapshot.data.docs[index][
+                                                          globalChallangesDocs[index]
+                                                              [
                                                               'numberOfCommunitiesWhoHasThatChallangeCount'],
                                                       numberOfCommentsCount:
-                                                          snapshot.data.docs[index][
+                                                          globalChallangesDocs[index]
+                                                              [
                                                               'numberOfCommentsCount'],
-                                                      trophiesCount: snapshot.data.docs[index]
-                                                          ['trophiesCount'],
-                                                      challengeDiscription: snapshot.data.docs[index]
-                                                          ['challengeDiscription'],
-                                                      setToDate: snapshot.data.docs[index]['setToDate'],
-                                                      numberOfPeopleWhoHasTheChallengeCount: snapshot.data.docs[index]['numberOfPeopleWhoHasThatChallengeCount'],
-                                                      challengeLikeCounter: snapshot.data.docs[index]['challengeLikeCounter'],
-                                                      challengeName: snapshot.data.docs[index]['challengeName'],
-                                                      bookTitle: snapshot.data.docs[index]['bookTitle'],
-                                                      bookId: snapshot.data.docs[index]['id'],
-                                                      previewLink: snapshot.data.docs[index]['previewLink'],
-                                                      challengeAuthors: snapshot.data.docs[index]['challengeAuthors'],
-                                                      image: snapshot.data.docs[index]['challengeImage'],
-                                                      challangeId: snapshot.data.docs[index].id);
+                                                      trophiesCount:
+                                                          globalChallangesDocs[index]
+                                                              ['trophiesCount'],
+                                                      challengeDiscription: snapshot
+                                                          .data
+                                                          .docs[index]
+                                                              ['challengeDiscription']
+                                                          .replaceAll(RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true), ''),
+                                                      setToDate: globalChallangesDocs[index]['setToDate'],
+                                                      numberOfPeopleWhoHasTheChallengeCount: globalChallangesDocs[index]['numberOfPeopleWhoHasThatChallengeCount'],
+                                                      challengeLikeCounter: globalChallangesDocs[index]['challengeLikeCounter'],
+                                                      challengeName: globalChallangesDocs[index]['challengeName'],
+                                                      bookTitle: globalChallangesDocs[index]['bookTitle'],
+                                                      bookId: globalChallangesDocs[index]['id'],
+                                                      previewLink: globalChallangesDocs[index]['previewLink'],
+                                                      challengeAuthors: globalChallangesDocs[index]['challengeAuthors'],
+                                                      image: globalChallangesDocs[index]['challengeImage'],
+                                                      challangeId: globalChallangesDocs[index].id);
                                                 },
                                                 child: Card(
                                                   shape: RoundedRectangleBorder(
@@ -405,9 +444,8 @@ class ChallengesView extends StatelessWidget {
                                                       image: DecorationImage(
                                                         fit: BoxFit.cover,
                                                         image: NetworkImage(
-                                                            snapshot.data
-                                                                    .docs[index]
-                                                                [
+                                                            globalChallangesDocs[
+                                                                    index][
                                                                 'challengeImage']),
                                                       ),
                                                     ),
@@ -450,11 +488,11 @@ class ChallengesView extends StatelessWidget {
                                                                           .black45,
                                                                       BlendMode
                                                                           .darken),
-                                                                  image: NetworkImage(snapshot
-                                                                          .data
-                                                                          .docs[index]
-                                                                      [
-                                                                      'challengeImage']),
+                                                                  image: NetworkImage(
+                                                                      globalChallangesDocs[
+                                                                              index]
+                                                                          [
+                                                                          'challengeImage']),
                                                                 ),
                                                               ),
                                                             ),
@@ -485,9 +523,9 @@ class ChallengesView extends StatelessWidget {
                                                                               .start,
                                                                       children: [
                                                                         Text(
-                                                                          snapshot
-                                                                              .data
-                                                                              .docs[index]['challengeName'],
+                                                                          globalChallangesDocs[index]
+                                                                              [
+                                                                              'challengeName'],
                                                                           overflow:
                                                                               TextOverflow.ellipsis,
                                                                           style: TextStyle(
@@ -496,9 +534,9 @@ class ChallengesView extends StatelessWidget {
                                                                               color: Colors.white),
                                                                         ),
                                                                         Text(
-                                                                          snapshot
-                                                                              .data
-                                                                              .docs[index]['challengeAuthors'],
+                                                                          globalChallangesDocs[index]
+                                                                              [
+                                                                              'challengeAuthors'],
                                                                           overflow:
                                                                               TextOverflow.ellipsis,
                                                                           style:
@@ -548,13 +586,9 @@ class ChallengesView extends StatelessWidget {
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   if (snapshot.hasError) return snapshot.error;
 
-                                  if (!snapshot.hasData) {
-                                    return Container();
-                                  }
-                                  if (snapshot.data.docs.length == 0)
-                                    return Container();
                                   if (snapshot.hasData &&
                                       snapshot.data.docs.length != 0) {
+                                    viewModel.setHasMyChallengesToTrue();
                                     List<QueryDocumentSnapshot>
                                         userChallangesDocs = snapshot.data.docs;
                                     userChallangesDocs.sort((a, b) {
@@ -583,22 +617,8 @@ class ChallengesView extends StatelessWidget {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return GestureDetector(
-                                              onTap: () =>
-                                                  viewModel.pushBookView(
-                                                authors:
-                                                    userChallangesDocs[index]
-                                                        ['authors'],
-                                                image: userChallangesDocs[index]
-                                                    ['bookImage'],
-                                                id: userChallangesDocs[index]
-                                                    ['id'],
-                                                bookTitle:
-                                                    userChallangesDocs[index]
-                                                        ['title'],
-                                                previewLink:
-                                                    userChallangesDocs[index]
-                                                        ['previewLink'],
-                                              ),
+                                              onTap: () => viewModel
+                                                  .pushMyChallangesView(),
                                               child: Padding(
                                                   padding: const EdgeInsets
                                                           .symmetric(
@@ -623,20 +643,44 @@ class ChallengesView extends StatelessWidget {
                                                                   vertical: 12),
                                                           child: Row(
                                                             children: [
-                                                              Container(
-                                                                height: 100,
-                                                                width: 71,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                8),
-                                                                    image: DecorationImage(
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                        image: NetworkImage(userChallangesDocs[index]
-                                                                            [
-                                                                            'bookImage']))),
+                                                              GestureDetector(
+                                                                onTap: () =>
+                                                                    viewModel
+                                                                        .pushBookView(
+                                                                  authors: userChallangesDocs[
+                                                                          index]
+                                                                      [
+                                                                      'authors'],
+                                                                  image: userChallangesDocs[
+                                                                          index]
+                                                                      [
+                                                                      'bookImage'],
+                                                                  id: userChallangesDocs[
+                                                                          index]
+                                                                      ['id'],
+                                                                  bookTitle: userChallangesDocs[
+                                                                          index]
+                                                                      ['title'],
+                                                                  previewLink:
+                                                                      userChallangesDocs[
+                                                                              index]
+                                                                          [
+                                                                          'previewLink'],
+                                                                ),
+                                                                child:
+                                                                    Container(
+                                                                  height: 110,
+                                                                  width: 71,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              8),
+                                                                      image: DecorationImage(
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          image:
+                                                                              NetworkImage(userChallangesDocs[index]['bookImage']))),
+                                                                ),
                                                               ),
                                                               SizedBox(
                                                                 width: 12,
@@ -700,7 +744,7 @@ class ChallengesView extends StatelessWidget {
                                                                               children: [
                                                                                 Text(
                                                                                   viewModel.convertTheGivenTimestampToString(snapshot.data.docs[index]['setToDate']),
-                                                                                  style: TextStyle(fontSize: 22),
+                                                                                  style: TextStyle(fontSize: 22, wordSpacing: 5, fontWeight: FontWeight.w500),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -869,6 +913,32 @@ class ChallengesView extends StatelessWidget {
                                       ],
                                     );
                                   }
+
+                                  if (!snapshot.hasData ||
+                                      viewModel.hasGlobalChallenges == false &&
+                                          viewModel.hasGlobalChallenges ==
+                                              false) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.3,
+                                      child: Center(
+                                        child: Text(
+                                            'You have no challanges yet 😭'),
+                                      ),
+                                    );
+                                  }
+                                  if (snapshot.data.docs.length == 0 &&
+                                      viewModel.hasGlobalChallenges == true)
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.3,
+                                      child: Center(
+                                        child: Text(
+                                            'You have no challanges yet 😭'),
+                                      ),
+                                    );
 
                                   return ListView(
                                     shrinkWrap: true,

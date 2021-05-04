@@ -108,6 +108,15 @@ class CloudFirestoreServices {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getOtherUserShelfsStream(
+      {String otherUserEmail}) async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(otherUserEmail)
+        .collection('userShelfs')
+        .snapshots();
+  }
+
   Future<QuerySnapshot> getUserShelfsBooksByNameFuture(String shelfId) async {
     String _userEmail = await _authenticationService.userEmail();
     return FirebaseFirestore.instance
@@ -125,6 +134,17 @@ class CloudFirestoreServices {
     yield* FirebaseFirestore.instance
         .collection('users')
         .doc(_userEmail)
+        .collection('userShelfs')
+        .doc(shelfName)
+        .collection('books')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getOtherUserBooksInThatShelfStream(
+      {@required String shelfName, @required otherUserEmail}) async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(otherUserEmail)
         .collection('userShelfs')
         .doc(shelfName)
         .collection('books')
@@ -675,6 +695,91 @@ class CloudFirestoreServices {
     } catch (e) {}
   }
 
+  addALikeToChallange({
+    @required String challangeId,
+  }) async {
+    try {
+      String _userEmail = await _authenticationService.userEmail();
+
+      FirebaseFirestore.instance
+          .collection('globalChallenges')
+          .doc(challangeId)
+          .collection('ChallengeLikes')
+          .doc(_userEmail)
+          .get()
+          .then((challangeDoc) => {
+                if (!challangeDoc.exists)
+                  {
+                    FirebaseFirestore.instance
+                        .collection('globalChallenges')
+                        .doc(challangeId)
+                        .collection('ChallengeLikes')
+                        .doc(_userEmail)
+                        .set({'isChallangeLiked': true}).then((value) => {
+                              FirebaseFirestore.instance
+                                  .collection('globalChallenges')
+                                  .doc(challangeId)
+                                  .update({
+                                'challengeLikeCounter': FieldValue.increment(1)
+                              })
+                            })
+                  }
+                else
+                  {
+                    FirebaseFirestore.instance
+                        .collection('globalChallenges')
+                        .doc(challangeId)
+                        .collection('ChallengeLikes')
+                        .doc(_userEmail)
+                        .get()
+                        .then((challangeDoc) => {
+                              print('-------'),
+                              print(challangeDoc.data()['isChallangeLiked']),
+                              if (!challangeDoc.data()['isChallangeLiked'])
+                                {
+                                  FirebaseFirestore.instance
+                                      .collection('globalChallenges')
+                                      .doc(challangeId)
+                                      .collection('ChallengeLikes')
+                                      .doc(_userEmail)
+                                      .update({'isChallangeLiked': true}).then(
+                                    (value) => {
+                                      FirebaseFirestore.instance
+                                          .collection('globalChallenges')
+                                          .doc(challangeId)
+                                          .update({
+                                        'challengeLikeCounter':
+                                            FieldValue.increment(1)
+                                      })
+                                    },
+                                  )
+                                }
+                              else
+                                {
+                                  FirebaseFirestore.instance
+                                      .collection('globalChallenges')
+                                      .doc(challangeId)
+                                      .collection('ChallengeLikes')
+                                      .doc(_userEmail)
+                                      .update({'isChallangeLiked': false}).then(
+                                    (value) => {
+                                      FirebaseFirestore.instance
+                                          .collection('globalChallenges')
+                                          .doc(challangeId)
+                                          .update({
+                                        'challengeLikeCounter':
+                                            FieldValue.increment(-1)
+                                      })
+                                    },
+                                  )
+                                }
+                            })
+                  }
+              })
+          .then((value) => print('Like added'));
+    } catch (e) {}
+  }
+
   Future addACommentToAGlobalChallange({
     @required String challangeId,
 
@@ -1010,6 +1115,7 @@ class CloudFirestoreServices {
               .collection('Trophies')
               .doc('Welcome To BooVie')
               .set({
+            'isNormalTrophy': true,
             'trophyTitle': 'Welcome To BooVie',
             'trophyReceivedDate': DateTime.now(),
             'trophyDescription':
@@ -1116,7 +1222,15 @@ class CloudFirestoreServices {
                     'challengeLikeCounter': challengeLikeCounter,
                     'challangeId': challangeId,
                     'id': bookId,
-                  })
+                  }).then((value) => {
+                            FirebaseFirestore.instance
+                                .collection('globalChallenges')
+                                .doc(challangeId)
+                                .update({
+                              'numberOfPeopleWhoHasThatChallengeCount':
+                                  FieldValue.increment(1)
+                            })
+                          })
                 }
             });
   }
@@ -1159,5 +1273,72 @@ class CloudFirestoreServices {
         .doc('userTrophies')
         .collection('Trophies')
         .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getGlobalChallengeIsLikedByUserStream(
+      String challangeId) async* {
+    yield* FirebaseFirestore.instance
+        .collection('globalChallenges')
+        .doc(challangeId)
+        .collection('ChallengeLikes')
+        .doc(await _authenticationService.userEmail())
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getGlobalChallangeSetToDateStream(
+      String challangeId) async* {
+    yield* FirebaseFirestore.instance
+        .collection('globalChallenges')
+        .doc(challangeId)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCompletedChallengesStream() async* {
+    yield* _users
+        .doc(await _authenticationService.userEmail())
+        .collection('completedChallenges')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getPrivateChatWithOtherUsers() async* {
+    yield* _users
+        .doc(await _authenticationService.userEmail())
+        .collection('privateChatWithOtherUsers')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getThatPrivateChatWithThatOtherUser(
+      {@required String otherUser}) async* {
+    yield* _users
+        .doc(await _authenticationService.userEmail())
+        .collection('privateChatWithOtherUsers')
+        .doc(otherUser)
+        .collection('messages')
+        .snapshots();
+  }
+
+  Future createANewConversation(String otherUser) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('privateChatWithOtherUsers')
+        .doc(otherUser)
+        .get()
+        .then((thatOtherUser) async => {
+              if (!thatOtherUser.exists)
+                {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(await _authenticationService.userEmail())
+                      .collection('privateChatWithOtherUsers')
+                      .doc(otherUser)
+                      .collection('messages')
+                      .add({
+                    'sentDate': DateTime.now(),
+                    'isMeThatSender': true,
+                    'message': 'hello 👋'
+                  })
+                }
+            });
   }
 }

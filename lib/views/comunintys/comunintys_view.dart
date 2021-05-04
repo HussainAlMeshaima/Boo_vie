@@ -1,4 +1,5 @@
 import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'comunintys_view_model.dart';
@@ -223,7 +224,74 @@ class ComunintysView extends StatelessWidget {
                   Container(),
 
                   // !
-                  Container()
+                  StreamBuilder(
+                    stream: viewModel.getPrivateChatWithOtherUsers(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: ListView(
+                                  physics: ScrollPhysics(),
+                                  shrinkWrap: true,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        viewModel.pushRoomView(
+                                            otherUser:
+                                                snapshot.data.docs[index].id);
+                                      },
+                                      child: ListTile(
+                                        leading: Container(
+                                          height: 55,
+                                          width: 55,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(.4),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(snapshot
+                                                  .data.docs[index]['image']),
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          snapshot.data.docs[index]['name'],
+                                        ),
+                                        subtitle: Text(
+                                          snapshot.data.docs[index]
+                                              ['lastMessage'],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 25,
+                                      ),
+                                      child: Divider(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ]),
+                            );
+                          },
+                        );
+                      }
+                      return Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                  )
                 ],
               )),
         );

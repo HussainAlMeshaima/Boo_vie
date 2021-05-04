@@ -28,6 +28,11 @@ import 'package:boo_vi_app/views/comuninty/comuninty_view.dart' as view21;
 import 'package:boo_vi_app/views/comuninty_information/comuninty_information_view.dart' as view22;
 import 'package:boo_vi_app/views/trophies/trophies_view.dart' as view23;
 import 'package:boo_vi_app/views/trophy/trophy_view.dart' as view24;
+import 'package:boo_vi_app/views/user_review_to_profile/user_review_to_profile_view.dart' as view25;
+import 'package:boo_vi_app/views/completed_challenges/completed_challenges_view.dart' as view26;
+import 'package:boo_vi_app/views/my_challanges/my_challanges_view.dart' as view27;
+import 'package:boo_vi_app/views/introduction_screen/introduction_screen_view.dart' as view28;
+import 'package:boo_vi_app/views/room/room_view.dart' as view29;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -82,6 +87,16 @@ class Router {
         return MaterialPageRoute(builder: (_) => view23.TrophiesView());
       case trophyViewRoute:
         return MaterialPageRoute(builder: (_) => view24.TrophyView());
+      case userReviewToProfileViewRoute:
+        return MaterialPageRoute(builder: (_) => view25.UserReviewToProfileView());
+      case completedChallengesViewRoute:
+        return MaterialPageRoute(builder: (_) => view26.CompletedChallengesView());
+      case myChallangesViewRoute:
+        return MaterialPageRoute(builder: (_) => view27.MyChallangesView());
+      case introductionScreenViewRoute:
+        return MaterialPageRoute(builder: (_) => view28.IntroductionScreenView());
+      case roomViewRoute:
+        return MaterialPageRoute(builder: (_) => view29.RoomView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

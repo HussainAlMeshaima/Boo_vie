@@ -4,7 +4,9 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
+import 'package:boo_vi_app/views/completed_challenges/completed_challenges_view.dart';
 import 'package:boo_vi_app/views/global_challenge/global_challenge_view.dart';
+import 'package:boo_vi_app/views/my_challanges/my_challanges_view.dart';
 import 'package:boo_vi_app/views/trophies/trophies_view.dart';
 import 'package:boo_vi_app/views/user_global_challenge/user_global_challenge_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -161,6 +163,7 @@ class ChallengesViewModel extends BaseViewModel {
 
   Timestamp _setToDate;
   Timestamp get setToDate => _setToDate;
+
   String _numberOfhours;
   String get numberOfhours => _numberOfhours;
 
@@ -190,12 +193,41 @@ class ChallengesViewModel extends BaseViewModel {
     _numberOfminutes = _minutesString;
     _numberOfseconds = _secondsString;
 
-    return (_daysString +
-        ' : ' +
-        _numberOfhours.toString() +
+    return (_numberOfhours.toString() +
         ' : ' +
         _numberOfminutes.toString() +
         ' : ' +
         _numberOfseconds.toString());
+  }
+
+  bool _hasGlobalChallenges = true;
+  bool get hasGlobalChallenges => _hasGlobalChallenges;
+
+  bool _hasMyChallenges = true;
+  bool get hasMyChallenges => _hasMyChallenges;
+
+  pushMyChallangesView({
+    @required String bookId,
+    @required String bookAuthors,
+    @required String bookPreviewLink,
+    @required Timestamp setToDate,
+  }) {
+    _navigationService.navigateWithTransition(MyChallangesView(),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  pushCompletedChallengesView() {
+    _navigationService.navigateWithTransition(CompletedChallengesView(),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  void sethasGlobalChallengesToTrue() {
+    _hasGlobalChallenges = true;
+  }
+
+  void setHasMyChallengesToTrue() {
+    _hasMyChallenges = true;
   }
 }

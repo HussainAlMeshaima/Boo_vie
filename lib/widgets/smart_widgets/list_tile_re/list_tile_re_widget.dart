@@ -9,6 +9,7 @@ class ListTileReWidget extends StatelessWidget {
   final String userImage;
   final String userName;
   final String userReview;
+  final String userEmail;
   final DateTime userSentTime;
   final double commentsCounter;
   final double likesCounter;
@@ -25,6 +26,7 @@ class ListTileReWidget extends StatelessWidget {
     @required this.likesCounter,
     @required this.bookId,
     @required this.bookImage,
+    @required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -68,18 +70,25 @@ class ListTileReWidget extends StatelessWidget {
                           children: [
                             Tooltip(
                               message: userName + ' profile Image',
-                              child: Container(
-                                height: 43,
-                                width: 43,
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Color(0xff262626)
-                                        : Color(0xffE8E8E8),
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(userImage))),
+                              child: GestureDetector(
+                                onTap: () {
+                                  viewModel.pushUserReviewToProfileView(
+                                      userImage: userImage,
+                                      userEmail: userEmail);
+                                },
+                                child: Container(
+                                  height: 43,
+                                  width: 43,
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Color(0xff262626)
+                                          : Color(0xffE8E8E8),
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(userImage))),
+                                ),
                               ),
                             ),
                             Padding(

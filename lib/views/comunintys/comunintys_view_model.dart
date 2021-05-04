@@ -1,4 +1,7 @@
 import 'package:boo_vi_app/core/locator.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
+import 'package:boo_vi_app/views/room/room_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -13,6 +16,9 @@ class ComunintysViewModel extends BaseViewModel {
   ComunintysViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
 
   int _pageIndex = 0;
   int get pageIndex => _pageIndex;
@@ -39,6 +45,16 @@ class ComunintysViewModel extends BaseViewModel {
 
   pushComunintyInformationView() {
     return _navigationService.navigateWithTransition(ComunintyInformationView(),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 400));
+  }
+
+  Stream<QuerySnapshot> getPrivateChatWithOtherUsers() async* {
+    yield* _cloudFirestoreServices.getPrivateChatWithOtherUsers();
+  }
+
+  void pushRoomView({@required String otherUser}) {
+    _navigationService.navigateWithTransition(RoomView(),
         transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 400));
   }
