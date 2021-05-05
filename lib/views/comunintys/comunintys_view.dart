@@ -90,15 +90,15 @@ class ComunintysView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          viewModel.pushComunintyInformationView();
-                        },
-                        child: ListView(
-                          physics: ScrollPhysics(),
-                          shrinkWrap: true,
-                          children: [
-                            Card(
+                      child: ListView(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              viewModel.pushComunintyInformationView();
+                            },
+                            child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
@@ -110,112 +110,225 @@ class ComunintysView extends StatelessWidget {
                                     Hero(
                                       tag: 1,
                                       child: Container(
-                                        height: 120,
+                                        height: 200,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(15),
-                                              topRight: Radius.circular(15)),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
                                                   'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80004f68741469.5bae1b8424f4c.jpg')),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            width: 210,
-                                            child: Text(
-                                              'Hussain Comunity 101',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Column(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            alignment: Alignment.bottomCenter,
                                             children: [
-                                              Icon(
-                                                Icons.favorite,
-                                                size: 18,
-                                              ),
-                                              Text('19'),
+                                              Positioned(
+                                                bottom: -42,
+                                                child: Container(
+                                                  height: 113,
+                                                  width: 300,
+                                                  child: Card(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              9.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12.0),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                width: 215,
+                                                                child: Text(
+                                                                  'Horror Comunity',
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                              Spacer(),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.timer,
+                                                                    size: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    '12',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .people,
+                                                                    size: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    '12',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Stack(
+                                                                clipBehavior:
+                                                                    Clip.none,
+                                                                alignment:
+                                                                    AlignmentDirectional
+                                                                        .bottomEnd,
+                                                                children: [
+                                                                  Positioned(
+                                                                    right: -24,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          32,
+                                                                      width: 32,
+                                                                      decoration: BoxDecoration(
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                                color: Colors.black45,
+                                                                                blurRadius: 3,
+                                                                                spreadRadius: 2)
+                                                                          ],
+                                                                          color: Theme.of(context).primaryColor.withOpacity(
+                                                                              .4),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              5),
+                                                                          image: DecorationImage(
+                                                                              fit: BoxFit.cover,
+                                                                              image: NetworkImage('https://thumbs.dreamstime.com/b/surprised-female-person-confused-isolated-surprised-female-person-confused-isolated-168304856.jpg'))),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                    right: -15,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          34,
+                                                                      width: 34,
+                                                                      decoration: BoxDecoration(
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                                color: Colors.black45,
+                                                                                blurRadius: 3,
+                                                                                spreadRadius: 2)
+                                                                          ],
+                                                                          color: Theme.of(context).primaryColor.withOpacity(
+                                                                              .4),
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              7),
+                                                                          image: DecorationImage(
+                                                                              fit: BoxFit.cover,
+                                                                              image: NetworkImage('https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80'))),
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    height: 40,
+                                                                    width: 40,
+                                                                    decoration: BoxDecoration(
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor
+                                                                            .withOpacity(
+                                                                                .4),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: Colors.black45,
+                                                                              blurRadius: 3,
+                                                                              spreadRadius: 2)
+                                                                        ],
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                5),
+                                                                        image: DecorationImage(
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            image: NetworkImage('https://img.freepik.com/free-photo/cheerful-curly-business-girl-wearing-glasses_176420-206.jpg?size=626&ext=jpg'))),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                width: 34,
+                                                              ),
+                                                              Text(
+                                                                '12',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                              Text(
+                                                                ' more',
+                                                                style: TextStyle(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                    fontSize:
+                                                                        9),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 50,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
                                             ],
                                           ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Column(
-                                            children: [
-                                              Icon(
-                                                Icons.timer,
-                                                size: 18,
-                                              ),
-                                              Text('19'),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Column(
-                                            children: [
-                                              Icon(
-                                                Icons.people,
-                                                size: 18,
-                                              ),
-                                              Text('19'),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Text(
-                                        '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit '
-                                                    .length >=
-                                                150
-                                            ? '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit '
-                                                    .substring(0, 150) +
-                                                '...'
-                                            : '     Welcome to a community of Community fans, and the subreddit that\'s streets ahead! Voted 5th best new Reddit community of 2010 and 2nd best little Reddit ',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
                                     ),
                                   ],
                                 ),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                        ],
                       ),
                     ),
                   ),

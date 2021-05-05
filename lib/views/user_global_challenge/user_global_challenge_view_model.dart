@@ -118,9 +118,9 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
         challangeId: _challangeId);
   }
 
-  Stream<QuerySnapshot> getUserShelfsStream() async* {
-    yield* _cloudFirestoreServices.getUserShelfsStream();
-  }
+  // Stream<QuerySnapshot> getUserShelfsStream() async* {
+  //   yield* _cloudFirestoreServices.getUserShelfsStream();
+  // }
 
   Stream<QuerySnapshot> getUserBooksInThatShelfStream(
       {@required String shelfName}) async* {

@@ -99,13 +99,13 @@ class CloudFirestoreServices {
     });
   }
 
-  Stream<QuerySnapshot> getUserShelfsStream() async* {
+  Future<QuerySnapshot> getUserShelfsStream() async {
     String _userEmail = await _authenticationService.userEmail();
-    yield* FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection('users')
         .doc(_userEmail)
         .collection('userShelfs')
-        .snapshots();
+        .get();
   }
 
   Stream<QuerySnapshot> getOtherUserShelfsStream(

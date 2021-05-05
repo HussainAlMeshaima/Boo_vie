@@ -358,8 +358,8 @@ class ProfileView extends StatelessWidget {
                         );
                       },
                     )),
-                StreamBuilder(
-                    stream: viewModel.getUserShelfsStream(),
+                FutureBuilder(
+                    future: viewModel.getUserShelfsStream(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) return snapshot.error;
