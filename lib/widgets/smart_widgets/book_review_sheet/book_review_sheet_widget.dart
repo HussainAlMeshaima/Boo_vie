@@ -83,7 +83,7 @@ class BookReviewSheetWidget extends StatelessWidget {
                 },
               ),
               SizedBox(
-                height: 5,
+                height: 12,
               ),
               Tooltip(
                 message: 'Is that review a spoiler ? 🔥',

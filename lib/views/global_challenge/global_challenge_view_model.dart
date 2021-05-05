@@ -157,9 +157,9 @@ class GlobalChallengeViewModel extends BaseViewModel {
     return _streamServices.getGlobalChallengeStream(_challangeId);
   }
 
-  // Future<Stream<QuerySnapshot>> getUserShelfsStream() async {
-  //   return _cloudFirestoreServices.getUserShelfsStream();
-  // }
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
+    yield* _cloudFirestoreServices.getUserShelfsStream();
+  }
 
   Stream<DocumentSnapshot> getGlobalChallangeSetToDateStream() async* {
     yield* _cloudFirestoreServices

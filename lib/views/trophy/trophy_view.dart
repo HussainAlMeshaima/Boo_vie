@@ -41,174 +41,189 @@ class TrophyView extends StatelessWidget {
       ),
       builder: (BuildContext context, TrophyViewModel viewModel, Widget _) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Trophy'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: ListView(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              children: [
-                SizedBox(
-                  height: 24,
-                ),
-                Center(
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.circular(12),
-                      image: DecorationImage(
-                        fit: BoxFit.scaleDown,
-                        image: NetworkImage(Theme.of(context).brightness ==
-                                Brightness.dark
-                            ? 'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/assets%2FwelcomeToBooVi%2FwelcomeToBooViDark.png?alt=media&token=771822a7-1d88-4e96-958b-ea655a9209bc'
-                            : 'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/assets%2FwelcomeToBooVi%2FwelcomeToBooViLight.png?alt=media&token=8c1c90a8-3cbb-40d6-bad7-13d3464a934a'),
+            body: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              title: Text('Trophy'),
+            ),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  children: [
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(12),
+                          image: DecorationImage(
+                            fit: BoxFit.scaleDown,
+                            image: NetworkImage(Theme.of(context).brightness ==
+                                    Brightness.dark
+                                ? 'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/assets%2FwelcomeToBooVi%2FwelcomeToBooViDark.png?alt=media&token=771822a7-1d88-4e96-958b-ea655a9209bc'
+                                : 'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/assets%2FwelcomeToBooVi%2FwelcomeToBooViLight.png?alt=media&token=8c1c90a8-3cbb-40d6-bad7-13d3464a934a'),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  child: Text(
-                    'Trophy name',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                    SizedBox(
+                      height: 35,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Hero(
-                            tag: 1,
-                            child: Icon(
-                              Icons.emoji_events,
-                              size: 50,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 14,
-                          ),
-                          Column(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      child: Text(
+                        'Trophy name',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 12,
+                              Hero(
+                                tag: 1,
+                                child: Icon(
+                                  Icons.emoji_events,
+                                  size: 50,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                               ),
-                              Text(viewModel.trophyTitle,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500)),
+                              SizedBox(
+                                width: 14,
+                              ),
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  Text(viewModel.trophyTitle,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500)),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 22,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  child: Text(
-                    'Trophy Description',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                    SizedBox(
+                      height: 22,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(17.0),
-                      child: Text('       ' + viewModel.trophyDescription,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400)),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 22,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  child: Text(
-                    'Trophy obtain on',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(17.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
                       child: Text(
-                          '       ' +
-                              'Date       ' +
-                              DateFormat('dd-MM-yyyy')
-                                  .format(viewModel.trophyReceivedDate.toDate())
-                                  .toString() +
-                              '\n' +
+                        'Trophy Description',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17.0),
+                          child: Text('       ' + viewModel.trophyDescription,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 22,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      child: Text(
+                        'Trophy obtain on',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17.0),
+                          child: Text(
                               '       ' +
-                              'Time       ' +
-                              DateFormat('kk:mm:a')
-                                  .format(viewModel.trophyReceivedDate.toDate())
-                                  .toString(),
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400)),
+                                  'Date       ' +
+                                  DateFormat('dd-MM-yyyy')
+                                      .format(
+                                          viewModel.trophyReceivedDate.toDate())
+                                      .toString() +
+                                  '\n' +
+                                  '       ' +
+                                  'Time       ' +
+                                  DateFormat('kk:mm:a')
+                                      .format(
+                                          viewModel.trophyReceivedDate.toDate())
+                                      .toString(),
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 22,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  child: Text(
-                    'Trophy type',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                    SizedBox(
+                      height: 22,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(17.0),
-                      child: Text('       ' + 'Normal tropy',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      child: Text(
+                        'Trophy type',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  ),
+                    Container(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17.0),
+                          child: Text('       ' + 'Normal tropy',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 100,
-                ),
-              ],
-            ),
-          ),
-        );
+              ),
+            ]))
+          ],
+        ));
       },
       viewModelBuilder: () => TrophyViewModel(),
     );

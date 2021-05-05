@@ -29,7 +29,7 @@ class MoreBooksViewModel extends BaseViewModel {
           text: bookTitle,
           previewLink: previewLink,
         ),
-        transition: 'fade',
+        transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 460));
   }
 }

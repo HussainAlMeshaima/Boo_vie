@@ -73,6 +73,9 @@ class EditReviewSheetWidget extends StatelessWidget {
               ElevatedButtonWidget(
                 text: 'Update',
                 onPressed: () async {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      content: Text('My Review has been updated')));
                   Navigator.pop(context);
                   await viewModel.updateThatUserReviewForThatBook();
                 },

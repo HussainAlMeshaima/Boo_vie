@@ -79,11 +79,11 @@ class BookReviewSheetViewModel extends BaseViewModel {
     if (reviewController.text == '') {
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 3),
-          content: Text('Please include a review to be recorded.')));
+          content: Text('Please include a review to be recorded')));
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: Duration(seconds: 3),
-        content: Text('Review has been send.')));
+        duration: Duration(seconds: 2),
+        content: Text('Reviews has been updated')));
     String userEmail = await _authenticationService.userEmail();
     String userId = await _authenticationService.userId();
     DocumentSnapshot userDoc =

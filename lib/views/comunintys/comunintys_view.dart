@@ -10,7 +10,7 @@ class ComunintysView extends StatelessWidget {
     return ViewModelBuilder<ComunintysViewModel>.reactive(
       builder: (BuildContext context, ComunintysViewModel viewModel, Widget _) {
         return DefaultTabController(
-          length: 3,
+          length: 2,
           child: Scaffold(
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
@@ -79,8 +79,6 @@ class ComunintysView extends StatelessWidget {
                           'Comunintys',
                           textAlign: TextAlign.center,
                         ))),
-                    Tooltip(
-                        message: 'Chats tab', child: Tab(icon: Text('Chats'))),
                   ],
                 ),
               ),
@@ -335,76 +333,6 @@ class ComunintysView extends StatelessWidget {
 
                   // ! My Comunintys
                   Container(),
-
-                  // !
-                  StreamBuilder(
-                    stream: viewModel.getPrivateChatWithOtherUsers(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          physics: ScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.docs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: ListView(
-                                  physics: ScrollPhysics(),
-                                  shrinkWrap: true,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        viewModel.pushRoomView(
-                                            otherUser:
-                                                snapshot.data.docs[index].id);
-                                      },
-                                      child: ListTile(
-                                        leading: Container(
-                                          height: 55,
-                                          width: 55,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(.4),
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(snapshot
-                                                  .data.docs[index]['image']),
-                                            ),
-                                          ),
-                                        ),
-                                        title: Text(
-                                          snapshot.data.docs[index]['name'],
-                                        ),
-                                        subtitle: Text(
-                                          snapshot.data.docs[index]
-                                              ['lastMessage'],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 25,
-                                      ),
-                                      child: Divider(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ]),
-                            );
-                          },
-                        );
-                      }
-                      return Container(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    },
-                  )
                 ],
               )),
         );

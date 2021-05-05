@@ -31,21 +31,26 @@ class LoginView extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      Text(
-                        'Forgot Password ?',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).primaryColor),
-                        textAlign: TextAlign.center,
+                      Tooltip(
+                        message: 'Forgot Password ?',
+                        child: Text(
+                          'Forgot Password ?',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'Raleway',
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).primaryColor),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       TextfieldWidget(
                         controller: viewModel.forgotPasswordController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        onSubmitted: (_) =>
-                            viewModel.sendResetPasswordLink(context),
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                          viewModel.sendResetPasswordLink(context);
+                        },
                       ),
                       SizedBox(
                         height: 128,
@@ -66,8 +71,10 @@ class LoginView extends StatelessWidget {
                       ),
                       ElevatedButtonWidget(
                         text: 'Send Email',
-                        onPressed: () =>
-                            viewModel.sendResetPasswordLink(context),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          viewModel.sendResetPasswordLink(context);
+                        },
                       )
                     ],
                   ),
@@ -80,12 +87,15 @@ class LoginView extends StatelessWidget {
                       ),
                       Hero(
                         tag: 'BooVi',
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/booViLogo-Red.png'),
+                        child: Tooltip(
+                          message: 'booVi logo',
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/booViLogo-Red.png'),
+                              ),
                             ),
                           ),
                         ),
@@ -93,26 +103,34 @@ class LoginView extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      Text(
-                        'Log In',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).primaryColor),
-                        textAlign: TextAlign.center,
+                      Tooltip(
+                        message: 'Log In',
+                        child: Text(
+                          'Log In',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'Raleway',
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).primaryColor),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       TextfieldWidget(
                         controller: viewModel.loginEmailController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        // onSubmitted: (_) => viewModel.loginUser(context),
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                        },
                       ),
                       TextfieldWidget(
                         controller: viewModel.loginPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        onSubmitted: (_) => viewModel.loginUser(context),
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                          viewModel.loginUser(context);
+                        },
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -121,9 +139,15 @@ class LoginView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap: () => viewModel.changePage(0),
-                                child: UnderlineTextWidget(
-                                    text: 'forgot password?'),
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                  viewModel.changePage(0);
+                                },
+                                child: Tooltip(
+                                  message: 'forgot password?',
+                                  child: UnderlineTextWidget(
+                                      text: 'forgot password?'),
+                                ),
                               ),
                             ],
                           )),
@@ -142,19 +166,28 @@ class LoginView extends StatelessWidget {
                       ),
                       ElevatedButtonWidget(
                           text: 'Log In',
-                          onPressed: () => viewModel.loginUser(context)),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            viewModel.loginUser(context);
+                          }),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '- or -',
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                          textAlign: TextAlign.center,
+                        child: Tooltip(
+                          message: 'or',
+                          child: Text(
+                            '- or -',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       OutlinedButtonWidget(
                         text: 'Sign Up',
-                        onPressed: () => viewModel.changePage(2),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          viewModel.changePage(2);
+                        },
                       )
                     ],
                   ),
@@ -168,26 +201,35 @@ class LoginView extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).primaryColor),
-                        textAlign: TextAlign.center,
+                      Tooltip(
+                        message: 'Sign Up',
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'Raleway',
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).primaryColor),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       TextfieldWidget(
                         controller: viewModel.signUpEmailController,
                         hintText: 'Email',
                         textInputType: TextInputType.emailAddress,
-                        //onSubmitted: (_) => viewModel.signUpUser(context),
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                          // viewModel.signUpUser(context);
+                        },
                       ),
                       TextfieldWidget(
                         controller: viewModel.signUpPasswordController,
                         hintText: 'password',
                         obscureText: true,
-                        onSubmitted: (_) => viewModel.signUpUser(context),
+                        onSubmitted: (_) {
+                          FocusScope.of(context).unfocus();
+                          viewModel.signUpUser(context);
+                        },
                       ),
                       SizedBox(
                         height: 38,
@@ -207,7 +249,10 @@ class LoginView extends StatelessWidget {
                       ),
                       OutlinedButtonWidget(
                         text: 'Sign Up',
-                        onPressed: () => viewModel.signUpUser(context),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          viewModel.signUpUser(context);
+                        },
                       )
                     ],
                   ),

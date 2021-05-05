@@ -30,109 +30,113 @@ class UserDetailsView extends StatelessWidget {
                     SizedBox(
                       height: 60,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 180,
-                                child: ListView(
-                                  children: [
-                                    ListTile(
-                                      title: Text(
-                                        'Choose Image Source:',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                    Tooltip(
+                      message: 'Edit image',
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 180,
+                                  child: ListView(
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                          'Choose Image Source:',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    ListTileWidget(
-                                      text: 'From Camera',
-                                      onTap: () => viewModel
-                                          .selectImageFromCamra(context),
-                                      leadingIconData: Icons.camera,
-                                    ),
-                                    ListTileWidget(
-                                      text: 'From Gallery',
-                                      onTap: () => viewModel
-                                          .selectImageFromGallery(context),
-                                      leadingIconData: Icons.photo,
+                                      ListTileWidget(
+                                        text: 'From Camera',
+                                        onTap: () => viewModel
+                                            .selectImageFromCamra(context),
+                                        leadingIconData: Icons.camera,
+                                      ),
+                                      ListTileWidget(
+                                        text: 'From Gallery',
+                                        onTap: () => viewModel
+                                            .selectImageFromGallery(context),
+                                        leadingIconData: Icons.photo,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
+                        child: viewModel.selectedImage != null
+                            ? Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Color(0xffE7E7E7)
+                                        : Color(0xff656565).withOpacity(0.4),
+                                    image: DecorationImage(
+                                        image:
+                                            FileImage(viewModel.selectedImage),
+                                        fit: BoxFit.cover)),
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Positioned(
+                                      bottom: -5,
+                                      right: -5,
+                                      child: Container(
+                                        height: 37,
+                                        width: 37,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                        child: Icon(Icons.edit),
+                                      ),
                                     ),
                                   ],
                                 ),
-                              );
-                            });
-                      },
-                      child: viewModel.selectedImage != null
-                          ? Container(
-                              height: 130,
-                              width: 130,
-                              decoration: BoxDecoration(
+                              )
+                            : Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(20),
                                   color: Theme.of(context).brightness ==
                                           Brightness.light
                                       ? Color(0xffE7E7E7)
                                       : Color(0xff656565).withOpacity(0.4),
-                                  image: DecorationImage(
-                                      image: FileImage(viewModel.selectedImage),
-                                      fit: BoxFit.cover)),
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Positioned(
-                                    bottom: -5,
-                                    right: -5,
-                                    child: Container(
-                                      height: 37,
-                                      width: 37,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                      child: Icon(Icons.edit),
+                                ),
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Positioned(
+                                      bottom: -5,
+                                      right: -5,
+                                      child: Container(
+                                        height: 37,
+                                        width: 37,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                        child: Icon(Icons.edit),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            )
-                          : Container(
-                              height: 130,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(20),
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? Color(0xffE7E7E7)
-                                    : Color(0xff656565).withOpacity(0.4),
-                              ),
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Positioned(
-                                    bottom: -5,
-                                    right: -5,
-                                    child: Container(
-                                      height: 37,
-                                      width: 37,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                      child: Icon(Icons.edit),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                      ),
                     ),
                     SizedBox(
                       height: 15,
@@ -158,29 +162,32 @@ class UserDetailsView extends StatelessWidget {
                                   child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 4),
-                                      child: Container(
-                                        height: 40,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Center(
-                                              child: Text(
-                                                  viewModel.options[index])),
+                                      child: Tooltip(
+                                        message: viewModel.options[index],
+                                        child: Container(
+                                          height: 40,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Center(
+                                                child: Text(
+                                                    viewModel.options[index])),
+                                          ),
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  viewModel.isChoiceChipSelected[
+                                                              index] ==
+                                                          true
+                                                      ? Theme.of(context)
+                                                          .primaryColor
+                                                      : Theme.of(context)
+                                                          .cardColor,
+                                              border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                         ),
-                                        decoration: BoxDecoration(
-                                            color:
-                                                viewModel.isChoiceChipSelected[
-                                                            index] ==
-                                                        true
-                                                    ? Theme.of(context)
-                                                        .primaryColor
-                                                    : Theme.of(context)
-                                                        .cardColor,
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                width: 2),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
                                       )),
                                 ),
                               );
@@ -225,8 +232,9 @@ class UserDetailsView extends StatelessWidget {
                       height: 15,
                     ),
                     OutlinedButtonWidget(
-                      text: 'Continue',
+                      text: ' Continue ',
                       onPressed: () async {
+                        FocusScope.of(context).unfocus();
                         await viewModel.createNewUser(context);
                       },
                     )

@@ -99,13 +99,13 @@ class CloudFirestoreServices {
     });
   }
 
-  Future<QuerySnapshot> getUserShelfsStream() async {
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
     String _userEmail = await _authenticationService.userEmail();
-    return FirebaseFirestore.instance
+    yield* FirebaseFirestore.instance
         .collection('users')
         .doc(_userEmail)
         .collection('userShelfs')
-        .get();
+        .snapshots();
   }
 
   Stream<QuerySnapshot> getOtherUserShelfsStream(
@@ -275,6 +275,7 @@ class CloudFirestoreServices {
       {String shelfId,
       String bookId,
       String bookImage,
+      String authors,
       String previewLink,
       String title}) async {
     await _users
@@ -287,6 +288,7 @@ class CloudFirestoreServices {
       'id': bookId,
       'thumbnail': bookImage,
       'previewLink': previewLink,
+      'authors': authors,
       'title': title,
       'openedDate': DateTime.now()
     });

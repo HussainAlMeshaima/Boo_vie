@@ -12,6 +12,7 @@ class ThemeGridWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.count(
+              physics: BouncingScrollPhysics(),
               crossAxisCount: 2,
               childAspectRatio: 3 / 1,
               children: [

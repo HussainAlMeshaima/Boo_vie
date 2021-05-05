@@ -53,8 +53,8 @@ class ProfileViewModel extends BaseViewModel {
     });
   }
 
-  Future<QuerySnapshot> getUserShelfsStream() async {
-    return _cloudFirestoreServices.getUserShelfsStream();
+  Stream<QuerySnapshot> getUserShelfsStream() async* {
+    yield* _cloudFirestoreServices.getUserShelfsStream();
   }
 
   Stream<QuerySnapshot> getUserBooksInThatShelfStream(
