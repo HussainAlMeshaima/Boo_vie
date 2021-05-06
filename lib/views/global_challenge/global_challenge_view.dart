@@ -83,10 +83,14 @@ class GlobalChallengeView extends StatelessWidget {
               Tooltip(
                 message: 'Share',
                 child: IconButton(
-                  icon: Icon(Icons.share),
+                  icon: Icon(
+                    Icons.share,
+                  ),
                   onPressed: () {
-                    Share.share(viewModel.previewLink,
-                        subject: viewModel.challengeName);
+                    Share.share(
+                      viewModel.previewLink,
+                      subject: viewModel.challengeName,
+                    );
                   },
                 ),
               ),
