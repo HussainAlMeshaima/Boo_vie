@@ -4,7 +4,6 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/router_constants.dart';
 import 'package:boo_vi_app/core/services/authenticationService.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
-import 'package:boo_vi_app/core/services/imageSelectorService.dart';
 
 import 'package:boo_vi_app/views/profile_to_edit_details/profile_to_edit_details_view.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
@@ -67,8 +66,8 @@ class ProfileViewModel extends BaseViewModel {
     return await _cloudFirestoreServices.getUserInformationDoc();
   }
 
-  Future<DocumentSnapshot> getUserInformation() {
-    return _cloudFirestoreServices.getUserInformation();
+  Stream<DocumentSnapshot> getUserInformation() async* {
+    yield* _cloudFirestoreServices.getUserInformationStream();
   }
 
   Stream<DocumentSnapshot> getUserInformationStream() async* {

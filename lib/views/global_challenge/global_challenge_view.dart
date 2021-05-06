@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:boo_vi_app/widgets/smart_widgets/book_review_sheet/book_review_sheet_widget.dart';
-
 import 'package:boo_vi_app/widgets/smart_widgets/create_a_new_shelf_with_name/create_a_new_shelf_with_name_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/elevated_button/elevated_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';

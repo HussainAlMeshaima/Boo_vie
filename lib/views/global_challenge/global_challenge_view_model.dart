@@ -209,22 +209,23 @@ class GlobalChallengeViewModel extends BaseViewModel {
 
   Future addTheSelectedChallangeToMyChallanges() {
     return _cloudFirestoreServices.addTheSelectedChallangeToMyChallanges(
-        challangeId: _challangeId,
-        challengeAuthors: _challengeAuthors,
-        challengeImage: _challengeImage,
-        challengeDiscription: _challengeDiscription,
-        setToDate: _setToDate,
-        bookId: _bookId,
-        trophiesCount: _trophiesCount,
-        challengeName: _challengeName,
-        bookTitle: _bookTitle,
-        challengeRules: _challengeRules,
-        trophiesMap: _trophiesMap,
-        previewLink: _previewLink,
-        numberOfCommentsCount: _numberOfCommentsCount,
-        numberOfCommunitiesWhoHasThatChallangeCount:
-            _numberOfCommunitiesWhoHasThatChallangeCount,
-        challengeLikeCounter: _challengeLikeCounter);
+      challangeId: _challangeId,
+      challengeAuthors: _challengeAuthors,
+      challengeImage: _challengeImage,
+      challengeDiscription: _challengeDiscription,
+      setToDate: _setToDate,
+      bookId: _bookId,
+      trophiesCount: _trophiesCount,
+      challengeName: _challengeName,
+      bookTitle: _bookTitle,
+      challengeRules: _challengeRules,
+      trophiesMap: _trophiesMap,
+      previewLink: _previewLink,
+      numberOfCommentsCount: _numberOfCommentsCount,
+      numberOfCommunitiesWhoHasThatChallangeCount:
+          _numberOfCommunitiesWhoHasThatChallangeCount,
+      challengeLikeCounter: _challengeLikeCounter,
+    );
   }
 
   Stream<DocumentSnapshot> getGlobalChallengeIsLikedByUserStream() async* {

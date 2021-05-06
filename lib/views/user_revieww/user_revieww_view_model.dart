@@ -52,10 +52,19 @@ class UserReviewwViewModel extends BaseViewModel {
   }
 
   String _bookId;
+  String get bookId => _bookId;
+
   String _tappedUserEmail;
+  String get tappedUserEmail => _tappedUserEmail;
+
   String _bookImage;
+  String get bookImage => _bookImage;
+
   String _userReviewString;
+  String get userReviewString => _userReviewString;
+
   double _userReviewEmojiRating;
+  double get userReviewEmojiRating => _userReviewEmojiRating;
 
   handleStartUpLogic({
     String bookId,
@@ -91,10 +100,6 @@ class UserReviewwViewModel extends BaseViewModel {
 
   Future<String> getUserEmail() async {
     return await _authenticationService.userEmail();
-  }
-
-  Future<String> getUserReview() {
-    return _cloudFirestoreServices.getUserReviewToBeEdited();
   }
 
   bool _spoiler;

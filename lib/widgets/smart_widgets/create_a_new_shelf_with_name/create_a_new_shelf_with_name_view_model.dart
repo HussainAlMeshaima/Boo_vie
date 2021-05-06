@@ -1,12 +1,9 @@
 import 'package:boo_vi_app/core/locator.dart';
-import 'package:boo_vi_app/core/services/authenticationService.dart';
-import 'package:boo_vi_app/core/services/bookServices.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class CreateANewShelfWithNameViewModel extends BaseViewModel {
   Logger log;
@@ -65,10 +62,6 @@ class CreateANewShelfWithNameViewModel extends BaseViewModel {
         title: title);
   }
 
-  BookServices _bookServices = locator<BookServices>();
-  AuthenticationService _authenticationService =
-      locator<AuthenticationService>();
-  NavigationService _navigationService = locator<NavigationService>();
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 }

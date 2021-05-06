@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:boo_vi_app/core/locator.dart';
-import 'package:boo_vi_app/core/services/authenticationService.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/cloudStorageServices.dart';
 import 'package:boo_vi_app/core/services/imageEditService.dart';

@@ -1,5 +1,3 @@
-import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'comunintys_view_model.dart';

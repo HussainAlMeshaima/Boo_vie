@@ -1,6 +1,4 @@
-import 'package:boo_vi_app/widgets/smart_widgets/message_by_sender/message_by_sender_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/message_from_receiver/message_from_receiver_widget.dart';
-import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';

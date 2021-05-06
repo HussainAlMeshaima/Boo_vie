@@ -27,6 +27,7 @@ class Error {
     code = json['code'];
     message = json['message'];
     if (json['errors'] != null) {
+      // ignore: deprecated_member_use
       errors = new List<Errors>();
       json['errors'].forEach((v) {
         errors.add(new Errors.fromJson(v));

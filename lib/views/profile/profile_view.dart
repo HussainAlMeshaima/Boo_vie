@@ -1,6 +1,4 @@
-import 'package:boo_vi_app/widgets/smart_widgets/elevated_button/elevated_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
-import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/theme_grid/theme_grid_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +23,11 @@ class ProfileView extends StatelessWidget {
                   icon: Icon(Icons.palette),
                   onPressed: () {
                     return showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return ThemeGridWidget();
-                        });
+                      context: context,
+                      builder: (context) {
+                        return ThemeGridWidget();
+                      },
+                    );
                   },
                 ),
                 IconButton(
@@ -78,6 +77,26 @@ class ProfileView extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  FutureBuilder(
+                    future: viewModel.getUserInformationDoc(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(12)),
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: 30,
                   ),

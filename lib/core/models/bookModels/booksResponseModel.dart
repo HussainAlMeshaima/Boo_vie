@@ -9,6 +9,7 @@ class BooksResponse {
     kind = json['kind'];
     totalItems = json['totalItems'];
     if (json['items'] != null) {
+      // ignore: deprecated_member_use
       items = new List<Items>();
       json['items'].forEach((v) {
         items.add(new Items.fromJson(v));
@@ -144,6 +145,7 @@ class VolumeInfo {
     publishedDate = json['publishedDate'];
     description = json['description'];
     if (json['industryIdentifiers'] != null) {
+      // ignore: deprecated_member_use
       industryIdentifiers = new List<IndustryIdentifiers>();
       json['industryIdentifiers'].forEach((v) {
         industryIdentifiers.add(new IndustryIdentifiers.fromJson(v));
@@ -315,6 +317,7 @@ class SaleInfo {
     //     : null;
     buyLink = json['buyLink'];
     if (json['offers'] != null) {
+      // ignore: deprecated_member_use
       offers = new List<Offers>();
       json['offers'].forEach((v) {
         offers.add(new Offers.fromJson(v));

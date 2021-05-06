@@ -246,7 +246,7 @@ class UserReviewwView extends StatelessWidget {
                                                                     child: Text(
                                                                       data['userName']
                                                                                   .length >
-                                                                              14
+                                                                              20
                                                                           ? data['userName'].substring(0, 20) +
                                                                               '..'
                                                                           : data[

@@ -91,12 +91,14 @@ class CloudFirestoreServices {
         .doc(bookId)
         .collection('reviews')
         .doc(_userEmail)
-        .update({
-      'userReviewEmojiRating': userReviewEmojiRating,
-      'userReviewString': userReviewString,
-      'spoiler': spoiler,
-      'reviewDateTime': DateTime.now(),
-    });
+        .update(
+      {
+        'userReviewEmojiRating': userReviewEmojiRating,
+        'userReviewString': userReviewString,
+        'spoiler': spoiler,
+        'reviewDateTime': DateTime.now(),
+      },
+    );
   }
 
   Stream<QuerySnapshot> getUserShelfsStream() async* {
@@ -240,35 +242,41 @@ class CloudFirestoreServices {
         .collection('myChallenges')
         .doc(bookId)
         .get()
-        .then((thatDoc) async => {
-              if (!thatDoc.exists)
-                {
-                  _users
-                      .doc(_userEmail)
-                      .collection('userDetails')
-                      .doc('userChallenges')
-                      .collection('myChallenges')
-                      .doc(bookId)
-                      .set({
-                    'id': bookId,
-                    'bookImage': bookImage,
-                    'previewLink': previewLink,
-                    'title': title,
-                    'authors': authors,
-                    'setToDate': setToDate,
-                  })
-                }
-              else
+        .then(
+          (thatDoc) async => {
+            if (!thatDoc.exists)
+              {
                 _users
                     .doc(_userEmail)
                     .collection('userDetails')
                     .doc('userChallenges')
                     .collection('myChallenges')
                     .doc(bookId)
-                    .update({
+                    .set(
+                  {
+                    'id': bookId,
+                    'bookImage': bookImage,
+                    'previewLink': previewLink,
+                    'title': title,
+                    'authors': authors,
+                    'setToDate': setToDate,
+                  },
+                )
+              }
+            else
+              _users
+                  .doc(_userEmail)
+                  .collection('userDetails')
+                  .doc('userChallenges')
+                  .collection('myChallenges')
+                  .doc(bookId)
+                  .update(
+                {
                   'setToDate': setToDate,
-                })
-            });
+                },
+              )
+          },
+        );
   }
 
   Future addAbooktoSelectedShelf(
@@ -284,14 +292,16 @@ class CloudFirestoreServices {
         .doc(shelfId)
         .collection('books')
         .doc(bookId)
-        .set({
-      'id': bookId,
-      'thumbnail': bookImage,
-      'previewLink': previewLink,
-      'authors': authors,
-      'title': title,
-      'openedDate': DateTime.now()
-    });
+        .set(
+      {
+        'id': bookId,
+        'thumbnail': bookImage,
+        'previewLink': previewLink,
+        'authors': authors,
+        'title': title,
+        'openedDate': DateTime.now()
+      },
+    );
   }
 
   Future<void> addANewShelfByName(
@@ -307,53 +317,59 @@ class CloudFirestoreServices {
         .collection('userShelfs')
         .doc(newShelfName)
         .get()
-        .then((thatShelf) async => {
-              if (!thatShelf.exists)
-                {
-                  await _users
-                      .doc(userEmail)
-                      .collection('userShelfs')
-                      .doc(newShelfName)
-                      .set({
-                    'name': newShelfName,
-                    'createdDate': DateTime.now(),
-                  }).then((value) async => {
-                            await _users
-                                .doc(userEmail)
-                                .collection('userShelfs')
-                                .doc(newShelfName)
-                                .collection('books')
-                                .doc(bookId)
-                                .set({
-                              'id': bookId,
-                              'thumbnail': bookImage,
-                              'authors': authors ?? 'No authors',
-                              'previewLink': previewLink,
-                              'title': title,
-                              'openedDate': DateTime.now()
-                            })
-                          })
-                }
-              else
+        .then(
+          (thatShelf) async => {
+            if (!thatShelf.exists)
+              {
                 await _users
                     .doc(userEmail)
                     .collection('userShelfs')
                     .doc(newShelfName)
-                    .collection('books')
-                    .doc(bookId)
-                    .set({
+                    .set(
+                  {
+                    'name': newShelfName,
+                    'createdDate': DateTime.now(),
+                  },
+                ).then(
+                  (value) async => {
+                    await _users
+                        .doc(userEmail)
+                        .collection('userShelfs')
+                        .doc(newShelfName)
+                        .collection('books')
+                        .doc(bookId)
+                        .set(
+                      {
+                        'id': bookId,
+                        'thumbnail': bookImage,
+                        'authors': authors ?? 'No authors',
+                        'previewLink': previewLink,
+                        'title': title,
+                        'openedDate': DateTime.now()
+                      },
+                    )
+                  },
+                )
+              }
+            else
+              await _users
+                  .doc(userEmail)
+                  .collection('userShelfs')
+                  .doc(newShelfName)
+                  .collection('books')
+                  .doc(bookId)
+                  .set(
+                {
                   'id': bookId,
                   'thumbnail': bookImage,
                   'previewLink': previewLink,
                   'authors': authors ?? 'No authors',
                   'title': title,
                   'openedDate': DateTime.now()
-                })
-            });
-  }
-
-  Future getUserReviewToBeEdited() {
-    //await
+                },
+              )
+          },
+        );
   }
 
   Future<void> addAbookToRecentlyViewedShelf(
@@ -376,25 +392,31 @@ class CloudFirestoreServices {
                     .doc(userEmail)
                     .collection('userShelfs')
                     .doc('recentlyViewed')
-                    .set({
-                  'name': 'Recently viewed shelf',
-                  'createdDate': DateTime.now(),
-                }).then((value) async => {
-                          await _users
-                              .doc(userEmail)
-                              .collection('userShelfs')
-                              .doc('recentlyViewed')
-                              .collection('books')
-                              .doc(bookId)
-                              .set({
-                            'id': bookId,
-                            'thumbnail': bookImage,
-                            'authors': authors ?? 'No authors',
-                            'previewLink': previewLink,
-                            'title': title,
-                            'openedDate': DateTime.now()
-                          })
-                        })
+                    .set(
+                  {
+                    'name': 'Recently viewed shelf',
+                    'createdDate': DateTime.now(),
+                  },
+                ).then(
+                  (value) async => {
+                    await _users
+                        .doc(userEmail)
+                        .collection('userShelfs')
+                        .doc('recentlyViewed')
+                        .collection('books')
+                        .doc(bookId)
+                        .set(
+                      {
+                        'id': bookId,
+                        'thumbnail': bookImage,
+                        'authors': authors ?? 'No authors',
+                        'previewLink': previewLink,
+                        'title': title,
+                        'openedDate': DateTime.now()
+                      },
+                    )
+                  },
+                )
               }
             else
               await _users
@@ -403,14 +425,16 @@ class CloudFirestoreServices {
                   .doc('recentlyViewed')
                   .collection('books')
                   .doc(bookId)
-                  .set({
-                'id': bookId,
-                'thumbnail': bookImage,
-                'authors': authors ?? 'No authors',
-                'previewLink': previewLink,
-                'title': title,
-                'openedDate': DateTime.now()
-              })
+                  .set(
+                {
+                  'id': bookId,
+                  'thumbnail': bookImage,
+                  'authors': authors ?? 'No authors',
+                  'previewLink': previewLink,
+                  'title': title,
+                  'openedDate': DateTime.now()
+                },
+              )
           },
         );
   }
@@ -435,25 +459,31 @@ class CloudFirestoreServices {
                     .doc(userEmail)
                     .collection('userShelfs')
                     .doc('myReviews')
-                    .set({
-                  'name': 'My reviews shelf',
-                  'createdDate': DateTime.now(),
-                }).then((value) async => {
-                          await _users
-                              .doc(userEmail)
-                              .collection('userShelfs')
-                              .doc('myReviews')
-                              .collection('books')
-                              .doc(bookId)
-                              .set({
-                            'id': bookId,
-                            'thumbnail': bookImage,
-                            'previewLink': previewLink,
-                            'authors': authors ?? 'No authors',
-                            'title': title,
-                            'openedDate': DateTime.now()
-                          })
-                        })
+                    .set(
+                  {
+                    'name': 'My reviews shelf',
+                    'createdDate': DateTime.now(),
+                  },
+                ).then(
+                  (value) async => {
+                    await _users
+                        .doc(userEmail)
+                        .collection('userShelfs')
+                        .doc('myReviews')
+                        .collection('books')
+                        .doc(bookId)
+                        .set(
+                      {
+                        'id': bookId,
+                        'thumbnail': bookImage,
+                        'previewLink': previewLink,
+                        'authors': authors ?? 'No authors',
+                        'title': title,
+                        'openedDate': DateTime.now()
+                      },
+                    )
+                  },
+                )
               }
             else
               await _users
@@ -462,14 +492,16 @@ class CloudFirestoreServices {
                   .doc('myReviews')
                   .collection('books')
                   .doc(bookId)
-                  .set({
-                'id': bookId,
-                'thumbnail': bookImage,
-                'authors': authors ?? 'No authors',
-                'previewLink': previewLink,
-                'title': title,
-                'openedDate': DateTime.now()
-              })
+                  .set(
+                {
+                  'id': bookId,
+                  'thumbnail': bookImage,
+                  'authors': authors ?? 'No authors',
+                  'previewLink': previewLink,
+                  'title': title,
+                  'openedDate': DateTime.now()
+                },
+              )
           },
         );
   }
@@ -496,20 +528,14 @@ class CloudFirestoreServices {
           .doc(userEmail)
           .collection('userChallenges')
           .add({
-        // users Information
         'userEmail': userEmail,
         'userName': userName,
-
-        // challage Information
         'bookId': bookId,
         'challageName': challageName ?? 'Not Set',
         'challageImage': challageImage ?? 'Not Set',
         'challageDiscription': challageDiscription ?? 'Not Set',
-
         'whichDayisTheChallageCreated': DateTime.now(),
         'tillWhichDayTheChallageEnds': challageToWhichDay ?? 'Not Set',
-
-        // ! Rules
         'isChallangePublicForEveryOne': isChallangePublicForEveryOne ?? false,
         'challageRules': challageRules ?? ['No Rules Set.'],
         'availableInCommunitys': availableInCommunitys ?? ['None'],
@@ -517,52 +543,6 @@ class CloudFirestoreServices {
               print('A new $challageName challage has been added !'));
     } catch (e) {
       return 'Error';
-    }
-  }
-
-  Future editAChallage({
-    // users Information
-    @required String userEmail,
-    @required String userName,
-
-    // challage Information
-    @required String challageName,
-    @required String challageDiscription,
-    @required DateTime challageToWhichDay,
-    @required String bookId,
-    List<String> challageRules,
-    bool isChallangePublicForEveryOne,
-    String challageImage,
-    //
-    List<String> availableInCommunitys,
-  }) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userEmail)
-          .collection('userChallenges')
-          .doc(challageName)
-          .update({
-        // users Information
-        'userEmail': userEmail,
-        'userName': userName ?? 'No User',
-
-        // challage Information
-        'bookId': bookId,
-        'challageName': challageName ?? 'Not Set',
-        'challageImage': challageImage ?? 'Not Set',
-        'challageDiscription': challageDiscription ?? 'Not Set',
-
-        'whichDayisTheChallageModifyed': DateTime.now(),
-        'tillWhichDayTheChallageEnds': challageToWhichDay ?? 'Not Set',
-
-        // ! Rules
-        'isChallangePublicForEveryOne': isChallangePublicForEveryOne ?? false,
-        'challageRules': challageRules ?? ['No Rules Set.'],
-        'availableInCommunitys': availableInCommunitys ?? ['None'],
-      });
-    } catch (e) {
-      return e.toString();
     }
   }
 
@@ -897,7 +877,7 @@ class CloudFirestoreServices {
     } catch (e) {}
   }
 
-  Future<String> addBookReview({
+  Future addBookReview({
     @required String userId,
     @required String userName,
     @required String userEmail,
@@ -1224,6 +1204,8 @@ class CloudFirestoreServices {
                     'challengeLikeCounter': challengeLikeCounter,
                     'challangeId': challangeId,
                     'id': bookId,
+                    'compleatedChallenge': false,
+                    'isChallangeHidden': false,
                   }).then((value) => {
                             FirebaseFirestore.instance
                                 .collection('globalChallenges')
@@ -1233,6 +1215,30 @@ class CloudFirestoreServices {
                                   FieldValue.increment(1)
                             })
                           })
+                }
+              else if (thatDoc.exists)
+                {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(await _authenticationService.userEmail())
+                      .collection('userDetails')
+                      .doc('userChallenges')
+                      .collection('globalChallenges')
+                      .doc(challangeId)
+                      .get()
+                      .then((thatDoc) async => {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(await _authenticationService.userEmail())
+                                .collection('userDetails')
+                                .doc('userChallenges')
+                                .collection('globalChallenges')
+                                .doc(challangeId)
+                                .update({
+                              'isChallangeHidden':
+                                  !thatDoc.data()['isChallangeHidden']
+                            })
+                          }),
                 }
             });
   }
@@ -1244,19 +1250,21 @@ class CloudFirestoreServices {
         .doc('userChallenges')
         .collection('globalChallenges')
         .doc(challangeId)
-        .delete();
+        .update({'isChallangeHidden': true});
   }
 
   Future<void> updateUserImage(String imageUrl) async {
     _users
         .doc(await _authenticationService.userEmail())
-        .update({'userImage': imageUrl}).then((value) async => {
-              _users
-                  .doc(await _authenticationService.userEmail())
-                  .collection('userDetails')
-                  .doc('userInformation')
-                  .update({'userImage': imageUrl})
-            });
+        .update({'userImage': imageUrl}).then(
+      (value) async => {
+        _users
+            .doc(await _authenticationService.userEmail())
+            .collection('userDetails')
+            .doc('userInformation')
+            .update({'userImage': imageUrl})
+      },
+    );
   }
 
   Future<void> updateThatMap(Map<String, dynamic> map) async {
@@ -1342,5 +1350,83 @@ class CloudFirestoreServices {
                   })
                 }
             });
+  }
+
+  Future markThatBookChallangeAsDone({
+    @required String challengeId,
+    @required String challengeImage,
+    @required String challengeName,
+    @required String challengeAuthorName,
+    @required List<dynamic> challengeRules,
+    @required String challengeDiscription,
+    @required Map trophyMap,
+  }) async {
+    String _userEmail = await _authenticationService.userEmail();
+    return _users
+        .doc(_userEmail)
+        .collection('userCompleatedChallenges')
+        .doc(challengeId)
+        .get()
+        .then(
+          (thatDoc) async => {
+            if (!thatDoc.exists)
+              {
+                _users
+                    .doc()
+                    .collection('userCompleatedChallenges')
+                    .doc(challengeId)
+                    .set(
+                      {
+                        'challengeId': challengeId,
+                        'challengeImage': challengeImage,
+                        'challengeName': challengeName,
+                        'challengeAuthorName': challengeAuthorName,
+                        'challengeRules': challengeRules,
+                        'challengeDiscription': challengeDiscription,
+                        'trophyMap': trophyMap,
+                        'atTime': DateTime.now(),
+                      },
+                    )
+                    .then(
+                      (value) async => {
+                        _users
+                            .doc(_userEmail)
+                            .collection('userDetails')
+                            .doc('userTrophies')
+                            .collection('Trophies')
+                            .doc(challengeName)
+                            .set(
+                          {
+                            'isNormalTrophy': false,
+                            'trophyDescription': trophyMap['trophyDescription'],
+                            'trophyReceivedDate': DateTime.now(),
+                            'trophyTitle': challengeName,
+                            'trophyChallengeImage': challengeImage,
+                            'trophyChallengeName': challengeName,
+                            'trophyChallengeAuthorName': challengeAuthorName,
+                            'trophyChallengeRules': challengeRules,
+                            'trophyChallengeDiscription': challengeDiscription,
+                          },
+                        )
+                      },
+                    )
+                    .then(
+                      (value) async => {
+                        _users
+                            .doc(_userEmail)
+                            .collection('userDetails')
+                            .doc('userChallenges')
+                            .collection('globalChallenges')
+                            .doc(challengeId)
+                            .update(
+                          {
+                            'compleatedChallenge': true,
+                          },
+                        )
+                      },
+                    )
+              },
+          },
+        );
   }
 }

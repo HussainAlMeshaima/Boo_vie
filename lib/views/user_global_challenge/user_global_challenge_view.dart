@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:boo_vi_app/widgets/smart_widgets/elevated_button/elevated_button_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/outlined_button/outlined_button_widget.dart';
-import 'package:boo_vi_app/widgets/smart_widgets/textfield/textfield_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
@@ -15,6 +13,7 @@ class UserGlobalChallengeView extends StatelessWidget {
   final String challangeId;
   final String challengeDiscription;
   final List challengeRules;
+  final bool compleatedChallenge;
   //-----------------------------------
   final String bookId;
   final String previewLink;
@@ -37,7 +36,8 @@ class UserGlobalChallengeView extends StatelessWidget {
       this.challengeName,
       this.challengeAuthors,
       this.setToDate,
-      this.trophiesMap})
+      this.trophiesMap,
+      @required this.compleatedChallenge})
       : super(key: key);
 
   @override
@@ -56,6 +56,7 @@ class UserGlobalChallengeView extends StatelessWidget {
         challengeDiscription: challengeDiscription,
         trophiesMap: trophiesMap,
         challengeRules: challengeRules,
+        compleatedChallenge: compleatedChallenge,
       ),
       builder: (BuildContext context, UserGlobalChallengeViewModel viewModel,
           Widget _) {
@@ -108,235 +109,16 @@ class UserGlobalChallengeView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  !viewModel.isChallangeTimeDone
-                      ? Container(
-                          height: 120,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      colorFilter: new ColorFilter.mode(
-                                          Colors.black.withOpacity(0.5),
-                                          BlendMode.dstATop),
-                                      image: NetworkImage(
-                                        viewModel.image,
-                                      ),
-                                    ),
-                                  ),
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10,
-                                        sigmaY: 10,
-                                        tileMode: TileMode.clamp),
-                                    child: Container(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.black.withOpacity(0.5)
-                                          : Colors.white.withOpacity(0.5),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  viewModel.numberOfdays
-                                                      .toString(),
-                                                  style:
-                                                      TextStyle(fontSize: 26),
-                                                ),
-                                                Text(
-                                                  'DAYS',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          .color
-                                                          .withOpacity(.35)),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              ':',
-                                              style: TextStyle(
-                                                  fontSize: 26,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      .color
-                                                      .withOpacity(.7)),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  viewModel.numberOfhours
-                                                      .toString(),
-                                                  style:
-                                                      TextStyle(fontSize: 26),
-                                                ),
-                                                Text(
-                                                  'HOUR',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          .color
-                                                          .withOpacity(.35)),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              ':',
-                                              style: TextStyle(
-                                                  fontSize: 26,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      .color
-                                                      .withOpacity(.7)),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  viewModel.numberOfminutes
-                                                      .toString(),
-                                                  style:
-                                                      TextStyle(fontSize: 26),
-                                                ),
-                                                Text(
-                                                  'MIN',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          .color
-                                                          .withOpacity(.35)),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              ':',
-                                              style: TextStyle(
-                                                  fontSize: 26,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      .color
-                                                      .withOpacity(.7)),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  viewModel.numberOfseconds
-                                                      .toString(),
-                                                  style:
-                                                      TextStyle(fontSize: 26),
-                                                ),
-                                                Text(
-                                                  'SEC',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          .color
-                                                          .withOpacity(.35)),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(
-                          height: 120,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      colorFilter: new ColorFilter.mode(
-                                          Colors.black.withOpacity(0.5),
-                                          BlendMode.dstATop),
-                                      image: NetworkImage(
-                                        viewModel.image,
-                                      ),
-                                    ),
-                                  ),
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10,
-                                        sigmaY: 10,
-                                        tileMode: TileMode.clamp),
-                                    child: Container(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.red.withOpacity(0.5)
-                                          : Colors.red.withOpacity(0.5),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24),
-                                        child: Center(
-                                          child: Text(
-                                            'Challenge dismissed 😭',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                  viewModel.whichWigetToShowHabibi(context),
                   SizedBox(
                     height: 5,
                   ),
-                  !viewModel.isChallangeTimeDone
+                  viewModel.showMarkAsDoneButton
                       ? ElevatedButtonWidget(
                           text: 'Mark as done',
-                          onPressed: () {},
+                          onPressed: () async {
+                            await viewModel.markThatBookAsDone(context);
+                          },
                         )
                       : ElevatedButtonWidget(
                           text: 'Mark as done',

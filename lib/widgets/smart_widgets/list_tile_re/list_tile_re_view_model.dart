@@ -22,7 +22,10 @@ class ListTileReViewModel extends BaseViewModel {
   }
 
   String _bookId;
+  String get bookId => _bookId;
   String _bookImage;
+  String get bookImage => _bookImage;
+
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 

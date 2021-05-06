@@ -11,6 +11,7 @@ import 'package:boo_vi_app/views/trophies/trophies_view.dart';
 import 'package:boo_vi_app/views/user_global_challenge/user_global_challenge_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
@@ -106,6 +107,7 @@ class ChallengesViewModel extends BaseViewModel {
     @required String challengeDiscription,
     @required List challengeRules,
     @required Map trophiesMap,
+    @required bool compleatedChallenge,
   }) {
     _navigationService.navigateWithTransition(
         UserGlobalChallengeView(
@@ -120,6 +122,7 @@ class ChallengesViewModel extends BaseViewModel {
           challengeDiscription: challengeDiscription,
           challengeRules: challengeRules,
           trophiesMap: trophiesMap,
+          compleatedChallenge: compleatedChallenge,
         ),
         transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 400));
@@ -230,4 +233,10 @@ class ChallengesViewModel extends BaseViewModel {
   void setHasMyChallengesToTrue() {
     _hasMyChallenges = true;
   }
+
+  TabController _tabController;
+  TabController get tabController => _tabController;
+
+  ScrollController _scrollController;
+  ScrollController get scrollController => _scrollController;
 }

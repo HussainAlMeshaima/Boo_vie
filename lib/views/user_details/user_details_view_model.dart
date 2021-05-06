@@ -92,8 +92,8 @@ class UserDetailsViewModel extends BaseViewModel {
       locator<CloudFirestoreServices>();
 
   createNewUser(context) async {
-    int counter =
-        _isChoiceChipSelected.where((element) => element == true).length;
+    // int counter =
+    //     _isChoiceChipSelected.where((element) => element == true).length;
     Map userMap = {};
 
     _options.asMap().entries.forEach((entry) {

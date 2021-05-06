@@ -154,7 +154,7 @@ class UserDetailsView extends StatelessWidget {
                             itemCount: viewModel.options.length,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            physics: ScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () => viewModel.swichChoiceChip(index),

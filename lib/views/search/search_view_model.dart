@@ -32,14 +32,14 @@ class SearchViewModel extends BaseViewModel {
         transition: 'rightToLeftWithFade');
   }
 
-  Future<void> addAbookToRecentlyViewedShelf({
+  Future addAbookToRecentlyViewedShelf({
     @required String bookId,
     @required String bookImage,
     @required String previewLink,
     @required String title,
     @required String authors,
-  }) {
-    _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
+  }) async {
+    await _cloudFirestoreServices.addAbookToRecentlyViewedShelf(
         bookId: bookId,
         authors: authors,
         title: title,
