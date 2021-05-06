@@ -155,9 +155,12 @@ class ChallengesViewModel extends BaseViewModel {
   pushBookReviews({String bookId, String tappedUserEmail}) async {}
 
   handleStartUpLogic() {
-    Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      notifyListeners();
-    });
+    Timer.periodic(
+      Duration(seconds: 1),
+      (Timer timer) {
+        notifyListeners();
+      },
+    );
   }
 
   Stream<QuerySnapshot> getThatBookEmoji(String bookId) {

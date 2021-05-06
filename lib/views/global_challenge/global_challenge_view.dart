@@ -77,6 +77,21 @@ class GlobalChallengeView extends StatelessWidget {
       builder:
           (BuildContext context, GlobalChallengeViewModel viewModel, Widget _) {
         return Scaffold(
+          appBar: AppBar(
+            title: Text('Global Challenge'),
+            actions: [
+              Tooltip(
+                message: 'Share',
+                child: IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () {
+                    Share.share(viewModel.previewLink,
+                        subject: viewModel.challengeName);
+                  },
+                ),
+              ),
+            ],
+          ),
           floatingActionButton: FloatingActionButton(
             tooltip: 'Add button',
             onPressed: () {
@@ -135,11 +150,14 @@ class GlobalChallengeView extends StatelessWidget {
                                             onSubmitted: (commentText) async {
                                               Navigator.pop(context);
                                               ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                      duration:
-                                                          Duration(seconds: 2),
-                                                      content: Text(
-                                                          'Comments updated')));
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  content:
+                                                      Text('Comments updated'),
+                                                ),
+                                              );
                                               await viewModel
                                                   .addACommentToAGlobalChallange();
                                               viewModel.commentController
@@ -151,11 +169,14 @@ class GlobalChallengeView extends StatelessWidget {
                                             onPressed: () async {
                                               Navigator.pop(context);
                                               ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                      duration:
-                                                          Duration(seconds: 2),
-                                                      content: Text(
-                                                          'Comments updated')));
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  content:
+                                                      Text('Comments updated'),
+                                                ),
+                                              );
                                               await viewModel
                                                   .addACommentToAGlobalChallange();
                                               viewModel.commentController
@@ -248,24 +269,23 @@ class GlobalChallengeView extends StatelessWidget {
                                                 context: context,
                                                 builder: (context) {
                                                   return GestureDetector(
-                                                      onTap: () {
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                      },
-                                                      child:
-                                                          CreateANewShelfWithNameWidget(
-                                                        authours: viewModel
-                                                            .bookAuthors,
-                                                        bookId:
-                                                            viewModel.bookId,
-                                                        bookImage:
-                                                            viewModel.image,
-                                                        bookTitle:
-                                                            viewModel.bookTitle,
-                                                        bookpreviewLink:
-                                                            viewModel
-                                                                .previewLink,
-                                                      ));
+                                                    onTap: () {
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                    },
+                                                    child:
+                                                        CreateANewShelfWithNameWidget(
+                                                      authours:
+                                                          viewModel.bookAuthors,
+                                                      bookId: viewModel.bookId,
+                                                      bookImage:
+                                                          viewModel.image,
+                                                      bookTitle:
+                                                          viewModel.bookTitle,
+                                                      bookpreviewLink:
+                                                          viewModel.previewLink,
+                                                    ),
+                                                  );
                                                 },
                                               );
                                             },
@@ -329,16 +349,18 @@ class GlobalChallengeView extends StatelessWidget {
                                                         shelfsDocs =
                                                         snapshot.data.docs;
 
-                                                    shelfsDocs.sort((a, b) {
-                                                      int aInt = a
-                                                          .get('createdDate')
-                                                          .microsecondsSinceEpoch;
-                                                      int bInt = b
-                                                          .get('createdDate')
-                                                          .microsecondsSinceEpoch;
-                                                      return bInt
-                                                          .compareTo(aInt);
-                                                    });
+                                                    shelfsDocs.sort(
+                                                      (a, b) {
+                                                        int aInt = a
+                                                            .get('createdDate')
+                                                            .microsecondsSinceEpoch;
+                                                        int bInt = b
+                                                            .get('createdDate')
+                                                            .microsecondsSinceEpoch;
+                                                        return bInt
+                                                            .compareTo(aInt);
+                                                      },
+                                                    );
                                                     return ListView.builder(
                                                         shrinkWrap: true,
                                                         physics:
@@ -673,21 +695,6 @@ class GlobalChallengeView extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             slivers: [
-              SliverAppBar(
-                floating: true,
-                title: Text('Global Challenge'),
-                actions: [
-                  Tooltip(
-                    message: 'Share',
-                    child: IconButton(
-                        icon: Icon(Icons.share),
-                        onPressed: () {
-                          Share.share(viewModel.previewLink,
-                              subject: viewModel.challengeName);
-                        }),
-                  ),
-                ],
-              ),
               SliverList(
                   delegate: SliverChildListDelegate([
                 ListView(

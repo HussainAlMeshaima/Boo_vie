@@ -134,15 +134,19 @@ class BookReviewsView extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              height: 60,
-                                              width: 60,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                          doc['userImage'])))),
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  doc['userImage'],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Column(
@@ -197,125 +201,122 @@ class BookReviewsView extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
-                                              width: 230,
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
+                                            width: 230,
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .chat_bubble_outline,
+                                                          size: 18,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        Text(
+                                                          doc['reviewCommentsConter']
+                                                              .toInt()
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      height: 20,
+                                                      width: 2,
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .iconTheme
+                                                                  .color,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.favorite_border,
+                                                          size: 18,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        Text(
+                                                          doc['reviewLikeConter']
+                                                              .toInt()
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      height: 20,
+                                                      width: 2,
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .iconTheme
+                                                                  .color,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.schedule,
+                                                          size: 18,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        Text(
+                                                          DateFormat('H:m a')
+                                                              .format(doc[
+                                                                      'reviewDateTime']
+                                                                  .toDate()),
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .chat_bubble_outline,
-                                                            size: 18,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Text(
-                                                            doc['reviewCommentsConter']
-                                                                .toInt()
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Container(
-                                                        height: 20,
-                                                        width: 2,
-                                                        decoration: BoxDecoration(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .iconTheme
-                                                                .color,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5)),
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .favorite_border,
-                                                            size: 18,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Text(
-                                                            doc['reviewLikeConter']
-                                                                .toInt()
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Container(
-                                                        height: 20,
-                                                        width: 2,
-                                                        decoration: BoxDecoration(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .iconTheme
-                                                                .color,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5)),
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.schedule,
-                                                            size: 18,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Text(
-                                                            DateFormat('H:m a')
-                                                                .format(doc[
-                                                                        'reviewDateTime']
-                                                                    .toDate()),
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       Padding(
@@ -353,34 +354,35 @@ class BookReviewsView extends StatelessWidget {
                                             ),
                                             onPressed: () {
                                               showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Container(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              2.5,
-                                                      child: ListView(
-                                                        children: [
-                                                          ListTile(
-                                                            title: Text(
-                                                              'Add a comment',
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            2.5,
+                                                    child: ListView(
+                                                      children: [
+                                                        ListTile(
+                                                          title: Text(
+                                                            'Add a comment',
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                           ),
-                                                          TextfieldWidget(
-                                                            maxLines: 5,
-                                                            //onSubmitted: ,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
+                                                        ),
+                                                        TextfieldWidget(
+                                                          maxLines: 5,
+                                                          //onSubmitted: ,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
                                             },
                                           ),
                                           SizedBox(

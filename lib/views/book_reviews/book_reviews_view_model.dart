@@ -32,15 +32,6 @@ class BookReviewsViewModel extends BaseViewModel {
     return await _authenticationService.userEmail();
   }
 
-  // Future<DocumentSnapshot> getLikeBoolValue(
-  //   String bookId,
-  // ) async {
-  //   Future<DocumentSnapshot> value = _cloudFirestoreServices.getLikeBoolValue(
-  //       bookId: bookId,tappedUserEmail: );
-  //   notifyListeners();
-  //   return value;
-  // }
-
   Future addAlikeToABook({String tappedUserEmail}) async {
     await _cloudFirestoreServices.addAlikeToABook(
       bookId: _bookId,

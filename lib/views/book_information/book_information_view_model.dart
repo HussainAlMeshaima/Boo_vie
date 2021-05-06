@@ -28,9 +28,11 @@ class BookInformationViewModel extends BaseViewModel {
       authorsString = authors[0];
     } else {
       var concatenate = StringBuffer();
-      authors.forEach((item) {
-        concatenate.write(item + ',  ');
-      });
+      authors.forEach(
+        (item) {
+          concatenate.write(item + ',  ');
+        },
+      );
       return concatenate.toString();
     }
     return authorsString.toString();
@@ -47,9 +49,11 @@ class BookInformationViewModel extends BaseViewModel {
       getCategoriesString = categories[0];
     } else {
       var concatenate = StringBuffer();
-      categories.forEach((item) {
-        concatenate.write(item + ',  ');
-      });
+      categories.forEach(
+        (item) {
+          concatenate.write(item + ',  ');
+        },
+      );
       return concatenate.toString();
     }
     return getCategoriesString.toString();
