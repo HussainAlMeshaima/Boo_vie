@@ -31,7 +31,7 @@ class StreamServices {
         .snapshots();
   }
 
-  Stream getArtsAndentErtainmentBooksStream() {
+  Stream<QuerySnapshot> getArtsAndentErtainmentBooksStream() {
     return _firebaseFirestoreInstance
         .collection('artsandentertainmentBooks')
         .limit(10)

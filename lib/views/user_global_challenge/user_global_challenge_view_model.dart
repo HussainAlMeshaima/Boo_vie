@@ -20,18 +20,18 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
   }
 
   handleStartUpLogic(
-      {String challangeId,
-      String bookId,
-      String challengeImage,
-      bool compleatedChallenge,
-      String challengeAuthors,
-      String challengeName,
-      String previewLink,
-      String bookTitle,
-      Timestamp setToDate,
-      String challengeDiscription,
-      Map trophiesMap,
-      List challengeRules}) {
+      {@required String challangeId,
+      @required String bookId,
+      @required String challengeImage,
+      @required bool compleatedChallenge,
+      @required String challengeAuthors,
+      @required String challengeName,
+      @required String previewLink,
+      @required String bookTitle,
+      @required Timestamp setToDate,
+      @required String challengeDiscription,
+      @required Map trophiesMap,
+      @required List challengeRules}) {
     _bookTitle = bookTitle;
     _bookId = bookId;
     _previewLink = previewLink;
@@ -218,6 +218,9 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
 
   markThatBookAsDone(BuildContext context) async {
     await _cloudFirestoreServices.markThatBookChallangeAsDone(
+      previewLink: _previewLink,
+      bookId: bookId,
+      bookTitle: bookTitle,
       challengeAuthorName: _challengeAuthors,
       challengeId: _challangeId,
       challengeDiscription: _challengeDiscription,

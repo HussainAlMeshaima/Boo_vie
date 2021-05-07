@@ -24,8 +24,13 @@ class CompletedChallengesView extends StatelessWidget {
                   );
                 }
                 if (snapshot.data.docs.isNotEmpty) {
-                  return Center(
-                    child: Text('c'),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      return Container();
+                    },
                   );
                 }
               }

@@ -7,6 +7,8 @@ class TrophiesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TrophiesViewModel>.reactive(
+      onModelReady: (TrophiesViewModel viewModel) =>
+          viewModel.handleStartUpLogic(),
       builder: (BuildContext context, TrophiesViewModel viewModel, Widget _) {
         return Scaffold(
             body: CustomScrollView(
@@ -33,8 +35,9 @@ class TrophiesView extends StatelessWidget {
                           a.get('trophyReceivedDate').microsecondsSinceEpoch;
                       int bInt =
                           b.get('trophyReceivedDate').microsecondsSinceEpoch;
-                      return aInt.compareTo(bInt);
+                      return bInt.compareTo(aInt);
                     });
+
                     return Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: ListView.builder(
@@ -42,23 +45,52 @@ class TrophiesView extends StatelessWidget {
                         shrinkWrap: true,
                         physics: ScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          Timestamp trophyReceivedDate = trophyDocs[index]
-                                  ['trophyReceivedDate'] ??
-                              DateTime.now();
                           String trophyDescription = trophyDocs[index]
                                   ['trophyDescription'] ??
-                              'noDescription';
-                          String trophyTitle =
-                              trophyDocs[index]['trophyTitle'] ?? 'trophyTitle';
-                          IconData icon = trophyDocs[index]['isNormalTrophy']
-                              ? Icons.emoji_events
-                              : Icons.auto_stories;
+                              'No description';
                           return GestureDetector(
                             onTap: () {
-                              viewModel.pushTrophyView(
-                                  trophyDescription: trophyDescription,
-                                  trophyTitle: trophyTitle,
-                                  trophyReceivedDate: trophyReceivedDate);
+                              if (!trophyDocs[index]['isNormalTrophy']) {
+                                viewModel.pushTrophyView(
+                                  title: trophyDocs[index]['title'],
+                                  id: trophyDocs[index]['id'],
+                                  previewLink: trophyDocs[index]['previewLink'],
+                                  docId: trophyDocs[index].id,
+                                  isNormalTrophy: trophyDocs[index]
+                                      ['isNormalTrophy'],
+                                  trophyChallengeDiscription: trophyDocs[index]
+                                      ['trophyChallengeDiscription'],
+                                  trophyChallengeImage: trophyDocs[index]
+                                      ['trophyChallengeImage'],
+                                  trophyChallengeName: trophyDocs[index]
+                                      ['trophyChallengeName'],
+                                  trophyChallengeRules: trophyDocs[index]
+                                      ['trophyChallengeRules'],
+                                  trophyDescription: trophyDocs[index]
+                                      ['trophyDescription'],
+                                  trophyReceivedDate: trophyDocs[index]
+                                      ['trophyReceivedDate'],
+                                  trophyTitle: trophyDocs[index]['trophyTitle'],
+                                );
+                              } else {
+                                viewModel.pushTrophyView(
+                                  title: null,
+                                  id: null,
+                                  previewLink: null,
+                                  docId: trophyDocs[index].id,
+                                  isNormalTrophy: trophyDocs[index]
+                                      ['isNormalTrophy'],
+                                  trophyChallengeDiscription: null,
+                                  trophyChallengeImage: null,
+                                  trophyChallengeName: null,
+                                  trophyChallengeRules: null,
+                                  trophyDescription: trophyDocs[index]
+                                      ['trophyDescription'],
+                                  trophyReceivedDate: trophyDocs[index]
+                                      ['trophyReceivedDate'],
+                                  trophyTitle: trophyDocs[index]['trophyTitle'],
+                                );
+                              }
                             },
                             child: Container(
                               height: 90,
@@ -71,11 +103,37 @@ class TrophiesView extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       Hero(
-                                        tag: 1,
-                                        child: Icon(
-                                          icon,
-                                          size: 40,
-                                          color: Theme.of(context).primaryColor,
+                                        tag: !trophyDocs[index]
+                                                ['isNormalTrophy']
+                                            ? trophyDocs[index]['id']
+                                            : trophyDocs[index].id,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6.0),
+                                          child: trophyDocs[index]
+                                                  ['isNormalTrophy']
+                                              ? Icon(
+                                                  Icons.emoji_events,
+                                                  size: 35,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                )
+                                              : Container(
+                                                  height: 60,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: NetworkImage(
+                                                        trophyDocs[index][
+                                                            'trophyChallengeImage'],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                         ),
                                       ),
                                       SizedBox(
@@ -89,7 +147,7 @@ class TrophiesView extends StatelessWidget {
                                             height: 9,
                                           ),
                                           Text(
-                                            trophyTitle,
+                                            trophyDocs[index]['trophyTitle'],
                                             style: TextStyle(
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w600),

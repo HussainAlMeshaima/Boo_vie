@@ -4,6 +4,7 @@ import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/Views/more_books/more_books_view.dart';
 import 'package:boo_vi_app/Views/searched/searched_view.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -91,7 +92,7 @@ class SearchViewModel extends BaseViewModel {
     return _streamServices.getFullArtsAndentErtainmentBooksStream();
   }
 
-  Stream getArtsAndentErtainmentBooksStream() {
+  Stream<QuerySnapshot> getArtsAndentErtainmentBooksStream() {
     return _streamServices.getArtsAndentErtainmentBooksStream();
   }
 

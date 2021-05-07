@@ -15,7 +15,7 @@ class GlobalChallengesViewModel extends BaseViewModel {
   NavigationService _navigationService = locator<NavigationService>();
 
   pushGlobalChallengeView() {
-    _navigationService.navigateWithTransition(GlobalChallengeView(),
-        transition: 'rightToLeftWithFade');
+    // _navigationService.navigateWithTransition(GlobalChallengeView(),
+    //     transition: 'rightToLeftWithFade');
   }
 }

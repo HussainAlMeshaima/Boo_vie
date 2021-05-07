@@ -1306,6 +1306,8 @@ class CloudFirestoreServices {
   Stream<QuerySnapshot> getCompletedChallengesStream() async* {
     yield* _users
         .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userChallenges')
         .collection('completedChallenges')
         .snapshots();
   }
@@ -1334,25 +1336,32 @@ class CloudFirestoreServices {
         .collection('privateChatWithOtherUsers')
         .doc(otherUser)
         .get()
-        .then((thatOtherUser) async => {
-              if (!thatOtherUser.exists)
-                {
-                  FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(await _authenticationService.userEmail())
-                      .collection('privateChatWithOtherUsers')
-                      .doc(otherUser)
-                      .collection('messages')
-                      .add({
+        .then(
+          (thatOtherUser) async => {
+            if (!thatOtherUser.exists)
+              {
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(await _authenticationService.userEmail())
+                    .collection('privateChatWithOtherUsers')
+                    .doc(otherUser)
+                    .collection('messages')
+                    .add(
+                  {
                     'sentDate': DateTime.now(),
                     'isMeThatSender': true,
                     'message': 'hello 👋'
-                  })
-                }
-            });
+                  },
+                )
+              }
+          },
+        );
   }
 
   Future markThatBookChallangeAsDone({
+    @required String bookId,
+    @required String previewLink,
+    @required String bookTitle,
     @required String challengeId,
     @required String challengeImage,
     @required String challengeName,
@@ -1364,69 +1373,88 @@ class CloudFirestoreServices {
     String _userEmail = await _authenticationService.userEmail();
     return _users
         .doc(_userEmail)
-        .collection('userCompleatedChallenges')
+        .collection('userDetails')
+        .doc('userChallenges')
+        .collection('globalChallenges')
         .doc(challengeId)
-        .get()
+        .update({
+          'compleatedChallenge': true,
+        })
         .then(
-          (thatDoc) async => {
-            if (!thatDoc.exists)
+          (value) async => {
+            _users
+                .doc(_userEmail)
+                .collection('userDetails')
+                .doc('userTrophies')
+                .collection('Trophies')
+                .doc(challengeName)
+                .set(
               {
-                _users
-                    .doc()
-                    .collection('userCompleatedChallenges')
-                    .doc(challengeId)
-                    .set(
-                      {
-                        'challengeId': challengeId,
-                        'challengeImage': challengeImage,
-                        'challengeName': challengeName,
-                        'challengeAuthorName': challengeAuthorName,
-                        'challengeRules': challengeRules,
-                        'challengeDiscription': challengeDiscription,
-                        'trophyMap': trophyMap,
-                        'atTime': DateTime.now(),
-                      },
-                    )
-                    .then(
-                      (value) async => {
-                        _users
-                            .doc(_userEmail)
-                            .collection('userDetails')
-                            .doc('userTrophies')
-                            .collection('Trophies')
-                            .doc(challengeName)
-                            .set(
-                          {
-                            'isNormalTrophy': false,
-                            'trophyDescription': trophyMap['trophyDescription'],
-                            'trophyReceivedDate': DateTime.now(),
-                            'trophyTitle': challengeName,
-                            'trophyChallengeImage': challengeImage,
-                            'trophyChallengeName': challengeName,
-                            'trophyChallengeAuthorName': challengeAuthorName,
-                            'trophyChallengeRules': challengeRules,
-                            'trophyChallengeDiscription': challengeDiscription,
-                          },
-                        )
-                      },
-                    )
-                    .then(
-                      (value) async => {
-                        _users
-                            .doc(_userEmail)
-                            .collection('userDetails')
-                            .doc('userChallenges')
-                            .collection('globalChallenges')
-                            .doc(challengeId)
-                            .update(
-                          {
-                            'compleatedChallenge': true,
-                          },
-                        )
-                      },
-                    )
+                'isNormalTrophy': false,
+                'trophyDescription': trophyMap['trophyDescription'],
+                'trophyReceivedDate': DateTime.now(),
+                'trophyTitle': challengeName,
+                'trophyChallengeImage': challengeImage,
+                'trophyChallengeName': challengeName,
+                'trophyChallengeAuthorName': challengeAuthorName,
+                'trophyChallengeRules': challengeRules,
+                'trophyChallengeDiscription': challengeDiscription,
+                'previewLink': previewLink,
+                'id': bookId,
+                'title': bookTitle,
               },
+            )
           },
-        );
+        )
+        .then((value) => {
+              _users
+                  .doc(_userEmail)
+                  .collection('userDetails')
+                  .doc('userChallenges')
+                  .collection('globalChallenges')
+                  .doc(challengeId)
+                  .collection('completedChallenges')
+                  .doc(challengeId)
+                  .get()
+                  .then(
+                    (thatDoc) => {
+                      if (!thatDoc.exists)
+                        {
+                          _users
+                              .doc(_userEmail)
+                              .collection('userDetails')
+                              .doc('userChallenges')
+                              .collection('completedChallenges')
+                              .doc(challengeId)
+                              .set(
+                            {
+                              'bookId': bookId,
+                              'previewLink': previewLink,
+                              'bookTitle': bookTitle,
+                              'challengeId': challengeId,
+                              'challengeImage': challengeImage,
+                              'challengeName': challengeName,
+                              'challengeAuthorName': challengeAuthorName,
+                              'challengeRules': challengeRules,
+                              'challengeDiscription': challengeDiscription,
+                              'completedDate': DateTime.now(),
+                            },
+                          )
+                        }
+                    },
+                  )
+            })
+        .then(
+          (value) async => {
+            _users
+                .doc(_userEmail)
+                .collection('userDetails')
+                .doc('userInformation')
+                .update(
+              {'userTotalTrophies': FieldValue.increment(1)},
+            )
+          },
+        )
+        .then((value) => print('done'));
   }
 }

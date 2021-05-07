@@ -3,6 +3,7 @@ import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 
 import 'package:boo_vi_app/views/trophy/trophy_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:boo_vi_app/core/logger.dart';
@@ -24,28 +25,46 @@ class TrophiesViewModel extends BaseViewModel {
   }
 
   void pushTrophyView({
-    String trophyTitle,
-    String trophyDescription,
-    Timestamp trophyReceivedDate,
-    //
-    String bookAuthors,
-    String bookId,
-    String bookImage,
-    String previewLink,
-    bool isNormalTrophy,
+    @required String docId,
+    //--------------------------------------------------------
+    @required bool isNormalTrophy,
+    @required String trophyChallengeDiscription,
+    @required String trophyChallengeImage,
+    @required String trophyChallengeName,
+    @required List<dynamic> trophyChallengeRules,
+    //--------------------------------------------------------
+    @required String trophyDescription,
+    @required Timestamp trophyReceivedDate,
+    @required String trophyTitle,
+    //--------------------------------------------------------
+    @required String id,
+    @required String previewLink,
+    @required String title,
   }) {
     _navigationService.navigateWithTransition(
-        TrophyView(
-          isNormalTrophy: isNormalTrophy,
-          trophyTitle: trophyTitle,
-          previewLink: previewLink ?? '',
-          bookId: bookId ?? ' ',
-          bookAuthors: bookAuthors ?? '',
-          bookImage: bookImage ?? '',
-          trophyDescription: trophyDescription,
-          trophyReceivedDate: trophyReceivedDate,
-        ),
-        transition: 'rightToLeftWithFade',
-        duration: Duration(milliseconds: 400));
+      TrophyView(
+        docId: docId,
+        //-----------------------------------------------------
+        isNormalTrophy: isNormalTrophy,
+        trophyChallengeDiscription: trophyChallengeDiscription,
+        trophyChallengeImage: trophyChallengeImage,
+        trophyChallengeName: trophyChallengeName,
+        trophyChallengeRules: trophyChallengeRules,
+        //-----------------------------------------------------
+        trophyDescription: trophyDescription,
+        trophyReceivedDate: trophyReceivedDate,
+        trophyTitle: trophyTitle,
+        //-----------------------------------------------------
+        id: id,
+        previewLink: previewLink,
+        title: title,
+      ),
+      transition: 'rightToLeftWithFade',
+      duration: Duration(
+        milliseconds: 400,
+      ),
+    );
   }
+
+  handleStartUpLogic() {}
 }

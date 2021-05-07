@@ -242,4 +242,16 @@ class ChallengesViewModel extends BaseViewModel {
 
   ScrollController _scrollController;
   ScrollController get scrollController => _scrollController;
+
+  Color whatColorIsThatChallange(
+      {@required bool challengeIsCompleated, @required int setToDate}) {
+    if (challengeIsCompleated) {
+      return Colors.green;
+    }
+    if (setToDate <= 0) {
+      return Colors.red.withOpacity(.7);
+    }
+
+    return Colors.black54;
+  }
 }
