@@ -5,16 +5,15 @@ import 'package:stacked/stacked.dart';
 import 'room_view_model.dart';
 
 class RoomView extends StatelessWidget {
-  final String otherUserEmailWhichIsAlsoADoc;
+  final String roomId;
 
-  const RoomView({Key key, @required this.otherUserEmailWhichIsAlsoADoc})
-      : super(key: key);
+  const RoomView({Key key, @required this.roomId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RoomViewModel>.reactive(
       onModelReady: (RoomViewModel viewModel) =>
-          viewModel.handleStartUpLogic(otherUserEmailWhichIsAlsoADoc),
+          viewModel.handleStartUpLogic(roomId),
       builder: (BuildContext context, RoomViewModel viewModel, Widget _) {
         return Scaffold(
           floatingActionButton: Container(

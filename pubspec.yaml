@@ -57,6 +57,9 @@ flutter:
     - assets/introAssets/aboutBooVi.png
     - assets/introAssets/shareReviews.png
     - assets/introAssets/reading.png
+    - assets/doorHandleBlack.png
+    - assets/doorHandleWhite.png
+
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

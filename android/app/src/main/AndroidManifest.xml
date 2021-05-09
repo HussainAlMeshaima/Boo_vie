@@ -2,6 +2,7 @@
     package="com.autovita.boovie2">
  
    <application
+        android:requestLegacyExternalStorage="true"
         android:label="BooVi"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

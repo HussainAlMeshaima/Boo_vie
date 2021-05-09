@@ -15,15 +15,15 @@ class RoomViewModel extends BaseViewModel {
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 
-  Stream<QuerySnapshot> getThatPrivateChatWithThatOtherUser() async* {
-    yield* _cloudFirestoreServices.getThatPrivateChatWithThatOtherUser(
-        otherUser: _otherUserEmailWhichIsAlsoADoc);
+  // Stream<QuerySnapshot> getThatPrivateChatWithThatOtherUser() async* {
+  //   yield* _cloudFirestoreServices.getThatPrivateChatWithThatOtherUser(
+  //       otherUser: _otherUserEmailWhichIsAlsoADoc);
+  // }
+
+  handleStartUpLogic(String roomId) {
+    _roomId = roomId;
   }
 
-  handleStartUpLogic(String otherUserWhichIsAlsoADoc) {
-    _otherUserEmailWhichIsAlsoADoc = otherUserEmailWhichIsAlsoADoc;
-  }
-
-  String _otherUserEmailWhichIsAlsoADoc;
-  String get otherUserEmailWhichIsAlsoADoc => _otherUserEmailWhichIsAlsoADoc;
+  String _roomId;
+  String get roomId => _roomId;
 }

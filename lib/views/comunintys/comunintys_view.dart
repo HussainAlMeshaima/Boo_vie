@@ -1,3 +1,6 @@
+import 'package:boo_vi_app/widgets/smart_widgets/message_by_sender/message_by_sender_widget.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/message_from_receiver/message_from_receiver_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'comunintys_view_model.dart';
@@ -103,216 +106,299 @@ class ComunintysView extends StatelessWidget {
                                   physics: ScrollPhysics(),
                                   shrinkWrap: true,
                                   children: [
-                                    Hero(
-                                      tag: 1,
-                                      child: Container(
-                                        height: 200,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80004f68741469.5bae1b8424f4c.jpg')),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Stack(
-                                            clipBehavior: Clip.none,
-                                            alignment: Alignment.bottomCenter,
-                                            children: [
-                                              Positioned(
-                                                bottom: -42,
-                                                child: Container(
-                                                  height: 113,
-                                                  width: 300,
-                                                  child: Card(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              9.0),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              12.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Container(
-                                                                width: 215,
-                                                                child: Text(
-                                                                  'Horror Comunity',
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          17,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
+                                    Container(
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/80004f68741469.5bae1b8424f4c.jpg')),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
+                                          alignment: Alignment.bottomCenter,
+                                          children: [
+                                            Positioned(
+                                              bottom: -42,
+                                              child: Container(
+                                                height: 113,
+                                                width: 300,
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            9.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 260,
+                                                              child: Text(
+                                                                'Horror Comunity',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
                                                               ),
-                                                              Spacer(),
-                                                              SizedBox(
-                                                                width: 4,
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  Icon(
-                                                                    Icons.timer,
-                                                                    size: 20,
-                                                                  ),
-                                                                  Text(
-                                                                    '12',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            12),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                width: 4,
-                                                              ),
-                                                              Column(
-                                                                children: [
-                                                                  Icon(
-                                                                    Icons
-                                                                        .people,
-                                                                    size: 20,
-                                                                  ),
-                                                                  Text(
-                                                                    '12',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            12),
-                                                                  ),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Stack(
-                                                                clipBehavior:
-                                                                    Clip.none,
-                                                                alignment:
-                                                                    AlignmentDirectional
-                                                                        .bottomEnd,
-                                                                children: [
-                                                                  Positioned(
-                                                                    right: -24,
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          32,
-                                                                      width: 32,
-                                                                      decoration: BoxDecoration(
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                                color: Colors.black45,
-                                                                                blurRadius: 3,
-                                                                                spreadRadius: 2)
-                                                                          ],
-                                                                          color: Theme.of(context).primaryColor.withOpacity(
-                                                                              .4),
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              5),
-                                                                          image: DecorationImage(
-                                                                              fit: BoxFit.cover,
-                                                                              image: NetworkImage('https://thumbs.dreamstime.com/b/surprised-female-person-confused-isolated-surprised-female-person-confused-isolated-168304856.jpg'))),
-                                                                    ),
-                                                                  ),
-                                                                  Positioned(
-                                                                    right: -15,
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          34,
-                                                                      width: 34,
-                                                                      decoration: BoxDecoration(
-                                                                          boxShadow: [
-                                                                            BoxShadow(
-                                                                                color: Colors.black45,
-                                                                                blurRadius: 3,
-                                                                                spreadRadius: 2)
-                                                                          ],
-                                                                          color: Theme.of(context).primaryColor.withOpacity(
-                                                                              .4),
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              7),
-                                                                          image: DecorationImage(
-                                                                              fit: BoxFit.cover,
-                                                                              image: NetworkImage('https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80'))),
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    height: 40,
-                                                                    width: 40,
+                                                            ),
+                                                            Spacer(),
+                                                            // SizedBox(
+                                                            //   width: 4,
+                                                            // ),
+                                                            // Column(
+                                                            //   children: [
+                                                            //     Icon(
+                                                            //       Icons.timer,
+                                                            //       size: 20,
+                                                            //     ),
+                                                            //     Text(
+                                                            //       '12',
+                                                            //       style: TextStyle(
+                                                            //           fontSize:
+                                                            //               12),
+                                                            //     ),
+                                                            //   ],
+                                                            // ),
+                                                            // SizedBox(
+                                                            //   width: 4,
+                                                            // ),
+                                                            // Column(
+                                                            //   children: [
+                                                            //     Icon(
+                                                            //       Icons
+                                                            //           .people,
+                                                            //       size: 20,
+                                                            //     ),
+                                                            //     Text(
+                                                            //       '12',
+                                                            //       style: TextStyle(
+                                                            //           fontSize:
+                                                            //               12),
+                                                            //     ),
+                                                            //   ],
+                                                            // )
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Stack(
+                                                              clipBehavior:
+                                                                  Clip.none,
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .bottomEnd,
+                                                              children: [
+                                                                Positioned(
+                                                                  right: -24,
+                                                                  child:
+                                                                      Container(
+                                                                    height: 32,
+                                                                    width: 32,
                                                                     decoration: BoxDecoration(
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: Theme.of(context).primaryColor.withOpacity(.4),
+                                                                              blurRadius: 5,
+                                                                              spreadRadius: 1)
+                                                                        ],
                                                                         color: Theme.of(context)
                                                                             .primaryColor
                                                                             .withOpacity(
                                                                                 .4),
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                              color: Colors.black45,
-                                                                              blurRadius: 3,
-                                                                              spreadRadius: 2)
-                                                                        ],
                                                                         borderRadius:
                                                                             BorderRadius.circular(
                                                                                 5),
                                                                         image: DecorationImage(
                                                                             fit:
                                                                                 BoxFit.cover,
-                                                                            image: NetworkImage('https://img.freepik.com/free-photo/cheerful-curly-business-girl-wearing-glasses_176420-206.jpg?size=626&ext=jpg'))),
+                                                                            image: NetworkImage('https://thumbs.dreamstime.com/b/surprised-female-person-confused-isolated-surprised-female-person-confused-isolated-168304856.jpg'))),
                                                                   ),
-                                                                ],
+                                                                ),
+                                                                Positioned(
+                                                                  right: -15,
+                                                                  child:
+                                                                      Container(
+                                                                    height: 34,
+                                                                    width: 34,
+                                                                    decoration: BoxDecoration(
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: Theme.of(context).primaryColor.withOpacity(.4),
+                                                                              blurRadius: 5,
+                                                                              spreadRadius: 1)
+                                                                        ],
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor
+                                                                            .withOpacity(
+                                                                                .4),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                7),
+                                                                        image: DecorationImage(
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                            image: NetworkImage('https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80'))),
+                                                                  ),
+                                                                ),
+                                                                Hero(
+                                                                  tag: 'admin',
+                                                                  child:
+                                                                      Container(
+                                                                    height: 40,
+                                                                    width: 40,
+                                                                    decoration: BoxDecoration(
+                                                                        color: Theme.of(context).primaryColor.withOpacity(.4),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: Theme.of(context).primaryColor.withOpacity(.4),
+                                                                              blurRadius: 5,
+                                                                              spreadRadius: 1)
+                                                                        ],
+                                                                        borderRadius: BorderRadius.circular(5),
+                                                                        image: DecorationImage(fit: BoxFit.cover, image: NetworkImage('https://img.freepik.com/free-photo/cheerful-curly-business-girl-wearing-glasses_176420-206.jpg?size=626&ext=jpg'))),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              width: 34,
+                                                            ),
+                                                            Text(
+                                                              '12',
+                                                              style: TextStyle(
+                                                                  fontSize: 17,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                            ),
+                                                            Text(
+                                                              ' more',
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                  fontSize: 13),
+                                                            ),
+                                                            Spacer(),
+                                                            Card(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              child: Container(
+                                                                height: 36,
+                                                                width: 75,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          5,
+                                                                      vertical:
+                                                                          4),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.timer,
+                                                                            size:
+                                                                                16,
+                                                                            color:
+                                                                                Theme.of(context).primaryIconTheme.color,
+                                                                          ),
+                                                                          Text(
+                                                                            '12',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 9,
+                                                                              color: Theme.of(context).primaryIconTheme.color,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.favorite,
+                                                                            size:
+                                                                                16,
+                                                                            color:
+                                                                                Theme.of(context).primaryIconTheme.color,
+                                                                          ),
+                                                                          Text(
+                                                                            '12',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 9,
+                                                                              color: Theme.of(context).primaryIconTheme.color,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.people,
+                                                                            size:
+                                                                                16,
+                                                                            color:
+                                                                                Theme.of(context).primaryIconTheme.color,
+                                                                          ),
+                                                                          Text(
+                                                                            '12',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 9,
+                                                                              color: Theme.of(context).primaryIconTheme.color,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
                                                               ),
-                                                              SizedBox(
-                                                                width: 34,
-                                                              ),
-                                                              Text(
-                                                                '12',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                              ),
-                                                              Text(
-                                                                ' more',
-                                                                style: TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .primaryColor,
-                                                                    fontSize:
-                                                                        9),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 50,
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                            ],
-                                          ),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -330,7 +416,28 @@ class ComunintysView extends StatelessWidget {
                   ),
 
                   // ! My Comunintys
-                  Container(),
+                  Container(
+                    child: ListView(
+                      children: [
+                        // MessageBySenderWidget(
+                        //     text: 'sender', timestamp: Timestamp.now()),
+                        // MessageFromReceiverWidget(
+                        //     text: 'resiver', timestamp: Timestamp.now()),
+                        // MessageFromReceiverWidget(
+                        //     text: 'resiver', timestamp: Timestamp.now()),
+                        // MessageBySenderWidget(
+                        //     text: 'sender', timestamp: Timestamp.now()),
+                        // MessageFromReceiverWidget(
+                        //     text: 'resiver', timestamp: Timestamp.now()),
+                        // MessageBySenderWidget(
+                        //     text: 'sender', timestamp: Timestamp.now()),
+                        // MessageFromReceiverWidget(
+                        //     text: 'resiver', timestamp: Timestamp.now()),
+                        // MessageBySenderWidget(
+                        //     text: 'sender', timestamp: Timestamp.now()),
+                      ],
+                    ),
+                  ),
                 ],
               )),
         );

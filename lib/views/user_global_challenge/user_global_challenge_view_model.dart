@@ -18,6 +18,8 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
   UserGlobalChallengeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
+  bool _isBusy = false;
+  bool get isBusy => _isBusy;
 
   handleStartUpLogic(
       {@required String challangeId,
@@ -32,6 +34,7 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
       @required String challengeDiscription,
       @required Map trophiesMap,
       @required List challengeRules}) {
+    _isBusy = true;
     _bookTitle = bookTitle;
     _bookId = bookId;
     _previewLink = previewLink;
@@ -59,7 +62,6 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
         (Timer timer) {
           if (!_challangeHasNotBeenCompleated && !_challangeTimeIsNotDone) {
             convertTheGivenTimestampToString();
-            notifyListeners();
           } else {
             _showMarkAsDoneButton = false;
             timer.cancel();
@@ -68,6 +70,8 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
         },
       );
     }
+    _isBusy = false;
+    notifyListeners();
   }
 
   void convertTheGivenTimestampToString() {
