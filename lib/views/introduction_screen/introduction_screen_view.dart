@@ -78,7 +78,7 @@ class IntroductionScreenView extends StatelessWidget {
             ),
             PageViewModel(
               titleWidget: Text(
-                'Why review books ?',
+                'Reviews are valued',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w500,
@@ -91,11 +91,11 @@ class IntroductionScreenView extends StatelessWidget {
               ),
               // title: "Welcome To BooVi",
               body:
-                  "Simple. Reviews is a guide for potential readers. BooVi give books greater visibility and a greater chance of getting found by more and more readers.",
+                  "Reviews not only have the power to influence people decisions but can strengthen credibility. Reviews have the power to gain people trust, and they encourage people to interact more.",
             ),
             PageViewModel(
               titleWidget: Text(
-                'Why review books ?',
+                'Enjoy reading !',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w500,
@@ -108,7 +108,7 @@ class IntroductionScreenView extends StatelessWidget {
               ),
               // title: "Welcome To BooVi",
               body:
-                  "Simple. Reviews is a guide for potential readers. BooVi give books greater visibility and a greater chance of getting found by more and more readers.",
+                  "Books are the quietest and most constant of friends for all; they are the most accessible and wisest of counselors.",
             ),
           ],
         ));

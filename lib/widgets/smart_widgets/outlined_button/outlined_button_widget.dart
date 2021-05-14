@@ -6,9 +6,10 @@ class OutlinedButtonWidget extends StatelessWidget {
   final String text;
   final Function onPressed;
   final Function onLongPress;
+  final String message;
 
   const OutlinedButtonWidget(
-      {Key key, this.text, this.onPressed, this.onLongPress})
+      {Key key, this.text, this.onPressed, this.onLongPress, this.message})
       : super(key: key);
 
   @override
@@ -17,7 +18,7 @@ class OutlinedButtonWidget extends StatelessWidget {
       builder:
           (BuildContext context, OutlinedButtonViewModel viewModel, Widget _) {
         return Tooltip(
-          message: text,
+          message: message ?? text,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 70),
             child: OutlinedButton(

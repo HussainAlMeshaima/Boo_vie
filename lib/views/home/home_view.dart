@@ -1,3 +1,4 @@
+import 'package:boo_vi_app/widgets/smart_widgets/currently_reading/currently_reading_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/book_author_and_name/book_author_and_name_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/book_categories_row/book_categories_row_widget.dart';
 import 'package:boo_vi_app/widgets/smart_widgets/more_books/more_books_widget.dart';
@@ -27,6 +28,74 @@ class HomeView extends StatelessWidget {
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             children: [
+              SizedBox(
+                height: 20,
+              ),
+              FutureBuilder(
+                future: viewModel.getUserCurrentlyReadingBooks(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data.docs.isEmpty) {
+                      return Container();
+                    } else {
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 20, right: 20),
+                              child: Row(children: [
+                                Tooltip(
+                                  message: 'Currently Reading',
+                                  child: Text(
+                                    'Currently Reading',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ])),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                                height: 120,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return CurrentlyReadingWidget(
+                                      numberOfTimesBookRead: snapshot.data
+                                          .docs[index]['numberOfTimesBookRead'],
+                                      bookPreviewLink: snapshot.data.docs[index]
+                                          ['bookPreviewLink'],
+                                      bookId: snapshot.data.docs[index]
+                                          ['bookId'],
+                                      bookImage: snapshot.data.docs[index]
+                                          ['bookImage'],
+                                      bookAuthors: snapshot.data.docs[index]
+                                          ['bookAuthors'],
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['bookTitle'],
+                                      bookTotalPages: snapshot.data.docs[index]
+                                          ['bookTotalPages'],
+                                      bookCurrentlyReachedPages:
+                                          snapshot.data.docs[index]
+                                              ['bookCurrentlyReachedPages'],
+                                    );
+                                  },
+                                )),
+                          ),
+                        ],
+                      );
+                    }
+                  }
+                  return Container();
+                },
+              ),
               FutureBuilder(
                 future: viewModel.getUserCategories(),
                 builder: (

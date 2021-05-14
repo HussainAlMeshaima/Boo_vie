@@ -122,7 +122,7 @@ class UserDetailsViewModel extends BaseViewModel {
     }
     if (_displayedNameController.text.isEmpty) {
       return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Please provide an Email')));
+          .showSnackBar(SnackBar(content: Text('Please provide a name')));
     }
     if (_aboutMeController.text.isEmpty) {
       return ScaffoldMessenger.of(context).showSnackBar(

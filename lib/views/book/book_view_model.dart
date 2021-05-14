@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:boo_vi_app/core/models/bookModels/bookIdModel.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/currently_reading_bottom_sheet/currently_reading_bottom_sheet_widget.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 
 import 'package:boo_vi_app/core/locator.dart';
@@ -58,8 +60,11 @@ class BookViewModel extends BaseViewModel {
         volumeName: volumeName, maxResults: 40, sortBy: 'newest');
   }
 
-  getBookById({@required String id}) {
-    return _bookServices.getBookById(volumeId: id);
+  Future<BookIdVolume> getBookById({@required String id}) async {
+    BookIdVolume _bookIdVolume = await _bookServices.getBookById(volumeId: id);
+    _bookTotalPages = _bookIdVolume.volumeInfo.pageCount;
+
+    return _bookIdVolume;
   }
 
   pushBookAuthorGridView({@required String authorName}) {
@@ -502,6 +507,65 @@ class BookViewModel extends BaseViewModel {
                   ),
                 ),
               ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return FutureBuilder(
+                          future: getUserCurrentlyReadingBook(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data.exists) {
+                                return CurrentlyReadingBottomSheetWidget(
+                                  bookId: snapshot.data.get('bookId'),
+                                  bookAuthors: snapshot.data.get('bookAuthors'),
+                                  bookCurrentlyReachedPages: snapshot.data
+                                      .get('bookCurrentlyReachedPages'),
+                                  bookImage: snapshot.data.get('bookImage'),
+                                  bookTitle: snapshot.data.get('bookTitle'),
+                                  bookTotalPages:
+                                      snapshot.data.get('bookTotalPages'),
+                                  numberOfTimesBookRead: snapshot.data
+                                      .get('numberOfTimesBookRead'),
+                                  bookPreviewLink:
+                                      snapshot.data.get('bookPreviewLink'),
+                                );
+                              } else
+                                return CurrentlyReadingBottomSheetWidget(
+                                    outlinedButtonText: 'Add book',
+                                    bookId: _bookId,
+                                    bookAuthors: _bookAuthors,
+                                    bookCurrentlyReachedPages: 0,
+                                    bookImage: _bookImage,
+                                    bookTitle: _bookTitle,
+                                    bookTotalPages: _bookTotalPages,
+                                    numberOfTimesBookRead: 0,
+                                    bookPreviewLink: _bookpreviewLink);
+                            }
+                            return Container(
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        );
+                      });
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.auto_stories,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    title: Text('Add to currently reading'),
+                  ),
+                ),
+              ),
               // ! Add as a challenge
               GestureDetector(
                 onTap: () {
@@ -542,11 +606,32 @@ class BookViewModel extends BaseViewModel {
                                       horizontal: 12.0, vertical: 5),
                                   child: ListTile(
                                     leading: Icon(
-                                      Icons.person,
+                                      Icons.linear_scale,
                                       color: Theme.of(context).primaryColor,
                                     ),
-                                    title: Text('Add to my challenges'),
+                                    title: Text('Add to my challenges (day)'),
                                   ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 5),
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.event,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  title: Text('Add to my challenges (days)'),
+                                  onTap: () async {
+                                    DateTime newDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(3000, 7),
+                                      helpText: 'Select a date',
+                                    );
+                                    Navigator.pop(context);
+                                  },
                                 ),
                               ),
                               Padding(
@@ -558,6 +643,16 @@ class BookViewModel extends BaseViewModel {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   title: Text('Add as a community challenge'),
+                                  onTap: () async {
+                                    DateTime newDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(3000, 7),
+                                      helpText: 'Select a date',
+                                    );
+                                    Navigator.pop(context);
+                                  },
                                 ),
                               ),
                               SizedBox(
@@ -618,6 +713,9 @@ class BookViewModel extends BaseViewModel {
 
   String _bookAuthors;
   String get bookAuthors => _bookAuthors;
+
+  int _bookTotalPages;
+  int get bookTotalPages => _bookTotalPages;
 
   int _bookIndex;
   int get bookIndex => _bookIndex;
@@ -744,5 +842,9 @@ class BookViewModel extends BaseViewModel {
         title: title,
         previewLink: previewLink,
         bookImage: bookImage);
+  }
+
+  Future<DocumentSnapshot> getUserCurrentlyReadingBook() {
+    return _cloudFirestoreServices.getUserCurrentlyReadingBook(bookId: _bookId);
   }
 }

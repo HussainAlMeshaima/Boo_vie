@@ -35,7 +35,7 @@ class SearchView extends StatelessWidget {
                   viewModel.searchTextfieldController.text
                       .trim()
                       .replaceAll('', '+');
-                  print(viewModel.searchTextfieldController.text + '---');
+
                   if (viewModel.searchTextfieldController.text.isNotEmpty)
                     return viewModel.pushSearchedView(
                       context: context,

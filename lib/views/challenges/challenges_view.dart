@@ -968,8 +968,8 @@ class ChallengesView extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height /
                                         1.3,
                                     child: Center(
-                                      child:
-                                          Text('You have no challanges yet 😭'),
+                                      child: Text(
+                                          'You have no user challanges yet 😭'),
                                     ),
                                   );
                                 }
@@ -979,8 +979,8 @@ class ChallengesView extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height /
                                         1.3,
                                     child: Center(
-                                      child:
-                                          Text('You have no challanges yet 😭'),
+                                      child: Text(
+                                          'You have no user challanges yet 😭'),
                                     ),
                                   );
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class StreamServices {
   FirebaseFirestore _firebaseFirestoreInstance = FirebaseFirestore.instance;
@@ -222,6 +223,93 @@ class StreamServices {
         .collection('globalChallenges')
         .doc(challangeId)
         .collection('challangeComments')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunities() {
+    return _firebaseFirestoreInstance.collection('communities').snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityInformation(
+      {@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('CommunityInformation')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityRooms({@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityRooms')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityMembers({@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityMembers')
+        .limit(3)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getFullCommunityMembers(
+      {@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityMembers')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getcommunityNotifications(
+      {@required String communityId}) async* {
+    yield* _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityNotifications')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityHistoryChallanges(
+      {@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityHistoryChallanges')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityActiveChallanges(
+      {@required String communityId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(communityId)
+        .collection('communityActiveChallanges')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getRoomMessages(
+      {@required String docId, @required String roomId}) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityRooms')
+        .doc(roomId)
+        .collection('messages')
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getCommunityNotifications({
+    @required String docId,
+  }) {
+    return _firebaseFirestoreInstance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityNotifications')
         .snapshots();
   }
 }

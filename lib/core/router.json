@@ -1,5 +1,5 @@
 {
-    "last_updated": "Tue, 04 May 2021 05:06:44 GMT",
+    "last_updated": "Thu, 13 May 2021 01:54:35 GMT",
     "routes": [
         {
             "file_path": "views/start_up/start_up_view.dart",
@@ -107,11 +107,6 @@
             "view_name": "ProfileToEditDetailsView"
         },
         {
-            "file_path": "views/comuninty/comuninty_view.dart",
-            "route_name": "comunintyViewRoute",
-            "view_name": "ComunintyView"
-        },
-        {
             "file_path": "views/comuninty_information/comuninty_information_view.dart",
             "route_name": "comuninty_informationViewRoute",
             "view_name": "ComunintyInformationView"
@@ -150,6 +145,32 @@
             "file_path": "views/room/room_view.dart",
             "route_name": "roomViewRoute",
             "view_name": "RoomView"
+        },
+        {
+            "file_path": "views/comunity_members/comunity_members_view.dart",
+            "route_name": "comunity_membersViewRoute",
+            "view_name": "ComunityMembersView"
+        },
+        {
+            "file_path": "views/community_notifications/community_notifications_view.dart",
+            "route_name": "community_notificationsViewRoute",
+            "view_name": "CommunityNotificationsView"
+        },
+        {
+            "file_path": "views/comunity_active_challenges/comunity_active_challenges_view.dart",
+            "route_name": "comunity_active_challengesViewRoute",
+            "view_name": "ComunityActiveChallengesView"
+        },
+        {
+            "file_path": "views/edit_community_rules_and_discription/edit_community_rules_and_discription_view.dart",
+            "route_name": "edit_community_rules_and_discriptionViewRoute",
+            "view_name": "EditCommunityRulesAndDiscriptionView"
+        },
+        
+        {
+            "file_path": "views/community_challange/community_challange_view.dart",
+            "route_name": "community_challangeViewRoute",
+            "view_name": "CommunityChallangeView"
         }
     ]
 }

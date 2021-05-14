@@ -19,19 +19,28 @@ class UserReviewToProfileViewModel extends BaseViewModel {
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 
-  handleStartUpLogic({String userEmail, String userImage}) {
+  handleStartUpLogic({@required String userEmail, @required String userImage}) {
     _userEmail = userEmail;
     _userImage = userImage;
   }
 
   Stream<QuerySnapshot> getOtherUserBooksInThatShelfStream(
-      {@required String shelfName}) async* {
-    yield* _cloudFirestoreServices.getOtherUserBooksInThatShelfStream(
+      {@required String shelfName}) {
+    return _cloudFirestoreServices.getOtherUserBooksInThatShelfStream(
         shelfName: shelfName, otherUserEmail: _userEmail);
   }
 
-  Stream<QuerySnapshot> getOtherUserShelfsStream() async* {
-    yield* _cloudFirestoreServices.getOtherUserShelfsStream(
+  Stream<QuerySnapshot> getOtherUserShelfsStream() {
+    return _cloudFirestoreServices.getOtherUserShelfsStream(
+        otherUserEmail: _userEmail);
+  }
+
+  Future<DocumentSnapshot> getUserInformationDoc() async {
+    return await _cloudFirestoreServices.getUserInformationDoc();
+  }
+
+  Future<DocumentSnapshot> getOtherUserInformationDoc() async {
+    return await _cloudFirestoreServices.getOtherUserInformationDoc(
         otherUserEmail: _userEmail);
   }
 

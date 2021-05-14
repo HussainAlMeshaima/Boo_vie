@@ -12,70 +12,61 @@ class MoreBooksView extends StatelessWidget {
     return ViewModelBuilder<MoreBooksViewModel>.reactive(
       builder: (BuildContext context, MoreBooksViewModel viewModel, Widget _) {
         return Scaffold(
-            body: CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          shrinkWrap: true,
-          slivers: [
-            SliverAppBar(
-              floating: true,
-              title: Text(text),
-            ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              StreamBuilder(
-                  stream: stream,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasError) return snapshot.error;
+          appBar: AppBar(
+            title: Text(text),
+          ),
+          body: StreamBuilder(
+              stream: stream,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasError) return snapshot.error;
 
-                    if (snapshot.hasData) {
-                      print(snapshot.data.docs[0].data()['id']);
-                      return GridView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: snapshot.data.docs.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 1 / 1.6, crossAxisCount: 3),
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () => viewModel.pushBookView(
-                                  authors: snapshot.data.docs[index]
-                                      .data()['authors'],
-                                  image: snapshot.data.docs[index]
-                                      .data()['medium'],
-                                  id: snapshot.data.docs[index].data()['id'],
-                                  bookTitle:
-                                      snapshot.data.docs[index].data()['title'],
-                                  previewLink: snapshot.data.docs[index]
-                                      .data()['previewLink'],
-                                ),
-                                child: Hero(
-                                  tag: snapshot.data.docs[index].data()['id'],
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(snapshot
-                                                .data.docs[index]
-                                                .data()['medium']))),
-                                  ),
-                                ),
+                if (snapshot.hasData) {
+                  print(snapshot.data.docs[0].data()['id']);
+                  return GridView.builder(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: snapshot.data.docs.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1 / 1.6, crossAxisCount: 3),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () => viewModel.pushBookView(
+                              authors:
+                                  snapshot.data.docs[index].data()['authors'],
+                              image: snapshot.data.docs[index].data()['medium'],
+                              id: snapshot.data.docs[index].data()['id'],
+                              bookTitle:
+                                  snapshot.data.docs[index].data()['title'],
+                              previewLink: snapshot.data.docs[index]
+                                  .data()['previewLink'],
+                            ),
+                            child: Hero(
+                              tag: snapshot.data.docs[index].data()['id'],
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.5),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(snapshot
+                                            .data.docs[index]
+                                            .data()['medium']))),
                               ),
-                            );
-                          });
-                    }
+                            ),
+                          ),
+                        );
+                      });
+                }
 
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ]))
-          ],
-        ));
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
+        );
       },
       viewModelBuilder: () => MoreBooksViewModel(),
     );

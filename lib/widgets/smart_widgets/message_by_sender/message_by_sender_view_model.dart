@@ -14,7 +14,7 @@ class MessageBySenderViewModel extends BaseViewModel {
   String convertTheGivenTimestampToString(Timestamp timestamp) {
     DateTime otherDate = timestamp.toDate();
 
-    var time = DateFormat.jm().format(otherDate);
+    String time = DateFormat.jm().format(otherDate).toString();
 
     return (time);
   }

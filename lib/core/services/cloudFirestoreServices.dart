@@ -21,6 +21,16 @@ class CloudFirestoreServices {
         .get();
   }
 
+  Future<DocumentSnapshot> getOtherUserInformationDoc(
+      {@required String otherUserEmail}) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(otherUserEmail)
+        .collection('userDetails')
+        .doc('userInformation')
+        .get();
+  }
+
   Future<DocumentSnapshot> getUserCategories() async {
     return FirebaseFirestore.instance
         .collection('users')
@@ -110,9 +120,8 @@ class CloudFirestoreServices {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> getOtherUserShelfsStream(
-      {String otherUserEmail}) async* {
-    yield* FirebaseFirestore.instance
+  Stream<QuerySnapshot> getOtherUserShelfsStream({String otherUserEmail}) {
+    return FirebaseFirestore.instance
         .collection('users')
         .doc(otherUserEmail)
         .collection('userShelfs')
@@ -143,8 +152,8 @@ class CloudFirestoreServices {
   }
 
   Stream<QuerySnapshot> getOtherUserBooksInThatShelfStream(
-      {@required String shelfName, @required otherUserEmail}) async* {
-    yield* FirebaseFirestore.instance
+      {@required String shelfName, @required otherUserEmail}) {
+    return FirebaseFirestore.instance
         .collection('users')
         .doc(otherUserEmail)
         .collection('userShelfs')
@@ -1456,5 +1465,182 @@ class CloudFirestoreServices {
           },
         )
         .then((value) => print('done'));
+  }
+
+  Future sendTheGivenMessageToAGivenRoom({
+    @required String docId,
+    @required String roomId,
+    @required String messageString,
+  }) async {
+    DocumentSnapshot userDoc = await getUserDoc();
+    String userId = userDoc.data()['userId'];
+    String displayedName = userDoc.data()['displayedName'];
+    String userImage = userDoc.data()['userImage'];
+
+    return FirebaseFirestore.instance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityRooms')
+        .doc(roomId)
+        .collection('messages')
+        .add({
+      'userId': userId,
+      'displayedName': displayedName,
+      'userImage': userImage,
+      'messageString': messageString,
+      'messageTimeStamp': DateTime.now(),
+      'messageUserEmail': await _authenticationService.userEmail(),
+    });
+  }
+
+  Future createARoomInThatComunity({
+    @required String docId,
+    @required String roomName,
+  }) async {
+    return FirebaseFirestore.instance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityRooms')
+        .doc(roomName)
+        .get()
+        .then((thatDoc) => {
+              if (!thatDoc.exists)
+                {
+                  FirebaseFirestore.instance
+                      .collection('communities')
+                      .doc(docId)
+                      .collection('communityRooms')
+                      .doc(roomName)
+                      .set({
+                    'doorName': roomName,
+                    'createdDate': DateTime.now(),
+                    'roomName': roomName,
+                  })
+
+                  // .then((value) => {
+                  //           FirebaseFirestore.instance
+                  //               .collection('communities')
+                  //               .doc(docId)
+                  //               .collection('communityRooms')
+                  //               .doc(roomName)
+                  //               .collection('messages')
+                  //               .doc('Welcome message')
+                  //               .set({
+                  //             'displayedName': 'BooVi',
+                  //             'messageString':
+                  //                 'Welcome All To BooVie, $roomName was created by the admin! enjoy your stay 😄',
+                  //             'messageTimeStamp': DateTime.now(),
+                  //             'messageUserEmail': 'BooVi',
+                  //             'userId': 'BooVi',
+                  //             'userImage':
+                  //                 'https://firebasestorage.googleapis.com/v0/b/boovie-22ac7.appspot.com/o/assets%2FbooViLogoSmall.png?alt=media&token=082770b2-e010-41d9-8f8a-741659204375'
+                  //           }).then((value) => print('room added in ' + docId))
+                  //         })
+                }
+            });
+  }
+
+  void addAMemberToAGivenMemeberToComunity({
+    @required String docId,
+    @required String memberEmail,
+    @required String displayedName,
+    @required String userImage,
+  }) {
+    FirebaseFirestore.instance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityMembers')
+        .doc(memberEmail)
+        .get()
+        .then((thatMemebr) => {
+              if (!thatMemebr.exists)
+                {
+                  FirebaseFirestore.instance
+                      .collection('communities')
+                      .doc(docId)
+                      .collection('communityMembers')
+                      .doc(memberEmail)
+                      .set({
+                    'role': 'Member',
+                    'userImage': userImage,
+                    'memberEmail': memberEmail,
+                    'displayedName': displayedName,
+                    'joinedDate': DateTime.now(),
+                  })
+                }
+            });
+  }
+
+  void deleteUserMessage({@required String docId, @required String id}) {
+    FirebaseFirestore.instance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityNotifications')
+        .doc(id)
+        .delete();
+  }
+
+  void sendARequestToAGivenComunityToJoin({
+    @required String docId,
+    @required String memberEmail,
+    @required String userImage,
+    @required String displayedName,
+  }) {
+    FirebaseFirestore.instance
+        .collection('communities')
+        .doc(docId)
+        .collection('communityMembers')
+        .doc(memberEmail)
+        .get()
+        .then((thatMember) => {
+              if (!thatMember.exists)
+                {
+                  FirebaseFirestore.instance
+                      .collection('communities')
+                      .doc(docId)
+                      .collection('communityNotifications')
+                      .doc(memberEmail)
+                      .get()
+                      .then((thatNotification) => {
+                            if (!thatNotification.exists)
+                              {
+                                FirebaseFirestore.instance
+                                    .collection('communities')
+                                    .doc(docId)
+                                    .collection('communityNotifications')
+                                    .doc(memberEmail)
+                                    .set({
+                                  'role': 'Member',
+                                  'userImage': userImage,
+                                  'memberEmail': memberEmail,
+                                  'displayedName': displayedName,
+                                  'joinedDate': DateTime.now(),
+                                })
+                              }
+                          })
+                }
+            });
+  }
+
+  Future<QuerySnapshot> getUserCurrentlyReadingBooks() async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .get();
+  }
+
+  Future<DocumentSnapshot> getUserCurrentlyReadingBook(
+      {@required String bookId}) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .doc(bookId)
+        .get();
   }
 }

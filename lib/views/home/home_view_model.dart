@@ -192,4 +192,8 @@ class HomeViewModel extends BaseViewModel {
         previewLink: previewLink,
         bookImage: bookImage);
   }
+
+  Future<QuerySnapshot> getUserCurrentlyReadingBooks() {
+    return _cloudFirestoreServices.getUserCurrentlyReadingBooks();
+  }
 }
