@@ -1622,14 +1622,14 @@ class CloudFirestoreServices {
             });
   }
 
-  Future<QuerySnapshot> getUserCurrentlyReadingBooks() async {
+  Future<Stream<QuerySnapshot>> getUserCurrentlyReadingBooks() async {
     return FirebaseFirestore.instance
         .collection('users')
         .doc(await _authenticationService.userEmail())
         .collection('userDetails')
         .doc('userCurrentlyReading')
         .collection('currentlyReadingBooks')
-        .get();
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getUserCurrentlyReadingBook(
@@ -1642,5 +1642,50 @@ class CloudFirestoreServices {
         .collection('currentlyReadingBooks')
         .doc(bookId)
         .get();
+  }
+
+  Future<void> addBookToUserCurrentlyReading({
+    @required String bookAuthors,
+    @required int bookCurrentlyReachedPages,
+    @required String bookId,
+    @required String bookImage,
+    @required String bookPreviewLink,
+    @required String bookTitle,
+    @required int bookTotalPages,
+  }) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .doc(bookId)
+        .set({
+      'bookAuthors': bookAuthors,
+      'bookCurrentlyReachedPages': bookCurrentlyReachedPages,
+      'bookId': bookId,
+      'bookImage': bookImage,
+      'bookPreviewLink': bookPreviewLink,
+      'bookTitle': bookTitle,
+      'bookTotalPages': bookTotalPages,
+      'numberOfTimesBookRead': 0,
+      'isHidden': false,
+    });
+  }
+
+  Future<void> updateBookAtUserCurrentlyReading({
+    @required int bookCurrentlyReachedPages,
+    @required String bookId,
+  }) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .doc(bookId)
+        .update({
+      'bookCurrentlyReachedPages': bookCurrentlyReachedPages,
+    });
   }
 }

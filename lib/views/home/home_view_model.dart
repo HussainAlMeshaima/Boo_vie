@@ -193,7 +193,7 @@ class HomeViewModel extends BaseViewModel {
         bookImage: bookImage);
   }
 
-  Future<QuerySnapshot> getUserCurrentlyReadingBooks() {
-    return _cloudFirestoreServices.getUserCurrentlyReadingBooks();
+  Stream<QuerySnapshot> getUserCurrentlyReadingBooks() async* {
+    yield* _cloudFirestoreServices.getUserCurrentlyReadingBooks();
   }
 }

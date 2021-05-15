@@ -343,7 +343,9 @@ class CurrentlyReadingBottomSheetWidget extends StatelessWidget {
               ),
               OutlinedButtonWidget(
                 text: outlinedButtonText ?? 'Update',
-                onPressed: viewModel.outlinedButtonWidgetOnPressed,
+                onPressed: () {
+                  viewModel.outlinedButtonWidgetOnPressed(context: context);
+                },
               ),
               SizedBox(
                 height: 10,

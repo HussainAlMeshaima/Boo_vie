@@ -31,8 +31,8 @@ class HomeView extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              FutureBuilder(
-                future: viewModel.getUserCurrentlyReadingBooks(),
+              StreamBuilder(
+                stream: viewModel.getUserCurrentlyReadingBooks(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data.docs.isEmpty) {

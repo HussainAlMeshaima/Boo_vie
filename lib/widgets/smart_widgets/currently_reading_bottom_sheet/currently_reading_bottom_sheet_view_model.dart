@@ -1,3 +1,5 @@
+import 'package:boo_vi_app/core/locator.dart';
+import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -9,6 +11,9 @@ class CurrentlyReadingBottomSheetViewModel extends BaseViewModel {
   CurrentlyReadingBottomSheetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
+
+  CloudFirestoreServices _cloudFirestoreServices =
+      locator<CloudFirestoreServices>();
 
   handleStartUpLogic({
     @required String bookId,
@@ -32,7 +37,14 @@ class CurrentlyReadingBottomSheetViewModel extends BaseViewModel {
     _outlinedButtonText = outlinedButtonText;
   }
 
-  void outlinedButtonWidgetOnPressed() {}
+  void outlinedButtonWidgetOnPressed({@required BuildContext context}) {
+    // ! 'add book'
+    if (_outlinedButtonText != null) {
+      Navigator.pop(context);
+      addBookToUserCurrentlyReading();
+    }
+  }
+
   void elevatedButtonWidgetOnPressed() {}
 
   String _bookId;
@@ -75,12 +87,15 @@ class CurrentlyReadingBottomSheetViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void addBookToUserCurrentlyReading({
-    @required String bookId,
-    @required String bookAuthors,
-    @required String bookImage,
-    @required int bookTotalPages,
-    @required int numberOfTimesBookRead,
-    @required String bookPreviewLink,
-  }) {}
+  void addBookToUserCurrentlyReading() {
+    _cloudFirestoreServices.addBookToUserCurrentlyReading(
+      bookAuthors: _bookAuthors,
+      bookCurrentlyReachedPages: _bookCurrentlyReachedPages,
+      bookId: _bookId,
+      bookImage: _bookImage,
+      bookPreviewLink: _bookPreviewLink,
+      bookTitle: _bookTitle,
+      bookTotalPages: _bookTotalPages,
+    );
+  }
 }
