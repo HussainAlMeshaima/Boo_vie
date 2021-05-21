@@ -212,13 +212,24 @@ class ChallengesViewModel extends BaseViewModel {
   bool _hasMyChallenges = true;
   bool get hasMyChallenges => _hasMyChallenges;
 
-  pushMyChallangesView({
-    @required String bookId,
-    @required String bookAuthors,
-    @required String bookPreviewLink,
-    @required Timestamp setToDate,
-  }) {
-    _navigationService.navigateWithTransition(MyChallangesView(),
+  pushMyChallangesView(
+      {@required String title,
+      @required String id,
+      @required String authors,
+      @required String bookImage,
+      @required bool isCompleated,
+      @required String previewLink,
+      @required Timestamp setToDate}) {
+    _navigationService.navigateWithTransition(
+        MyChallangesView(
+          title: title,
+          id: id,
+          authors: authors,
+          bookImage: bookImage,
+          isCompleated: isCompleated,
+          previewLink: previewLink,
+          setToDate: setToDate,
+        ),
         transition: 'rightToLeftWithFade',
         duration: Duration(milliseconds: 400));
   }
@@ -253,5 +264,85 @@ class ChallengesViewModel extends BaseViewModel {
     }
 
     return Colors.black54;
+  }
+
+  Color whatColorToShowHabibi(
+      {@required bool isCompleated, @required Timestamp setToDate}) {
+    DateTime thatDate = setToDate.toDate();
+    if (isCompleated) {
+      return Colors.green;
+    }
+    if (thatDate.isBefore(DateTime.now())) {
+      return Colors.red;
+    }
+  }
+
+  Widget whichContainerToShowHabibi({
+    @required bool isCompleated,
+    @required Timestamp setToDate,
+    @required BuildContext context,
+  }) {
+    DateTime thatDate = setToDate.toDate();
+    if (isCompleated) {
+      return Container(
+        height: 47,
+        width: 155,
+        decoration: BoxDecoration(
+            color: Colors.green, borderRadius: BorderRadius.circular(7)),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Compleated',
+                style: TextStyle(
+                    fontSize: 20, wordSpacing: 5, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if (thatDate.isBefore(DateTime.now())) {
+      return Container(
+        height: 47,
+        width: 155,
+        decoration: BoxDecoration(
+            color: Colors.red, borderRadius: BorderRadius.circular(7)),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Dismissed',
+                style: TextStyle(
+                    fontSize: 20, wordSpacing: 5, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        height: 47,
+        width: 155,
+        decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Color(0xff262626)
+                : Color(0xffE8E8E8),
+            borderRadius: BorderRadius.circular(7)),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                convertTheGivenTimestampToString(setToDate),
+                style: TextStyle(
+                    fontSize: 20, wordSpacing: 5, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

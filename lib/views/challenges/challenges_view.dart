@@ -650,7 +650,27 @@ class ChallengesView extends StatelessWidget {
                                               int index) {
                                             return GestureDetector(
                                               onTap: () => viewModel
-                                                  .pushMyChallangesView(),
+                                                  .pushMyChallangesView(
+                                                isCompleated:
+                                                    userChallangesDocs[index]
+                                                        ['isCompleated'],
+                                                previewLink:
+                                                    userChallangesDocs[index]
+                                                        ['previewLink'],
+                                                bookImage:
+                                                    userChallangesDocs[index]
+                                                        ['bookImage'],
+                                                authors:
+                                                    userChallangesDocs[index]
+                                                        ['authors'],
+                                                id: userChallangesDocs[index]
+                                                    ['id'],
+                                                title: userChallangesDocs[index]
+                                                    ['title'],
+                                                setToDate:
+                                                    userChallangesDocs[index]
+                                                        ['setToDate'],
+                                              ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -759,31 +779,14 @@ class ChallengesView extends StatelessWidget {
                                                                   ),
                                                                   Row(
                                                                     children: [
-                                                                      Container(
-                                                                        height:
-                                                                            47,
-                                                                        width:
-                                                                            155,
-                                                                        decoration: BoxDecoration(
-                                                                            color: Theme.of(context).brightness == Brightness.dark
-                                                                                ? Color(0xff262626)
-                                                                                : Color(0xffE8E8E8),
-                                                                            borderRadius: BorderRadius.circular(7)),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
-                                                                            children: [
-                                                                              Text(
-                                                                                viewModel.convertTheGivenTimestampToString(snapshot.data.docs[index]['setToDate']),
-                                                                                style: TextStyle(fontSize: 22, wordSpacing: 5, fontWeight: FontWeight.w500),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                                      viewModel.whichContainerToShowHabibi(
+                                                                          context:
+                                                                              context,
+                                                                          isCompleated: userChallangesDocs[index]
+                                                                              [
+                                                                              'isCompleated'],
+                                                                          setToDate:
+                                                                              userChallangesDocs[index]['setToDate']),
                                                                       SizedBox(
                                                                         width:
                                                                             15,

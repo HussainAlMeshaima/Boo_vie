@@ -277,6 +277,7 @@ class CloudFirestoreServices {
                     'title': title,
                     'authors': authors,
                     'setToDate': setToDate,
+                    'isCompleated': false,
                   },
                 )
               }
@@ -1320,6 +1321,19 @@ class CloudFirestoreServices {
         .snapshots();
   }
 
+  Stream<DocumentSnapshot> getUserMyChallangeSetToDateStream(
+      {@required String bookId}) async* {
+    String userEmail = await _authenticationService.userEmail();
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
+        .collection('userDetails')
+        .doc('userChallenges')
+        .collection('myChallenges')
+        .doc(bookId)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> getCompletedChallengesStream() async* {
     yield* _users
         .doc(await _authenticationService.userEmail())
@@ -1725,5 +1739,27 @@ class CloudFirestoreServices {
       'numberOfTimesBookRead': FieldValue.increment(1),
       'setDate': DateTime.now(),
     });
+  }
+
+  Future<void> removeChallangeFromMyChallange({@required String bookId}) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userChallenges')
+        .collection('myChallenges')
+        .doc(bookId)
+        .delete();
+  }
+
+  Future<void> markMyChallangeAsCompleated({@required String bookId}) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userChallenges')
+        .collection('myChallenges')
+        .doc(bookId)
+        .update({'isCompleated': true});
   }
 }

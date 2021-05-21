@@ -537,27 +537,33 @@ class BookView extends StatelessWidget {
                                                   ),
                                                 )
                                               : Container(
-                                                  child: Text(
-                                                    description.length >= 160
-                                                        ? '     ' +
-                                                            description
-                                                                .replaceAll(
-                                                                    RegExp(
-                                                                        r"<[^>]*>",
-                                                                        multiLine:
-                                                                            true,
-                                                                        caseSensitive:
-                                                                            true),
-                                                                    '')
-                                                                .substring(
-                                                                    0, 160) +
-                                                            '...'
-                                                        : description.replaceAll(
-                                                            RegExp(r"<[^>]*>",
-                                                                multiLine: true,
-                                                                caseSensitive:
-                                                                    true),
-                                                            ''),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Text(
+                                                      description.length >= 160
+                                                          ? '     ' +
+                                                              description
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r"<[^>]*>",
+                                                                          multiLine:
+                                                                              true,
+                                                                          caseSensitive:
+                                                                              true),
+                                                                      '')
+                                                                  .substring(
+                                                                      0, 160) +
+                                                              '...'
+                                                          : description.replaceAll(
+                                                              RegExp(r"<[^>]*>",
+                                                                  multiLine:
+                                                                      true,
+                                                                  caseSensitive:
+                                                                      true),
+                                                              ''),
+                                                    ),
                                                   ),
                                                 ),
                                         ),
@@ -837,7 +843,6 @@ class BookView extends StatelessWidget {
                                                         (book) => book.id)
                                                     .toSet();
 
-                                            print(bookListWithIds);
                                             newListOfBooks.retainWhere((book) =>
                                                 bookListWithIds
                                                     .remove(book.id));
@@ -848,7 +853,27 @@ class BookView extends StatelessWidget {
                                                         .imageLinks ==
                                                     null);
                                             newListOfBooks.removeWhere(
+                                                (items) =>
+                                                    items.volumeInfo.imageLinks
+                                                        .thumbnail ==
+                                                    null);
+                                            newListOfBooks.removeWhere(
                                                 (items) => items.id == id);
+                                            newListOfBooks.removeWhere(
+                                                (items) => items.id == null);
+                                            newListOfBooks.removeWhere(
+                                                (items) => items
+                                                    .volumeInfo.title.isEmpty);
+                                            newListOfBooks.removeWhere(
+                                                (items) =>
+                                                    items.volumeInfo.authors ==
+                                                    null);
+
+                                            newListOfBooks.removeWhere(
+                                                (items) =>
+                                                    items.volumeInfo
+                                                        .previewLink ==
+                                                    null);
 
                                             if (newListOfBooks == null ||
                                                 newListOfBooks.isEmpty) {
@@ -963,11 +988,10 @@ class BookView extends StatelessWidget {
                                                             );
 
                                                             viewModel.pushBookView(
-                                                                authors: newListOfBooks[index]
-                                                                            .volumeInfo
-                                                                            .authors[
-                                                                        0] ??
-                                                                    'No authors',
+                                                                authors: newListOfBooks[
+                                                                        index]
+                                                                    .volumeInfo
+                                                                    .authors[0],
                                                                 previewLink: newListOfBooks[
                                                                         index]
                                                                     .volumeInfo
