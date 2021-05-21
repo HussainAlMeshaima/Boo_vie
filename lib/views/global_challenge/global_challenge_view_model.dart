@@ -4,6 +4,7 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
+import 'package:boo_vi_app/views/user_review_to_profile/user_review_to_profile_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -301,4 +302,15 @@ class GlobalChallengeViewModel extends BaseViewModel {
 
   int _trophiesCount;
   int get trophiesCount => _trophiesCount;
+
+  Future<void> pushUserReviewToProfileCommentView({
+    @required String userImageComment,
+    @required String userEmailComment,
+  }) async {
+    _navigationService.navigateWithTransition(
+        UserReviewToProfileView(
+            userEmail: userEmailComment, userImage: userImageComment),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 500));
+  }
 }

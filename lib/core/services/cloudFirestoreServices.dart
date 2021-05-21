@@ -74,6 +74,14 @@ class CloudFirestoreServices {
         .get();
   }
 
+  Future<DocumentSnapshot> getTappedUserDoc(
+      {@required String tappedUserEmail}) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(tappedUserEmail)
+        .get();
+  }
+
   getUserCollection(String userEmail) {
     return FirebaseFirestore.instance.collection('users').doc(userEmail).get();
   }
@@ -1622,10 +1630,21 @@ class CloudFirestoreServices {
             });
   }
 
-  Future<Stream<QuerySnapshot>> getUserCurrentlyReadingBooks() async {
+  Future<QuerySnapshot> getUserCurrentlyReadingBooks() async {
     return FirebaseFirestore.instance
         .collection('users')
         .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .get();
+  }
+
+  Stream<QuerySnapshot> getUserCurrentlyReadingBooksStream() async* {
+    String userEmail = await _authenticationService.userEmail();
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .doc(userEmail)
         .collection('userDetails')
         .doc('userCurrentlyReading')
         .collection('currentlyReadingBooks')
@@ -1653,7 +1672,7 @@ class CloudFirestoreServices {
     @required String bookTitle,
     @required int bookTotalPages,
   }) async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(await _authenticationService.userEmail())
         .collection('userDetails')
@@ -1670,6 +1689,7 @@ class CloudFirestoreServices {
       'bookTotalPages': bookTotalPages,
       'numberOfTimesBookRead': 0,
       'isHidden': false,
+      'setDate': DateTime.now(),
     });
   }
 
@@ -1677,7 +1697,7 @@ class CloudFirestoreServices {
     @required int bookCurrentlyReachedPages,
     @required String bookId,
   }) async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(await _authenticationService.userEmail())
         .collection('userDetails')
@@ -1686,6 +1706,24 @@ class CloudFirestoreServices {
         .doc(bookId)
         .update({
       'bookCurrentlyReachedPages': bookCurrentlyReachedPages,
+      'setDate': DateTime.now(),
+    });
+  }
+
+  Future<void> compleateABookAtUserCurrentlyReading({
+    @required String bookId,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCurrentlyReading')
+        .collection('currentlyReadingBooks')
+        .doc(bookId)
+        .update({
+      'bookCurrentlyReachedPages': 0,
+      'numberOfTimesBookRead': FieldValue.increment(1),
+      'setDate': DateTime.now(),
     });
   }
 }

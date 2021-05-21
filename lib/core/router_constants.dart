@@ -33,5 +33,5 @@ const String comunityMembersViewRoute = 'comunityMembersViewRoute';
 const String communityNotificationsViewRoute = 'communityNotificationsViewRoute';
 const String comunityActiveChallengesViewRoute = 'comunityActiveChallengesViewRoute';
 const String editCommunityRulesAndDiscriptionViewRoute = 'editCommunityRulesAndDiscriptionViewRoute';
-const String communityChallangesViewRoute = 'communityChallangesViewRoute';
 const String communityChallangeViewRoute = 'communityChallangeViewRoute';
+const String compleatedChallangeViewRoute = 'compleatedChallangeViewRoute';

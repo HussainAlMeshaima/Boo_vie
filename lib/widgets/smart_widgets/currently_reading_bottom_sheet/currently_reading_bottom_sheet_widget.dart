@@ -352,10 +352,8 @@ class CurrentlyReadingBottomSheetWidget extends StatelessWidget {
               ),
               ElevatedButtonWidget(
                 text: 'Compleated',
-                onPressed: viewModel.elevatedButtonWidgetOnPressed,
-              ),
-              SizedBox(
-                height: 20,
+                onPressed: () =>
+                    viewModel.elevatedButtonWidgetOnPressed(context: context),
               ),
             ],
           ),

@@ -102,11 +102,11 @@ class CreateANewShelfWithNameWidget extends StatelessWidget {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      duration: Duration(seconds: 3),
+                                      duration: Duration(seconds: 1),
                                       content: Text(viewModel
                                               .displayedShelfNameController
                                               .text +
-                                          ' has been created')));
+                                          ' created')));
 
                               await viewModel.addANewShelfByName(
                                   authors: viewModel.authors,

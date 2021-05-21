@@ -40,12 +40,24 @@ class CurrentlyReadingBottomSheetViewModel extends BaseViewModel {
   void outlinedButtonWidgetOnPressed({@required BuildContext context}) {
     // ! 'add book'
     if (_outlinedButtonText != null) {
-      Navigator.pop(context);
       addBookToUserCurrentlyReading();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('Book added !'),
+        ),
+      );
+    } else {
+      updateBookToUserCurrentlyReading();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('Updated !'),
+        ),
+      );
     }
+    Navigator.pop(context);
   }
-
-  void elevatedButtonWidgetOnPressed() {}
 
   String _bookId;
   String get bookId => _bookId;
@@ -96,6 +108,25 @@ class CurrentlyReadingBottomSheetViewModel extends BaseViewModel {
       bookPreviewLink: _bookPreviewLink,
       bookTitle: _bookTitle,
       bookTotalPages: _bookTotalPages,
+    );
+  }
+
+  void updateBookToUserCurrentlyReading() {
+    _cloudFirestoreServices.updateBookAtUserCurrentlyReading(
+      bookCurrentlyReachedPages: _bookCurrentlyReachedPages,
+      bookId: _bookId,
+    );
+  }
+
+  void elevatedButtonWidgetOnPressed({BuildContext context}) {
+    _cloudFirestoreServices.compleateABookAtUserCurrentlyReading(
+        bookId: _bookId);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Compleated !'),
+      ),
     );
   }
 }

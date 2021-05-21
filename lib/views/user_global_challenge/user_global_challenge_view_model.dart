@@ -5,6 +5,7 @@ import 'package:boo_vi_app/core/locator.dart';
 import 'package:boo_vi_app/core/services/cloudFirestoreServices.dart';
 import 'package:boo_vi_app/core/services/streamServices.dart';
 import 'package:boo_vi_app/views/book/book_view.dart';
+import 'package:boo_vi_app/views/user_review_to_profile/user_review_to_profile_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -342,7 +343,7 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
         ),
       );
     }
-    notifyListeners();
+
     return Container(
       height: 120,
       child: Padding(
@@ -493,5 +494,81 @@ class UserGlobalChallengeViewModel extends BaseViewModel {
         ),
       ),
     );
+  }
+
+  String convertTheGivenTimestampToDays(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _days = date.inDays;
+
+    String _daysString = '$_days';
+
+    _numberOfdays = _daysString;
+
+    return _numberOfdays;
+  }
+
+  String convertTheGivenTimestampToHours(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _hours = date.inHours % 24;
+
+    String _hoursString = '$_hours'.padLeft(2, '0');
+
+    _numberOfhours = _hoursString;
+
+    return _numberOfhours.toString();
+  }
+
+  String convertTheGivenTimestampToMinutes(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _minutes = date.inMinutes % 60;
+
+    String _minutesString = '$_minutes'.padLeft(2, '0');
+
+    _numberOfminutes = _minutesString;
+
+    return _numberOfminutes.toString();
+  }
+
+  String convertTheGivenTimestampToSeconds(Timestamp setToDate) {
+    DateTime otherDate = setToDate.toDate();
+
+    Duration date = otherDate.difference(DateTime.now());
+
+    int _seconds = date.inSeconds % 60;
+
+    String _secondsString = '$_seconds'.padLeft(2, '0');
+
+    _numberOfseconds = _secondsString;
+
+    return _numberOfseconds.toString();
+  }
+
+  Stream<DocumentSnapshot> getGlobalChallangeSetToDateStream() async* {
+    yield* _cloudFirestoreServices
+        .getGlobalChallangeSetToDateStream(_challangeId);
+  }
+
+  Stream<QuerySnapshot> getChallangeComments(String challangeId) {
+    return _streamServices.getChallangeComments(challangeId);
+  }
+
+  Future<void> pushUserReviewToProfileCommentView({
+    @required String userImageComment,
+    @required String userEmailComment,
+  }) async {
+    _navigationService.navigateWithTransition(
+        UserReviewToProfileView(
+            userEmail: userEmailComment, userImage: userImageComment),
+        transition: 'rightToLeftWithFade',
+        duration: Duration(milliseconds: 500));
   }
 }

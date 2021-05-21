@@ -7,7 +7,7 @@ import 'edit_review_sheet_view_model.dart';
 class EditReviewSheetWidget extends StatelessWidget {
   final String bookId;
   final bool spoiler;
-  final bool editSpoiler;
+  final bool bookPageSpoiler;
   final String userReviewString;
   final double userReviewEmojiRating;
 
@@ -15,7 +15,7 @@ class EditReviewSheetWidget extends StatelessWidget {
     Key key,
     @required this.bookId,
     @required this.spoiler,
-    @required this.editSpoiler,
+    @required this.bookPageSpoiler,
     @required this.userReviewString,
     @required this.userReviewEmojiRating,
   }) : super(key: key);
@@ -26,7 +26,7 @@ class EditReviewSheetWidget extends StatelessWidget {
           viewModel.handleStartUpLogic(
         bookId: bookId,
         spoiler: spoiler,
-        editSpoiler: editSpoiler,
+        bookPageSpoiler: bookPageSpoiler,
         userReviewString: userReviewString,
         userReviewEmojiRating: userReviewEmojiRating,
       ),
@@ -86,7 +86,7 @@ class EditReviewSheetWidget extends StatelessWidget {
               Tooltip(
                 message: 'Is that review a spoiler ? 🔥',
                 child: SwitchListTile(
-                    value: viewModel.editSpoiler,
+                    value: viewModel.bookPageSpoiler,
                     title: Text('Is review spoiler ? 🔥'),
                     activeColor: Theme.of(context).primaryColor,
                     onChanged: (value) {

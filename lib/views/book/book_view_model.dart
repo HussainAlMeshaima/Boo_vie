@@ -360,6 +360,16 @@ class BookViewModel extends BaseViewModel {
                                                                     title:
                                                                         _bookTitle);
                                                               });
+
+                                                              ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                  .showSnackBar(SnackBar(
+                                                                      duration: Duration(
+                                                                          seconds:
+                                                                              1),
+                                                                      content: Text(
+                                                                          'Shelf updated !')));
                                                             },
                                                             child: ListView(
                                                               shrinkWrap: true,
@@ -403,22 +413,23 @@ class BookViewModel extends BaseViewModel {
                                                                         padding:
                                                                             const EdgeInsets.all(12.0),
                                                                         child:
-                                                                            GestureDetector(
+                                                                            Hero(
+                                                                          tag: booksDocs[index]
+                                                                              [
+                                                                              'id'],
                                                                           child:
-                                                                              Hero(
-                                                                            tag:
-                                                                                booksDocs[index]['id'],
-                                                                            child:
-                                                                                Container(
-                                                                              height: 150,
-                                                                              width: 110,
-                                                                              decoration: BoxDecoration(
-                                                                                color: Theme.of(context).primaryColor.withOpacity(.5),
-                                                                                borderRadius: BorderRadius.circular(8),
-                                                                                image: DecorationImage(
-                                                                                  fit: BoxFit.cover,
-                                                                                  image: NetworkImage(booksDocs[index]['thumbnail']),
-                                                                                ),
+                                                                              Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                110,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Theme.of(context).primaryColor.withOpacity(.5),
+                                                                              borderRadius: BorderRadius.circular(8),
+                                                                              image: DecorationImage(
+                                                                                fit: BoxFit.cover,
+                                                                                image: NetworkImage(booksDocs[index]['thumbnail']),
                                                                               ),
                                                                             ),
                                                                           ),
@@ -596,7 +607,15 @@ class BookViewModel extends BaseViewModel {
                                         value: TimeOfDay.now(),
                                         onChange: (TimeOfDay value) {},
                                         onChangeDateTime: (DateTime value) {
-                                          addBookToMyChallanges(value);
+                                          if (value != null) {
+                                            addBookToMyChallanges(value);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                    content: Text(
+                                                        'Challange set !')));
+                                          }
                                         }),
                                   );
                                   Navigator.pop(context);
@@ -623,13 +642,21 @@ class BookViewModel extends BaseViewModel {
                                   ),
                                   title: Text('Add to my challenges (days)'),
                                   onTap: () async {
-                                    DateTime newDate = await showDatePicker(
+                                    DateTime value = await showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
                                       lastDate: DateTime(3000, 7),
                                       helpText: 'Select a date',
                                     );
+                                    if (value != null) {
+                                      addBookToMyChallanges(value);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 1),
+                                              content:
+                                                  Text('Challange set !')));
+                                    }
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -731,38 +758,32 @@ class BookViewModel extends BaseViewModel {
     _navigationService.navigateWithTransition(
         BookReviewsView(bookId: _bookId, tappedUserEmail: tappedUserEmail),
         transition: 'rightToLeftWithFade',
-        duration: Duration(milliseconds: 400));
+        duration: Duration(milliseconds: 500));
   }
 
   pushBookUserReview({
-    String bookId,
-    String tappedUserEmail,
-    String bookImage,
-    bool spoiler,
-    String userReviewString,
-    double userReviewEmojiRating,
+    @required String bookId,
+    @required String tappedUserEmail,
+    @required String bookImage,
+    @required String userReviewString,
+    @required double userReviewEmojiRating,
   }) async {
     String currentUserEmail = await _authenticationService.userEmail();
-    bool editSpoiler;
+    bool bookSpoiler = _spoiler;
     if (currentUserEmail == tappedUserEmail) {
-      print(spoiler);
-      editSpoiler = spoiler;
-      spoiler = false;
-    } else {
-      spoiler = spoiler;
-      editSpoiler = spoiler;
+      _spoiler = false;
     }
 
-    print('spoiler-------' + spoiler.toString());
-    print('editSpoiler-------' + editSpoiler.toString());
+    print('spoiler-------' + _spoiler.toString());
+    print('editSpoiler-------' + bookSpoiler.toString());
 
     _navigationService.navigateWithTransition(
         UserReviewwView(
           tappedUserEmail: tappedUserEmail,
           bookId: _bookId,
           bookImage: bookImage,
-          spoiler: spoiler,
-          editSpoiler: editSpoiler,
+          spoiler: _spoiler,
+          bookPageSpoiler: bookSpoiler,
           userReviewEmojiRating: userReviewEmojiRating,
           userReviewString: userReviewString,
           userReviewEmojiRatingDouble: userReviewEmojiRating,

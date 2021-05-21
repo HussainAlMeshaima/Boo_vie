@@ -24,885 +24,286 @@ class SearchView extends StatelessWidget {
               'Search',
             ),
           ),
-          body: ListView(
-            shrinkWrap: true,
+          body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            children: [
-              TextfieldWidget(
-                controller: viewModel.searchTextfieldController,
-                hintText: 'Search',
-                onPressedIcon: () {
-                  viewModel.searchTextfieldController.text
-                      .trim()
-                      .replaceAll('', '+');
+            child: Column(
+              children: [
+                TextfieldWidget(
+                  controller: viewModel.searchTextfieldController,
+                  hintText: 'Search',
+                  onPressedIcon: () {
+                    viewModel.searchTextfieldController.text.trim();
+                    viewModel.searchTextfieldController.text
+                        .trim()
+                        .replaceAll('', '+');
 
-                  if (viewModel.searchTextfieldController.text.isNotEmpty)
-                    return viewModel.pushSearchedView(
-                      context: context,
+                    if (viewModel.searchTextfieldController.text.isNotEmpty) {
+                      viewModel.pushSearchedView(context: context);
+                      viewModel.searchTextfieldController.clear();
+                      FocusScope.of(context).unfocus();
+                    } else
+                      return ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Search cannot be empty',
+                          ),
+                        ),
+                      );
+                  },
+                  iconData: Icons.send,
+                  onSubmitted: (
+                    String searchString,
+                  ) {
+                    viewModel.searchTextfieldController.text.trim();
+                    viewModel.searchTextfieldController.text.trim().replaceAll(
+                          '',
+                          '+',
+                        );
+                    print(
+                      viewModel.searchTextfieldController.text + '---',
                     );
-                  else
-                    return ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Search cannot be empty',
+                    if (viewModel.searchTextfieldController.text.isNotEmpty) {
+                      viewModel.pushSearchedView(context: context);
+                      viewModel.searchTextfieldController.clear();
+                      FocusScope.of(context).unfocus();
+                    } else
+                      return ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(
+                        SnackBar(
+                          content: Text('Search cannot be empty'),
+                        ),
+                      );
+                  },
+                ),
+
+                // ! ArtsAndentErtainmentBooks
+                BookCategoriesRowWidget(
+                  text: 'Arts & Entertainment',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullArtsAndentErtainmentBooksStream(),
+                    text: 'Arts & Entertainment',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getArtsAndentErtainmentBooksStream(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot,
+                        ) {
+                          if (snapshot.hasError) return snapshot.error;
+
+                          if (snapshot.hasData) {
+                            return Container(
+                              height: 255,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot.data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return BookAuthorAndNameWidget(
+                                    context: context,
+                                    bookAuthor: snapshot.data.docs[index]
+                                        ['authors'],
+                                    networkImage: snapshot.data.docs[index]
+                                        ['medium'],
+                                    bookId: snapshot.data.docs[index]['id'],
+                                    onTap: () {
+                                      viewModel.pushBookView(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        image: snapshot.data.docs[index]
+                                            ['medium'],
+                                        id: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                        bookTitle: snapshot.data.docs[index]
+                                            ['title'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                      );
+                                      viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        title: snapshot.data.docs[index]
+                                            ['title'],
+                                        bookImage: snapshot.data.docs[index]
+                                            ['medium'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                        bookId: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                      );
+                                    },
+                                    bookTitle: snapshot.data.docs[index]
+                                        ['title'],
+                                  );
+                                },
+                              ),
+                            );
+                          }
+
+                          return Container(
+                            height: 250,
+                            width: MediaQuery.of(
+                              context,
+                            ).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel
+                              .getFullArtsAndentErtainmentBooksStream(),
+                          text: 'Arts & Entertainment',
                         ),
                       ),
-                    );
-                },
-                iconData: Icons.send,
-                onSubmitted: (
-                  String searchString,
-                ) {
-                  viewModel.searchTextfieldController.text.trim().replaceAll(
-                        '',
-                        '+',
-                      );
-                  print(
-                    viewModel.searchTextfieldController.text + '---',
-                  );
-                  if (viewModel.searchTextfieldController.text.isNotEmpty)
-                    return viewModel.pushSearchedView(context: context);
-                  else
-                    return ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(
-                      SnackBar(
-                        content: Text('Search cannot be empty'),
-                      ),
-                    );
-                },
-              ),
-
-              // ! ArtsAndentErtainmentBooks
-              BookCategoriesRowWidget(
-                text: 'Arts & Entertainment',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullArtsAndentErtainmentBooksStream(),
-                  text: 'Arts & Entertainment',
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getArtsAndentErtainmentBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
 
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
+                // ! Biographies Books
+                BookCategoriesRowWidget(
+                  text: 'Biographies & memoirs',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullBiographiesAndMemoirsBooksStream(),
+                    text: 'Biographies books',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream:
+                              viewModel.getBiographiesAndMemoirsBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
+
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
                                           ['authors'],
-                                      image: snapshot.data.docs[index]
+                                      networkImage: snapshot.data.docs[index]
                                           ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
                                       bookTitle: snapshot.data.docs[index]
                                           ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
                                     );
                                   },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
+                                ),
+                              );
+                            }
 
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(
-                            context,
-                          ).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream:
-                            viewModel.getFullArtsAndentErtainmentBooksStream(),
-                        text: 'Arts & Entertainment',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! Biographies Books
-              BookCategoriesRowWidget(
-                text: 'Biographies & memoirs',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullBiographiesAndMemoirsBooksStream(),
-                  text: 'Biographies books',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getBiographiesAndMemoirsBooksStream(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot,
-                        ) {
-                          if (snapshot.hasError) return snapshot.error;
-
-                          if (snapshot.hasData) {
                             return Container(
-                              height: 255,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data.docs.length,
-                                itemBuilder: (context, index) {
-                                  return BookAuthorAndNameWidget(
-                                    context: context,
-                                    bookAuthor: snapshot.data.docs[index]
-                                        ['authors'],
-                                    networkImage: snapshot.data.docs[index]
-                                        ['medium'],
-                                    bookId: snapshot.data.docs[index]['id'],
-                                    onTap: () {
-                                      viewModel.pushBookView(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        image: snapshot.data.docs[index]
-                                            ['medium'],
-                                        id: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                        bookTitle: snapshot.data.docs[index]
-                                            ['title'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                      );
-                                      viewModel.addAbookToRecentlyViewedShelf(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        title: snapshot.data.docs[index]
-                                            ['title'],
-                                        bookImage: snapshot.data.docs[index]
-                                            ['medium'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                        bookId: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                      );
-                                    },
-                                    bookTitle: snapshot.data.docs[index]
-                                        ['title'],
-                                  );
-                                },
-                              ),
-                            );
-                          }
-
-                          return Container(
-                              height: 250,
-                              width: MediaQuery.of(
-                                context,
-                              ).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream:
-                            viewModel.getFullBiographiesAndMemoirsBooksStream(),
-                        text: 'Biographies Books',
+                                height: 250,
+                                width: MediaQuery.of(
+                                  context,
+                                ).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel
+                              .getFullBiographiesAndMemoirsBooksStream(),
+                          text: 'Biographies Books',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // ! Childrens Books
-              BookCategoriesRowWidget(
-                text: 'Children\'s Books',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullChildrensBooksStream(),
+                // ! Childrens Books
+                BookCategoriesRowWidget(
                   text: 'Children\'s Books',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullChildrensBooksStream(),
+                    text: 'Children\'s Books',
+                  ),
                 ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getChildrensBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(
-                            context,
-                          ).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullChildrensBooksStream(),
-                        text: 'Children\'s Books',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! Comic Books
-              BookCategoriesRowWidget(
-                text: 'Comic Books',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullComicBooksStream(),
-                  text: 'Comic books',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getComicBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(
-                            context,
-                          ).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullComicBooksStream(),
-                        text: 'Comic Books',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! Computers & Tech Books
-              BookCategoriesRowWidget(
-                text: 'Computers & Tech',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullComputersAndTechnologyBooksStream(),
-                  text: 'Computers & Tech books',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getComputersAndTechnologyBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(
-                            context,
-                          ).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel
-                            .getFullComputersAndTechnologyBooksStream(),
-                        text: 'Entertainment Books',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! cooking & Food Books
-              BookCategoriesRowWidget(
-                text: 'Cooking & Food',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullCookingAndFoodBooksStream(),
-                  text: 'Computers & Tech books',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getCookingAndFoodBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullCookingAndFoodBooksStream(),
-                        text: 'Cooking & Food',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! cooking & Food Books
-              BookCategoriesRowWidget(
-                text: 'Fiction & Literature',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullFictionAndLiteratureBooksStream(),
-                  text: 'Fiction & Literature',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getFictionAndLiteratureBooksStream(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream:
-                            viewModel.getFullFictionAndLiteratureBooksStream(),
-                        text: 'Fiction & Literature ',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! Health, Mind & Body Books
-              BookCategoriesRowWidget(
-                text: 'Health, Mind & Body',
-                onPressed: () => viewModel.pushMoreBooksView(
-                    stream: viewModel.getFullHealthMindAndbodyBooksStream(),
-                    text: 'Health, Mind & Body'),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                      stream: viewModel.getHealthMindAndbodyBooksStream(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot,
-                      ) {
-                        if (snapshot.hasError) return snapshot.error;
-
-                        if (snapshot.hasData) {
-                          return Container(
-                            height: 255,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return BookAuthorAndNameWidget(
-                                  context: context,
-                                  bookAuthor: snapshot.data.docs[index]
-                                      ['authors'],
-                                  networkImage: snapshot.data.docs[index]
-                                      ['medium'],
-                                  bookId: snapshot.data.docs[index]['id'],
-                                  onTap: () {
-                                    viewModel.pushBookView(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      image: snapshot.data.docs[index]
-                                          ['medium'],
-                                      id: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                      bookTitle: snapshot.data.docs[index]
-                                          ['title'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                    );
-                                    viewModel.addAbookToRecentlyViewedShelf(
-                                      authors: snapshot.data.docs[index]
-                                          ['authors'],
-                                      title: snapshot.data.docs[index]['title'],
-                                      bookImage: snapshot.data.docs[index]
-                                          ['medium'],
-                                      previewLink: snapshot.data.docs[index]
-                                          ['previewLink'],
-                                      bookId: snapshot.data.docs[index]['id']
-                                          .replaceAll(
-                                        new RegExp(
-                                          r".{/ +}",
-                                        ),
-                                        '',
-                                      ),
-                                    );
-                                  },
-                                  bookTitle: snapshot.data.docs[index]['title'],
-                                );
-                              },
-                            ),
-                          );
-                        }
-
-                        return Container(
-                          height: 250,
-                          width: MediaQuery.of(
-                            context,
-                          ).size.width,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullHealthMindAndbodyBooksStream(),
-                        text: 'Health, Mind & Body',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! History Books
-              BookCategoriesRowWidget(
-                text: 'History',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullHistoryBooksStream(),
-                  text: 'History Books',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getHistoryBooksStream(),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getChildrensBooksStream(),
                         builder: (
                           BuildContext context,
                           AsyncSnapshot<dynamic> snapshot,
@@ -970,39 +371,43 @@ class SearchView extends StatelessWidget {
                           }
 
                           return Container(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullHistoryBooksStream(),
-                        text: 'History Books',
+                            height: 250,
+                            width: MediaQuery.of(
+                              context,
+                            ).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ],
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullChildrensBooksStream(),
+                          text: 'Children\'s Books',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              // ! Home & Garden Books
-              BookCategoriesRowWidget(
-                text: 'Home & Garden',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullHomeAndGardenBooksStream(),
-                  text: 'Home & Garden',
+                // ! Comic Books
+                BookCategoriesRowWidget(
+                  text: 'Comic Books',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullComicBooksStream(),
+                    text: 'Comic books',
+                  ),
                 ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getHomeAndGardenBooksStream(),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getComicBooksStream(),
                         builder: (
                           BuildContext context,
                           AsyncSnapshot<dynamic> snapshot,
@@ -1070,141 +475,45 @@ class SearchView extends StatelessWidget {
                           }
 
                           return Container(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullHomeAndGardenBooksStream(),
-                        text: 'Home & Garden',
+                            height: 250,
+                            width: MediaQuery.of(
+                              context,
+                            ).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ! Mystery & Thrillers Books
-              BookCategoriesRowWidget(
-                text: 'Mystery & Thrillers',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullMysteryAndThrillersBooksStream(),
-                  text: 'Mystery & Thrillers',
-                ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getMysteryAndThrillersBooksStream(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot,
-                        ) {
-                          if (snapshot.hasError) return snapshot.error;
-
-                          if (snapshot.hasData) {
-                            return Container(
-                              height: 255,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data.docs.length,
-                                itemBuilder: (context, index) {
-                                  return BookAuthorAndNameWidget(
-                                    context: context,
-                                    bookAuthor: snapshot.data.docs[index]
-                                        ['authors'],
-                                    networkImage: snapshot.data.docs[index]
-                                        ['medium'],
-                                    bookId: snapshot.data.docs[index]['id'],
-                                    onTap: () {
-                                      viewModel.pushBookView(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        image: snapshot.data.docs[index]
-                                            ['medium'],
-                                        id: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                        bookTitle: snapshot.data.docs[index]
-                                            ['title'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                      );
-                                      viewModel.addAbookToRecentlyViewedShelf(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        title: snapshot.data.docs[index]
-                                            ['title'],
-                                        bookImage: snapshot.data.docs[index]
-                                            ['medium'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                        bookId: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                      );
-                                    },
-                                    bookTitle: snapshot.data.docs[index]
-                                        ['title'],
-                                  );
-                                },
-                              ),
-                            );
-                          }
-
-                          return Container(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream:
-                            viewModel.getFullMysteryAndThrillersBooksStream(),
-                        text: 'Mystery & Thrillers',
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullComicBooksStream(),
+                          text: 'Comic Books',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // ! Science Fiction & Fantasy Books
-              BookCategoriesRowWidget(
-                text: 'Fiction & Fantasy',
-                onPressed: () => viewModel.pushMoreBooksView(
+                // ! Computers & Tech Books
+                BookCategoriesRowWidget(
+                  text: 'Computers & Tech',
+                  onPressed: () => viewModel.pushMoreBooksView(
                     stream:
-                        viewModel.getFullScienceFictionAndFantasyBooksStream(),
-                    text: 'Fiction & Fantasy'),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    StreamBuilder(
+                        viewModel.getFullComputersAndTechnologyBooksStream(),
+                    text: 'Computers & Tech books',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
                         stream:
-                            viewModel.getScienceFictionAndFantasyBooksStream(),
+                            viewModel.getComputersAndTechnologyBooksStream(),
                         builder: (
                           BuildContext context,
                           AsyncSnapshot<dynamic> snapshot,
@@ -1272,225 +581,946 @@ class SearchView extends StatelessWidget {
                           }
 
                           return Container(
-                              height: 250,
-                              width: MediaQuery.of(
-                                context,
-                              ).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel
-                            .getFullScienceFictionAndFantasyBooksStream(),
-                        text: 'Fiction & Fantasy',
+                            height: 250,
+                            width: MediaQuery.of(
+                              context,
+                            ).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ],
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel
+                              .getFullComputersAndTechnologyBooksStream(),
+                          text: 'Entertainment Books',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              // ! Sports Books
-              BookCategoriesRowWidget(
-                text: 'Sports Books',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getFullSportsBooksStream(),
+                // ! cooking & Food Books
+                BookCategoriesRowWidget(
+                  text: 'Cooking & Food',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullCookingAndFoodBooksStream(),
+                    text: 'Computers & Tech books',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getCookingAndFoodBooksStream(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot,
+                        ) {
+                          if (snapshot.hasError) return snapshot.error;
+
+                          if (snapshot.hasData) {
+                            return Container(
+                              height: 255,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot.data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return BookAuthorAndNameWidget(
+                                    context: context,
+                                    bookAuthor: snapshot.data.docs[index]
+                                        ['authors'],
+                                    networkImage: snapshot.data.docs[index]
+                                        ['medium'],
+                                    bookId: snapshot.data.docs[index]['id'],
+                                    onTap: () {
+                                      viewModel.pushBookView(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        image: snapshot.data.docs[index]
+                                            ['medium'],
+                                        id: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                        bookTitle: snapshot.data.docs[index]
+                                            ['title'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                      );
+                                      viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        title: snapshot.data.docs[index]
+                                            ['title'],
+                                        bookImage: snapshot.data.docs[index]
+                                            ['medium'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                        bookId: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                      );
+                                    },
+                                    bookTitle: snapshot.data.docs[index]
+                                        ['title'],
+                                  );
+                                },
+                              ),
+                            );
+                          }
+
+                          return Container(
+                            height: 250,
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullCookingAndFoodBooksStream(),
+                          text: 'Cooking & Food',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! cooking & Food Books
+                BookCategoriesRowWidget(
+                  text: 'Fiction & Literature',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullFictionAndLiteratureBooksStream(),
+                    text: 'Fiction & Literature',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getFictionAndLiteratureBooksStream(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasError) return snapshot.error;
+
+                          if (snapshot.hasData) {
+                            return Container(
+                              height: 255,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot.data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return BookAuthorAndNameWidget(
+                                    context: context,
+                                    bookAuthor: snapshot.data.docs[index]
+                                        ['authors'],
+                                    networkImage: snapshot.data.docs[index]
+                                        ['medium'],
+                                    bookId: snapshot.data.docs[index]['id'],
+                                    onTap: () {
+                                      viewModel.pushBookView(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        image: snapshot.data.docs[index]
+                                            ['medium'],
+                                        id: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                        bookTitle: snapshot.data.docs[index]
+                                            ['title'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                      );
+                                      viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        title: snapshot.data.docs[index]
+                                            ['title'],
+                                        bookImage: snapshot.data.docs[index]
+                                            ['medium'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                        bookId: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                      );
+                                    },
+                                    bookTitle: snapshot.data.docs[index]
+                                        ['title'],
+                                  );
+                                },
+                              ),
+                            );
+                          }
+
+                          return Container(
+                            height: 250,
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel
+                              .getFullFictionAndLiteratureBooksStream(),
+                          text: 'Fiction & Literature ',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! Health, Mind & Body Books
+                BookCategoriesRowWidget(
+                  text: 'Health, Mind & Body',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                      stream: viewModel.getFullHealthMindAndbodyBooksStream(),
+                      text: 'Health, Mind & Body'),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                        stream: viewModel.getHealthMindAndbodyBooksStream(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot,
+                        ) {
+                          if (snapshot.hasError) return snapshot.error;
+
+                          if (snapshot.hasData) {
+                            return Container(
+                              height: 255,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot.data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return BookAuthorAndNameWidget(
+                                    context: context,
+                                    bookAuthor: snapshot.data.docs[index]
+                                        ['authors'],
+                                    networkImage: snapshot.data.docs[index]
+                                        ['medium'],
+                                    bookId: snapshot.data.docs[index]['id'],
+                                    onTap: () {
+                                      viewModel.pushBookView(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        image: snapshot.data.docs[index]
+                                            ['medium'],
+                                        id: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                        bookTitle: snapshot.data.docs[index]
+                                            ['title'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                      );
+                                      viewModel.addAbookToRecentlyViewedShelf(
+                                        authors: snapshot.data.docs[index]
+                                            ['authors'],
+                                        title: snapshot.data.docs[index]
+                                            ['title'],
+                                        bookImage: snapshot.data.docs[index]
+                                            ['medium'],
+                                        previewLink: snapshot.data.docs[index]
+                                            ['previewLink'],
+                                        bookId: snapshot.data.docs[index]['id']
+                                            .replaceAll(
+                                          new RegExp(
+                                            r".{/ +}",
+                                          ),
+                                          '',
+                                        ),
+                                      );
+                                    },
+                                    bookTitle: snapshot.data.docs[index]
+                                        ['title'],
+                                  );
+                                },
+                              ),
+                            );
+                          }
+
+                          return Container(
+                            height: 250,
+                            width: MediaQuery.of(
+                              context,
+                            ).size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream:
+                              viewModel.getFullHealthMindAndbodyBooksStream(),
+                          text: 'Health, Mind & Body',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! History Books
+                BookCategoriesRowWidget(
+                  text: 'History',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullHistoryBooksStream(),
+                    text: 'History Books',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel.getHistoryBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
+
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
+                            return Container(
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullHistoryBooksStream(),
+                          text: 'History Books',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! Home & Garden Books
+                BookCategoriesRowWidget(
+                  text: 'Home & Garden',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullHomeAndGardenBooksStream(),
+                    text: 'Home & Garden',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel.getHomeAndGardenBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
+
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
+                            return Container(
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullHomeAndGardenBooksStream(),
+                          text: 'Home & Garden',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! Mystery & Thrillers Books
+                BookCategoriesRowWidget(
+                  text: 'Mystery & Thrillers',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullMysteryAndThrillersBooksStream(),
+                    text: 'Mystery & Thrillers',
+                  ),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel.getMysteryAndThrillersBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
+
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
+                            return Container(
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream:
+                              viewModel.getFullMysteryAndThrillersBooksStream(),
+                          text: 'Mystery & Thrillers',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! Science Fiction & Fantasy Books
+                BookCategoriesRowWidget(
+                  text: 'Fiction & Fantasy',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                      stream: viewModel
+                          .getFullScienceFictionAndFantasyBooksStream(),
+                      text: 'Fiction & Fantasy'),
+                ),
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel
+                              .getScienceFictionAndFantasyBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
+
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
+                            return Container(
+                                height: 250,
+                                width: MediaQuery.of(
+                                  context,
+                                ).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel
+                              .getFullScienceFictionAndFantasyBooksStream(),
+                          text: 'Fiction & Fantasy',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ! Sports Books
+                BookCategoriesRowWidget(
                   text: 'Sports Books',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getFullSportsBooksStream(),
+                    text: 'Sports Books',
+                  ),
                 ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getSportsBooksStream(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot,
-                        ) {
-                          if (snapshot.hasError) return snapshot.error;
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel.getSportsBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
 
-                          if (snapshot.hasData) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
                             return Container(
-                              height: 255,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data.docs.length,
-                                itemBuilder: (context, index) {
-                                  return BookAuthorAndNameWidget(
-                                    context: context,
-                                    bookAuthor: snapshot.data.docs[index]
-                                        ['authors'],
-                                    networkImage: snapshot.data.docs[index]
-                                        ['medium'],
-                                    bookId: snapshot.data.docs[index]['id'],
-                                    onTap: () {
-                                      viewModel.pushBookView(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        image: snapshot.data.docs[index]
-                                            ['medium'],
-                                        id: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                        bookTitle: snapshot.data.docs[index]
-                                            ['title'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                      );
-                                      viewModel.addAbookToRecentlyViewedShelf(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        title: snapshot.data.docs[index]
-                                            ['title'],
-                                        bookImage: snapshot.data.docs[index]
-                                            ['medium'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                        bookId: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                      );
-                                    },
-                                    bookTitle: snapshot.data.docs[index]
-                                        ['title'],
-                                  );
-                                },
-                              ),
-                            );
-                          }
-
-                          return Container(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullSportsBooksStream(),
-                        text: 'Sports Books',
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullSportsBooksStream(),
+                          text: 'Sports Books',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // ! Travel Books
-              BookCategoriesRowWidget(
-                text: 'Travel Books',
-                onPressed: () => viewModel.pushMoreBooksView(
-                  stream: viewModel.getTravelBooksStream(),
-                  text: 'Travel books',
+                // ! Travel Books
+                BookCategoriesRowWidget(
+                  text: 'Travel Books',
+                  onPressed: () => viewModel.pushMoreBooksView(
+                    stream: viewModel.getTravelBooksStream(),
+                    text: 'Travel books',
+                  ),
                 ),
-              ),
-              Container(
-                height: 255,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  children: [
-                    StreamBuilder(
-                        stream: viewModel.getTravelBooksStream(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot,
-                        ) {
-                          if (snapshot.hasError) return snapshot.error;
+                Container(
+                  height: 255,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    children: [
+                      StreamBuilder(
+                          stream: viewModel.getTravelBooksStream(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot,
+                          ) {
+                            if (snapshot.hasError) return snapshot.error;
 
-                          if (snapshot.hasData) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                height: 255,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return BookAuthorAndNameWidget(
+                                      context: context,
+                                      bookAuthor: snapshot.data.docs[index]
+                                          ['authors'],
+                                      networkImage: snapshot.data.docs[index]
+                                          ['medium'],
+                                      bookId: snapshot.data.docs[index]['id'],
+                                      onTap: () {
+                                        viewModel.pushBookView(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          image: snapshot.data.docs[index]
+                                              ['medium'],
+                                          id: snapshot.data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                          bookTitle: snapshot.data.docs[index]
+                                              ['title'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                        );
+                                        viewModel.addAbookToRecentlyViewedShelf(
+                                          authors: snapshot.data.docs[index]
+                                              ['authors'],
+                                          title: snapshot.data.docs[index]
+                                              ['title'],
+                                          bookImage: snapshot.data.docs[index]
+                                              ['medium'],
+                                          previewLink: snapshot.data.docs[index]
+                                              ['previewLink'],
+                                          bookId: snapshot
+                                              .data.docs[index]['id']
+                                              .replaceAll(
+                                            new RegExp(
+                                              r".{/ +}",
+                                            ),
+                                            '',
+                                          ),
+                                        );
+                                      },
+                                      bookTitle: snapshot.data.docs[index]
+                                          ['title'],
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+
                             return Container(
-                              height: 255,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data.docs.length,
-                                itemBuilder: (context, index) {
-                                  return BookAuthorAndNameWidget(
-                                    context: context,
-                                    bookAuthor: snapshot.data.docs[index]
-                                        ['authors'],
-                                    networkImage: snapshot.data.docs[index]
-                                        ['medium'],
-                                    bookId: snapshot.data.docs[index]['id'],
-                                    onTap: () {
-                                      viewModel.pushBookView(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        image: snapshot.data.docs[index]
-                                            ['medium'],
-                                        id: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                        bookTitle: snapshot.data.docs[index]
-                                            ['title'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                      );
-                                      viewModel.addAbookToRecentlyViewedShelf(
-                                        authors: snapshot.data.docs[index]
-                                            ['authors'],
-                                        title: snapshot.data.docs[index]
-                                            ['title'],
-                                        bookImage: snapshot.data.docs[index]
-                                            ['medium'],
-                                        previewLink: snapshot.data.docs[index]
-                                            ['previewLink'],
-                                        bookId: snapshot.data.docs[index]['id']
-                                            .replaceAll(
-                                          new RegExp(
-                                            r".{/ +}",
-                                          ),
-                                          '',
-                                        ),
-                                      );
-                                    },
-                                    bookTitle: snapshot.data.docs[index]
-                                        ['title'],
-                                  );
-                                },
-                              ),
-                            );
-                          }
-
-                          return Container(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ));
-                        }),
-                    MoreBooksWidget(
-                      onTap: () => viewModel.pushMoreBooksView(
-                        stream: viewModel.getFullTravelBooksStream(),
-                        text: 'Travel Books',
+                                height: 250,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ));
+                          }),
+                      MoreBooksWidget(
+                        onTap: () => viewModel.pushMoreBooksView(
+                          stream: viewModel.getFullTravelBooksStream(),
+                          text: 'Travel Books',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

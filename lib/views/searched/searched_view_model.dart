@@ -105,7 +105,7 @@ class SearchedViewModel extends BaseViewModel {
 
   Future<BooksResponse> changesearchTextfieldControllerAndBringBooks() async {
     var books = getSearchedBooks();
-    notifyListeners();
+    // notifyListeners();
 
     return books;
   }
