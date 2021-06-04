@@ -82,46 +82,56 @@ class ProfileView extends StatelessWidget {
                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasData) {
                       return Center(
-                        child: Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(15),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image:
-                                  NetworkImage(snapshot.data.get('userImage')),
+                        child: GestureDetector(
+                          onTap: () {
+                            viewModel.pushProfileToEditDetailsView(
+                              userImage: snapshot.data.data()['userImage'],
+                              userDescription:
+                                  snapshot.data.data()['userDescription'],
+                              userName: snapshot.data.data()['userName'],
+                            );
+                          },
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(15),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    snapshot.data.get('userImage')),
+                              ),
                             ),
-                          ),
-                          child: Stack(
-                            alignment: AlignmentDirectional.center,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                bottom: -5,
-                                right: -5,
-                                child: Container(
-                                  height: 37,
-                                  width: 37,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Theme.of(context).primaryColor),
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: Theme.of(context)
-                                        .primaryIconTheme
-                                        .color,
+                            child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  bottom: -5,
+                                  right: -5,
+                                  child: Container(
+                                    height: 37,
+                                    width: 37,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Theme.of(context).primaryColor),
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Theme.of(context)
+                                          .primaryIconTheme
+                                          .color,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: -40,
-                                child: Text(snapshot.data.get('userName'),
-                                    style: TextStyle(fontSize: 20)),
-                              )
-                            ],
+                                Positioned(
+                                  bottom: -40,
+                                  child: Text(snapshot.data.get('userName'),
+                                      style: TextStyle(fontSize: 20)),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -363,13 +373,15 @@ class ProfileView extends StatelessWidget {
                           List<QueryDocumentSnapshot> shelfsDocs =
                               snapshot.data.docs;
 
-                          shelfsDocs.sort((a, b) {
-                            int aInt =
-                                a.get('createdDate').microsecondsSinceEpoch;
-                            int bInt =
-                                b.get('createdDate').microsecondsSinceEpoch;
-                            return bInt.compareTo(aInt);
-                          });
+                          shelfsDocs.sort(
+                            (a, b) {
+                              int aInt =
+                                  a.get('createdDate').microsecondsSinceEpoch;
+                              int bInt =
+                                  b.get('createdDate').microsecondsSinceEpoch;
+                              return bInt.compareTo(aInt);
+                            },
+                          );
 
                           return ListView.builder(
                               shrinkWrap: true,

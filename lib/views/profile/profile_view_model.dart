@@ -29,7 +29,9 @@ class ProfileViewModel extends BaseViewModel {
   NavigationService _navigationService = locator<NavigationService>();
 
   pushProfileToEditDetailsView(
-      {String userImage, String userDescription, String userName}) {
+      {@required String userImage,
+      @required String userDescription,
+      @required String userName}) {
     return _navigationService.navigateWithTransition(
         ProfileToEditDetailsView(
           userImage: userImage,

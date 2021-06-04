@@ -20,10 +20,11 @@ class ProfileToEditDetailsViewModel extends BaseViewModel {
     this.log = getLogger(this.runtimeType.toString());
   }
 
-  handleStartUpLogic(
-      {@required String userImage,
-      @required String userDescription,
-      @required String userName}) {
+  handleStartUpLogic({
+    @required String userImage,
+    @required String userDescription,
+    @required String userName,
+  }) {
     _userImage = userImage;
     _userDescription = userDescription;
     _userName = userName;

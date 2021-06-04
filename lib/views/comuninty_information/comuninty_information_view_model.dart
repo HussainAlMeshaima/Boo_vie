@@ -195,4 +195,11 @@ class ComunintyInformationViewModel extends BaseViewModel {
       userImage: userImage,
     );
   }
+
+  Future<bool> cheackIfCurrentUserIsAMember() async {
+    DocumentSnapshot doc = await _cloudFirestoreServices
+        .cheackIfCurrentUserIsAMember(comunityId: _docId);
+    bool isCurrentUserIsAMember = doc.exists;
+    return isCurrentUserIsAMember;
+  }
 }

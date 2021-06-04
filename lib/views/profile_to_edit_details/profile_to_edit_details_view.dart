@@ -21,9 +21,10 @@ class ProfileToEditDetailsView extends StatelessWidget {
     return ViewModelBuilder<ProfileToEditDetailsViewModel>.reactive(
       onModelReady: (ProfileToEditDetailsViewModel viewModel) =>
           viewModel.handleStartUpLogic(
-              userImage: userImage,
-              userName: userName,
-              userDescription: userDescription),
+        userImage: userImage,
+        userName: userName,
+        userDescription: userDescription,
+      ),
       builder: (BuildContext context, ProfileToEditDetailsViewModel viewModel,
           Widget _) {
         return Scaffold(

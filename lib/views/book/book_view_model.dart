@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:boo_vi_app/core/models/bookModels/bookIdModel.dart';
+import 'package:boo_vi_app/widgets/smart_widgets/comunity_sheet/comunity_sheet_widget.dart';
+
 import 'package:boo_vi_app/widgets/smart_widgets/currently_reading_bottom_sheet/currently_reading_bottom_sheet_widget.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 
@@ -38,8 +40,8 @@ class BookViewModel extends BaseViewModel {
   CloudFirestoreServices _cloudFirestoreServices =
       locator<CloudFirestoreServices>();
 
-  Stream getReviewsStream(String bookId) {
-    return _cloudFirestoreServices.getReviewsStream(bookId);
+  Stream getReviewsStream(String bookId) async* {
+    yield* _cloudFirestoreServices.getReviewsStream(bookId);
   }
 
   Stream<QuerySnapshot> getUserShelfsStream() async* {
@@ -606,16 +608,23 @@ class BookViewModel extends BaseViewModel {
                                         context: context,
                                         value: TimeOfDay.now(),
                                         onChange: (TimeOfDay value) {},
-                                        onChangeDateTime: (DateTime value) {
+                                        onChangeDateTime:
+                                            (DateTime value) async {
                                           if (value != null) {
                                             addBookToMyChallanges(value);
-                                            ScaffoldMessenger.of(context)
+                                            return ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
                                                     duration:
                                                         Duration(seconds: 1),
                                                     content: Text(
                                                         'Challange set !')));
                                           }
+                                          return ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  content:
+                                                      Text('Dismissed !')));
                                         }),
                                   );
                                   Navigator.pop(context);
@@ -628,7 +637,7 @@ class BookViewModel extends BaseViewModel {
                                       Icons.linear_scale,
                                       color: Theme.of(context).primaryColor,
                                     ),
-                                    title: Text('Add to my challenges (day)'),
+                                    title: Text('My challenges (day)'),
                                   ),
                                 ),
                               ),
@@ -656,8 +665,13 @@ class BookViewModel extends BaseViewModel {
                                               duration: Duration(seconds: 1),
                                               content:
                                                   Text('Challange set !')));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 1),
+                                              content: Text('Dismissed !')));
+                                      Navigator.pop(context);
                                     }
-                                    Navigator.pop(context);
                                   },
                                 ),
                               ),
@@ -671,14 +685,19 @@ class BookViewModel extends BaseViewModel {
                                   ),
                                   title: Text('Add as a community challenge'),
                                   onTap: () async {
-                                    DateTime newDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(3000, 7),
-                                      helpText: 'Select a date',
-                                    );
                                     Navigator.pop(context);
+
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2,
+                                            child: ComunitySheetWidget(),
+                                          );
+                                        });
                                   },
                                 ),
                               ),
@@ -767,11 +786,14 @@ class BookViewModel extends BaseViewModel {
     @required String bookImage,
     @required String userReviewString,
     @required double userReviewEmojiRating,
+    @required bool originalBookSpoiler,
   }) async {
     String currentUserEmail = await _authenticationService.userEmail();
+    bool _spoilerToBeSend;
     bool bookSpoiler = _spoiler;
     if (currentUserEmail == tappedUserEmail) {
-      _spoiler = false;
+      // _spoiler = false;
+      _spoilerToBeSend = false;
     }
 
     print('spoiler-------' + _spoiler.toString());
@@ -782,8 +804,8 @@ class BookViewModel extends BaseViewModel {
           tappedUserEmail: tappedUserEmail,
           bookId: _bookId,
           bookImage: bookImage,
-          spoiler: _spoiler,
-          bookPageSpoiler: bookSpoiler,
+          spoiler: _spoilerToBeSend ?? originalBookSpoiler,
+          bookPageSpoiler: originalBookSpoiler,
           userReviewEmojiRating: userReviewEmojiRating,
           userReviewString: userReviewString,
           userReviewEmojiRatingDouble: userReviewEmojiRating,

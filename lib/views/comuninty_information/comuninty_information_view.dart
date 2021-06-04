@@ -1084,11 +1084,21 @@ class ComunintyInformationView extends StatelessWidget {
                                   return Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: GestureDetector(
-                                        onTap: () {
-                                          viewModel.pushRoom(
-                                              roomId: roomsDoc[index].id,
-                                              doorName: roomsDoc[index]
-                                                  ['doorName']);
+                                        onTap: () async {
+                                          if (await viewModel
+                                              .cheackIfCurrentUserIsAMember()) {
+                                            viewModel.pushRoom(
+                                                roomId: roomsDoc[index].id,
+                                                doorName: roomsDoc[index]
+                                                    ['doorName']);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                    content: Text(
+                                                        'Please join the comunity first')));
+                                          }
                                         },
                                         child: DoorType1Widget(
                                             doorName: roomsDoc[index]
@@ -1098,11 +1108,21 @@ class ComunintyInformationView extends StatelessWidget {
                                 return Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: GestureDetector(
-                                      onTap: () {
-                                        viewModel.pushRoom(
-                                            roomId: roomsDoc[index].id,
-                                            doorName: roomsDoc[index]
-                                                ['doorName']);
+                                      onTap: () async {
+                                        if (await viewModel
+                                            .cheackIfCurrentUserIsAMember()) {
+                                          viewModel.pushRoom(
+                                              roomId: roomsDoc[index].id,
+                                              doorName: roomsDoc[index]
+                                                  ['doorName']);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  content: Text(
+                                                      'Please join the comunity first')));
+                                        }
                                       },
                                       child: DoorType2Widget(
                                           doorName: roomsDoc[index]
@@ -1125,20 +1145,20 @@ class ComunintyInformationView extends StatelessWidget {
 
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  SizedBox(
-                    height: 30,
-                  ),
-                  OutlinedButtonWidget(
-                    text: 'Send request',
-                    message:
-                        'Send a request to join message for the admin of the community',
-                    onPressed: () {
-                      viewModel.sendARequestToAGivenComunityToJoin();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 1),
-                          content: Text('A request has been has sent')));
-                    },
-                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  // ),
+                  // OutlinedButtonWidget(
+                  //   text: 'Send request',
+                  //   message:
+                  //       'Send a request to join message for the admin of the community',
+                  //   onPressed: () {
+                  //     viewModel.sendARequestToAGivenComunityToJoin();
+                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //         duration: Duration(seconds: 1),
+                  //         content: Text('A request has been has sent')));
+                  //   },
+                  // ),
                   SizedBox(
                     height: 100,
                   )

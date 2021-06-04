@@ -86,8 +86,8 @@ class CloudFirestoreServices {
     return FirebaseFirestore.instance.collection('users').doc(userEmail).get();
   }
 
-  Stream getReviewsStream(String bookId) {
-    return _bookReviewsCollection.doc(bookId).collection('reviews').snapshots();
+  Stream getReviewsStream(String bookId) async* {
+    yield* _bookReviewsCollection.doc(bookId).collection('reviews').snapshots();
   }
 
   Future<DocumentSnapshot> getThatUserReviewForThatBook(String bookId) async {
@@ -1761,5 +1761,29 @@ class CloudFirestoreServices {
         .collection('myChallenges')
         .doc(bookId)
         .update({'isCompleated': true});
+  }
+
+  Future<DocumentSnapshot> userCategories() async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(await _authenticationService.userEmail())
+        .collection('userDetails')
+        .doc('userCategories')
+        .get();
+  }
+
+  Future<DocumentSnapshot> cheackIfCurrentUserIsAMember(
+      {@required String comunityId}) async {
+    String userEmail = await _authenticationService.userEmail();
+    return FirebaseFirestore.instance
+        .collection('communities')
+        .doc(comunityId)
+        .collection('communityMembers')
+        .doc(userEmail)
+        .get();
+  }
+
+  Future<QuerySnapshot> allCreatedComunities() {
+    return FirebaseFirestore.instance.collection('communities').get();
   }
 }

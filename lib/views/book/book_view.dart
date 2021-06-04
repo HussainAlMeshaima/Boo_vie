@@ -697,6 +697,9 @@ class BookView extends StatelessWidget {
                                                     onTap: () {
                                                       viewModel
                                                           .pushBookUserReview(
+                                                        originalBookSpoiler:
+                                                            reviewsDocs[index]
+                                                                ['spoiler'],
                                                         bookId: id,
                                                         tappedUserEmail:
                                                             reviewsDocs[index]
