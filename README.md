@@ -1,4 +1,4 @@
-# boo_vi_app
+# booVie
 
 A new Flutter project.
 
